@@ -1,0 +1,9 @@
+<!--Create a New Share -->
+
+<h1>Share a Resource</h1>
+
+<form ng-submit="vm.addShare()">
+  <input type="url" ng-model="vm.share.url" placeholder="www.google.com">
+  <input type="textarea" ng-model="vm.share.description" placeholder="Description">
+  <button>Submit</button>
+</form>
