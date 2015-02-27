@@ -8,7 +8,18 @@ app.config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/', routeDefinition);
   $routeProvider.when('/shares', routeDefinition);
 }])
-.controller('SharesCtrl', [function () {
+.controller('SharesCtrl', ['Share', function (Share) {
   // TODO: load these via AJAX
-  this.shares = [];
+  var self = this;
+  self.shares = [];
+
+  self.newShare = Share();
+
+  self.addShare = function() {
+    var share = Share(self.newShare);
+
+    self.shares.push(share);
+
+    self.newShare = Share();
+  };
 }]);

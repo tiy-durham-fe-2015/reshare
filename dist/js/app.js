@@ -15,6 +15,32 @@ app.controller('MainNavCtrl',
     };
   }]);
 
+app.factory('Share', function() {
+  return function(spec) {
+    spec = spec || {};
+    return {
+      title: spec.title || '',
+      description: spec.description || '',
+      url: spec.url || '',
+      timestamp: new Date(), // non-mvp
+      author: spec.author, // non-mvp
+      authorId: spec.authorId // non-mvp
+      upvotes: spec.upvotes || 0, // non-mvp
+      downvotes: spec.downvotes || 0, // non-mvp
+      comments: spec.comments || [], // non-mvp
+      // score: function() { // non-mvp
+      //   return this.upvotes - this.downvotes;
+      // },
+      // getComments: function() { // non-mvp
+      //   return this.comments;
+      // },
+      // equals: function(share) { // non-mvp
+      //   return (this.url === share.url);
+      // },
+    };
+  };
+});
+
 app.config(['$routeProvider', function($routeProvider) {
   var routeDefinition = {
     templateUrl: 'shares/shares.html',
@@ -25,20 +51,21 @@ app.config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/', routeDefinition);
   $routeProvider.when('/shares', routeDefinition);
 }])
-.controller('SharesCtrl', [function () {
+.controller('SharesCtrl', ['Share', function (Share) {
   // TODO: load these via AJAX
-  this.shares = [];
-}]);
+  var self = this;
+  self.shares = [];
 
-// A little string utility... no biggie
-app.factory('StringUtil', function() {
-  return {
-    startsWith: function (str, subStr) {
-      str = str || '';
-      return str.slice(0, subStr.length) === subStr;
-    }
+  self.newShare = Share();
+
+  self.addShare = function() {
+    var share = Share(self.newShare);
+
+    self.shares.push(share);
+
+    self.newShare = Share();
   };
-});
+}]);
 
 app.config(['$routeProvider', function($routeProvider) {
   var routeDefinition = {
@@ -107,6 +134,55 @@ app.config(['$routeProvider', function($routeProvider) {
 
     // Clear our newUser property
     self.newUser = User();
+  };
+}]);
+
+// A little string utility... no biggie
+app.factory('StringUtil', function() {
+  return {
+    startsWith: function (str, subStr) {
+      str = str || '';
+      return str.slice(0, subStr.length) === subStr;
+    }
+  };
+});
+
+app.factory('shareService', ['$http', '$q', '$log', function($http, $q, $log) {
+  // My $http promise then and catch always
+  // does the same thing, so I'll put the
+  // processing of it here. What you probably
+  // want to do instead is create a convenience object
+  // that makes $http calls for you in a standard
+  // way, handling post, put, delete, etc
+  function get(url) {
+    return processAjaxPromise($http.get(url));
+  }
+
+  function processAjaxPromise(p) {
+    return p.then(function (result) {
+      return result.data;
+    })
+    .catch(function (error) {
+      $log.log(error);
+    });
+  }
+
+  return {
+    list: function () {
+      return get('/api/shares');
+    },
+
+    getByUrl: function (url) {
+      if (!url) {
+        throw new Error('getByUserId requires a user id');
+      }
+
+      return get('/api/shares/' + url);
+    },
+
+    addShare: function (share) {
+      return processAjaxPromise($http.post('/api/users', user));
+    }
   };
 }]);
 
