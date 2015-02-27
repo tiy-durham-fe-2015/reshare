@@ -6,6 +6,7 @@ app.config(['$routeProvider', function($routeProvider) {
     resolve: {
       users: ['usersService', function (usersService) {
         return usersService.list();
+        //Returns a list of users as an array..
       }]
     }
   };
