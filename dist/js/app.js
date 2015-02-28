@@ -1,14 +1,30 @@
 // The root module for our Angular application
 var app = angular.module('app', ['ngRoute']);
 
+app.controller('MainNavCtrl',
+  ['$location', 'StringUtil', function($location, StringUtil) {
+    var self = this;
+
+    self.isActive = function (path) {
+      // The default route is a special case.
+      if (path === '/') {
+        return $location.path() === '/';
+      }
+
+      return StringUtil.startsWith($location.path(), path);
+    };
+  }]);
+
 app.factory('Share', function() {
   return function(spec) {
+    date = new Date();
     spec = spec || {};
     return {
       title: spec.title || '',
       description: spec.description || '',
       url: spec.url || '',
-      timestamp: new Date(), // non-mvp
+      timestamp: date.getTime(),
+      timeString: date.toString(),
       // author: spec.author, // non-mvp
       // authorId: spec.authorId, // non-mvp
       // upvotes: spec.upvotes || 0, // non-mvp
@@ -46,6 +62,21 @@ app.config(['$routeProvider', function($routeProvider) {
   // TODO: load these via AJAX
   var self = this;
   self.shares = resources;
+
+  self.upVote = function(id) {
+    shareService.upVote(id);
+    alert('upvote!');
+  }
+
+  self.downVote = function(id) {
+    shareService.downVote(id);
+    alert('downvote!');
+  }
+
+  self.unVote = function(id) {
+    shareService.unVote(id);
+    alert('unvote!');
+  }
 
 }]);
 
@@ -98,33 +129,27 @@ app.config(['$routeProvider', function($routeProvider) {
 
   self.upVote = function(id) {
     shareService.upVote(id);
-    alert('upvote!');
+    self.shares = shareService.list();
   }
 
   self.downVote = function(id) {
     shareService.downVote(id);
-    alert('downvote!');
   }
 
   self.unVote = function(id) {
     shareService.unVote(id);
-    alert('unvote!');
   }
 }]);
 
-app.controller('MainNavCtrl',
-  ['$location', 'StringUtil', function($location, StringUtil) {
-    var self = this;
-
-    self.isActive = function (path) {
-      // The default route is a special case.
-      if (path === '/') {
-        return $location.path() === '/';
-      }
-
-      return StringUtil.startsWith($location.path(), path);
-    };
-  }]);
+// A little string utility... no biggie
+app.factory('StringUtil', function() {
+  return {
+    startsWith: function (str, subStr) {
+      str = str || '';
+      return str.slice(0, subStr.length) === subStr;
+    }
+  };
+});
 
 app.config(['$routeProvider', function($routeProvider) {
   var routeDefinition = {
@@ -195,16 +220,6 @@ app.config(['$routeProvider', function($routeProvider) {
     self.newUser = User();
   };
 }]);
-
-// A little string utility... no biggie
-app.factory('StringUtil', function() {
-  return {
-    startsWith: function (str, subStr) {
-      str = str || '';
-      return str.slice(0, subStr.length) === subStr;
-    }
-  };
-});
 
 app.factory('shareService', ['$http', '$q', '$log', function($http, $q, $log) {
   // My $http promise then and catch always

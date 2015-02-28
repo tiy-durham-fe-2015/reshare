@@ -1,11 +1,13 @@
 app.factory('Share', function() {
   return function(spec) {
+    date = new Date();
     spec = spec || {};
     return {
       title: spec.title || '',
       description: spec.description || '',
       url: spec.url || '',
-      timestamp: new Date(), // non-mvp
+      timestamp: date.getTime(),
+      timeString: date.toString(),
       // author: spec.author, // non-mvp
       // authorId: spec.authorId, // non-mvp
       // upvotes: spec.upvotes || 0, // non-mvp
