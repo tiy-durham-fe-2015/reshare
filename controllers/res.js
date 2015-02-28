@@ -50,6 +50,7 @@ function getResource (req, res) {
 function upsertResource (req, res) {
   var resource = {
     userId: req.user.userId,
+    title: req.body.title,
     url: req.body.url,
     description: req.body.description,
     tags: req.body.tags || [],
