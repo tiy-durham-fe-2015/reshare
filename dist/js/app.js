@@ -1,20 +1,6 @@
 // The root module for our Angular application
 var app = angular.module('app', ['ngRoute']);
 
-app.controller('MainNavCtrl',
-  ['$location', 'StringUtil', function($location, StringUtil) {
-    var self = this;
-
-    self.isActive = function (path) {
-      // The default route is a special case.
-      if (path === '/') {
-        return $location.path() === '/';
-      }
-
-      return StringUtil.startsWith($location.path(), path);
-    };
-  }]);
-
 app.factory('Share', function() {
   return function(spec) {
     spec = spec || {};
@@ -110,7 +96,35 @@ app.config(['$routeProvider', function($routeProvider) {
   var self = this;
   self.shares = resources;
 
+  self.upVote = function(id) {
+    shareService.upVote(id);
+    alert('upvote!');
+  }
+
+  self.downVote = function(id) {
+    shareService.downVote(id);
+    alert('downvote!');
+  }
+
+  self.unVote = function(id) {
+    shareService.unVote(id);
+    alert('unvote!');
+  }
 }]);
+
+app.controller('MainNavCtrl',
+  ['$location', 'StringUtil', function($location, StringUtil) {
+    var self = this;
+
+    self.isActive = function (path) {
+      // The default route is a special case.
+      if (path === '/') {
+        return $location.path() === '/';
+      }
+
+      return StringUtil.startsWith($location.path(), path);
+    };
+  }]);
 
 app.config(['$routeProvider', function($routeProvider) {
   var routeDefinition = {
@@ -227,6 +241,21 @@ app.factory('shareService', ['$http', '$q', '$log', function($http, $q, $log) {
 
     addShare: function (res) {
       return processAjaxPromise($http.post('/api/res', res));
+    },
+
+    upVote: function (resId) {
+      var url = 'api/res/' + resId + '/votes';
+      return processAjaxPromise($http.post(url, { vote: 1 }));
+    },
+
+    downVote: function (resId) {
+      var url = 'api/res/' + resId + '/votes';
+      return processAjaxPromise($http.post(url, { vote: -1 }));
+    },
+
+    unVote: function (resId) {
+      var url = 'api/res/' + resId + '/votes';
+      return processAjaxPromise($http.post(url, { vote: 0 }));
     }
   };
 }]);

@@ -33,6 +33,21 @@ app.factory('shareService', ['$http', '$q', '$log', function($http, $q, $log) {
 
     addShare: function (res) {
       return processAjaxPromise($http.post('/api/res', res));
+    },
+
+    upVote: function (resId) {
+      var url = 'api/res/' + resId + '/votes';
+      return processAjaxPromise($http.post(url, { vote: 1 }));
+    },
+
+    downVote: function (resId) {
+      var url = 'api/res/' + resId + '/votes';
+      return processAjaxPromise($http.post(url, { vote: -1 }));
+    },
+
+    unVote: function (resId) {
+      var url = 'api/res/' + resId + '/votes';
+      return processAjaxPromise($http.post(url, { vote: 0 }));
     }
   };
 }]);

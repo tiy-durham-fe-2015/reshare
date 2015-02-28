@@ -8,6 +8,7 @@
   <li ng-repeat="share in vm.shares">
     <a class="share-title" target="_blank" href="{{share.url}}">{{share.title}}</a>
     <p class="share-description">{{share.description}}</p>
+    <a class="share-creator" href="#/users/{{share.userId}}">{{share.userId}}</a>
     <button class="upvote">/\</button>
     <button class="downvote">\/</button>
     <button class="flagger">flag post</button>

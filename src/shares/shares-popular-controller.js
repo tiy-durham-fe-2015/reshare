@@ -20,4 +20,18 @@ app.config(['$routeProvider', function($routeProvider) {
   var self = this;
   self.shares = resources;
 
+  self.upVote = function(id) {
+    shareService.upVote(id);
+    alert('upvote!');
+  }
+
+  self.downVote = function(id) {
+    shareService.downVote(id);
+    alert('downvote!');
+  }
+
+  self.unVote = function(id) {
+    shareService.unVote(id);
+    alert('unvote!');
+  }
 }]);
