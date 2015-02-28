@@ -20,6 +20,7 @@ function apiFriendlyResource (resource) {
     downvotes: resource.downvotes.length,
     url: resource.url,
     description: resource.description,
+    title: resource.title,
     userId: resource.userId,
     tags: resource.tags
   };

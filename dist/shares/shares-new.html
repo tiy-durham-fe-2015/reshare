@@ -1,4 +1,8 @@
-<h1>Shares</h1>
+<a class="shares-category-link" href="#/shares/popular">popular</a>
+<a class="shares-category-link" href="#/shares/latest">latest</a>
+<a class="shares-category-link" href="#/shares/new">post new</a>
+
+<h1 class="page-header">Add a New Share</h1>
 
 <form ng-submit="vm.addShare()" class="new-share">
   <input ng-model="vm.newShare.title" class="new-share-title" required placeholder="Title" />
@@ -6,13 +10,3 @@
   <input ng-model="vm.newShare.description" class="new-share-description" required placeholder="description"/>
   <button class="new-share-submit">add share</button>
 </form>
-
-<ul>
-  <li ng-repeat="share in vm.shares">
-    <a class="share-title" target="_blank" href="{{share.url}}">{{share.title}}</a>
-    <p class="share-description">{{share.description}}</p>
-    <button class="upvote">/\</button>
-    <button class="downvote">\/</button>
-    <button class="flagger">flag post</button>
-  </li>
-</ul>

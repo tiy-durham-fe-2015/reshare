@@ -1,20 +1,6 @@
 // The root module for our Angular application
 var app = angular.module('app', ['ngRoute']);
 
-app.controller('MainNavCtrl',
-  ['$location', 'StringUtil', function($location, StringUtil) {
-    var self = this;
-
-    self.isActive = function (path) {
-      // The default route is a special case.
-      if (path === '/') {
-        return $location.path() === '/';
-      }
-
-      return StringUtil.startsWith($location.path(), path);
-    };
-  }]);
-
 app.factory('Share', function() {
   return function(spec) {
     spec = spec || {};
@@ -23,11 +9,11 @@ app.factory('Share', function() {
       description: spec.description || '',
       url: spec.url || '',
       timestamp: new Date(), // non-mvp
-      author: spec.author, // non-mvp
-      authorId: spec.authorId // non-mvp
-      upvotes: spec.upvotes || 0, // non-mvp
-      downvotes: spec.downvotes || 0, // non-mvp
-      comments: spec.comments || [], // non-mvp
+      // author: spec.author, // non-mvp
+      // authorId: spec.authorId, // non-mvp
+      // upvotes: spec.upvotes || 0, // non-mvp
+      // downvotes: spec.downvotes || 0, // non-mvp
+      // comments: spec.comments || [], // non-mvp
       // score: function() { // non-mvp
       //   return this.upvotes - this.downvotes;
       // },
@@ -43,29 +29,88 @@ app.factory('Share', function() {
 
 app.config(['$routeProvider', function($routeProvider) {
   var routeDefinition = {
-    templateUrl: 'shares/shares.html',
-    controller: 'SharesCtrl',
-    controllerAs: 'vm'
+    templateUrl: 'shares/shares-latest.html',
+    controller: 'SharesLatestCtrl',
+    controllerAs: 'vm',
+    resolve: {
+      resources: ['shareService', function(shareService) {
+        return shareService.list();
+      }]
+    }
+  };
+
+  $routeProvider.when('/shares/latest', routeDefinition);
+
+}])
+.controller('SharesLatestCtrl', ['resources', 'shareService', function (resources, shareService) {
+  // TODO: load these via AJAX
+  var self = this;
+  self.shares = resources;
+
+}]);
+
+app.config(['$routeProvider', function($routeProvider) {
+  var routeDefinition = {
+    templateUrl: 'shares/shares-new.html',
+    controller: 'SharesNewCtrl',
+    controllerAs: 'vm',
+  };
+
+  $routeProvider.when('/shares/new', routeDefinition);
+
+}])
+.controller('SharesNewCtrl', ['Share', 'shareService', '$location', function (Share, shareService, $location) {
+
+  var self = this;
+  self.newShare = Share();
+
+  self.addShare = function () {
+    var share = Share(self.newShare);
+
+    shareService.addShare(share).then(function () {
+      $location.url('#/shares/latest');
+    });
+  }
+
+}]);
+
+app.config(['$routeProvider', function($routeProvider) {
+  var routeDefinition = {
+    templateUrl: 'shares/shares-popular.html',
+    controller: 'SharesPopCtrl',
+    controllerAs: 'vm',
+    resolve: {
+      resources: ['shareService', function (shareService) {
+        return shareService.list();
+      }]
+    }
   };
 
   $routeProvider.when('/', routeDefinition);
   $routeProvider.when('/shares', routeDefinition);
+  $routeProvider.when('/shares/popular', routeDefinition);
+
 }])
-.controller('SharesCtrl', ['Share', function (Share) {
+.controller('SharesPopCtrl', ['resources', 'shareService', function (resources, shareService) {
   // TODO: load these via AJAX
   var self = this;
-  self.shares = [];
+  self.shares = resources;
 
-  self.newShare = Share();
-
-  self.addShare = function() {
-    var share = Share(self.newShare);
-
-    self.shares.push(share);
-
-    self.newShare = Share();
-  };
 }]);
+
+app.controller('MainNavCtrl',
+  ['$location', 'StringUtil', function($location, StringUtil) {
+    var self = this;
+
+    self.isActive = function (path) {
+      // The default route is a special case.
+      if (path === '/') {
+        return $location.path() === '/';
+      }
+
+      return StringUtil.startsWith($location.path(), path);
+    };
+  }]);
 
 app.config(['$routeProvider', function($routeProvider) {
   var routeDefinition = {
@@ -169,19 +214,19 @@ app.factory('shareService', ['$http', '$q', '$log', function($http, $q, $log) {
 
   return {
     list: function () {
-      return get('/api/shares');
+      return get('/api/res');
     },
 
-    getByUrl: function (url) {
-      if (!url) {
-        throw new Error('getByUserId requires a user id');
+    getById: function (resId) {
+      if (!resId) {
+        throw new Error('getById requires a resource id');
       }
 
-      return get('/api/shares/' + url);
+      return get('/api/res/' + resId);
     },
 
-    addShare: function (share) {
-      return processAjaxPromise($http.post('/api/users', user));
+    addShare: function (res) {
+      return processAjaxPromise($http.post('/api/res', res));
     }
   };
 }]);

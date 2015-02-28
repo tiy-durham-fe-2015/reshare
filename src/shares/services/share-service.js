@@ -20,19 +20,19 @@ app.factory('shareService', ['$http', '$q', '$log', function($http, $q, $log) {
 
   return {
     list: function () {
-      return get('/api/shares');
+      return get('/api/res');
     },
 
-    getByUrl: function (url) {
-      if (!url) {
-        throw new Error('getByUserId requires a user id');
+    getById: function (resId) {
+      if (!resId) {
+        throw new Error('getById requires a resource id');
       }
 
-      return get('/api/shares/' + url);
+      return get('/api/res/' + resId);
     },
 
-    addShare: function (share) {
-      return processAjaxPromise($http.post('/api/users', user));
+    addShare: function (res) {
+      return processAjaxPromise($http.post('/api/res', res));
     }
   };
 }]);
