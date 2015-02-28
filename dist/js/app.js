@@ -1,103 +1,6 @@
 // The root module for our Angular application
 var app = angular.module('app', ['ngRoute']);
 
-app.factory('VoteFactory', function () {
-
-	function upvote (color) {		
-		console.log('test')
-		event.target.style.color = color
-		// function that accesses a function in Ashley's code to upvote
-	}
-
-	function downvote (color) {
-		console.log('test1')
-		event.target.style.color = color
-		// function that accesses a function in Ashley's code to downvote
-	}
-
-	function eraseVote () {
-		console.log('try again')
-		event.target.style.color = 'lightgray';
-		// function that accesses a function in Ashley's code to erase vote
-	}
-
-	return {
-		vote: function (color, voted) {
-		  	// document.querySelector(el).onclick = function () {
-			  	
-			  // }
-		    if (voted === 'upvote' && (event.target.style.color === 'blue')) {
-		    	eraseVote();
-		    } else if (voted === 'downvote' && (event.target.style.color = 'orange')) {
-		    	eraseVote();
-		    } else if (voted === 'upvote') {
-		    	upvote(color);
-		    } else if (voted === 'downvote') {
-		    	downvote(color);
-		    } 
-	    }
-	}
-
-});
-app.config(['$routeProvider', function($routeProvider) {
-  var routeDefinition = {
-    templateUrl: 'shares/shares.html',
-    controller: 'SharesCtrl',
-    controllerAs: 'vm'
-  };
-
-  $routeProvider.when('/', routeDefinition);
-  $routeProvider.when('/shares', routeDefinition);
-}])
-.controller('SharesCtrl', ['VoteFactory', function (VoteFactory) {
-  // TODO: load these via AJAX
-  var self = this
-
-  self.shares = [];
-
-  // self.chosen;
-  // self.upCounter = 0;
-  // self.downCounter = 0;
-
-  // self.vote = function (direction) {
-  // 	self.chosen = direction;
-  // };
-
-  // self.vote = function (color, vote) {
-  // 	// document.querySelector(el).onclick = function () {
-	 //  	event.target.style.color = color
-	 //  // }
-  //   if (vote = 'upvote') {
-
-  //   }
-  // }
-
-  self.vote = function (color, voted) {
-    VoteFactory.vote(color, voted);
-  };
-
-  // todo:
-  // -add an upvote and downvote counter to each li. Need to create a function within whatever Ashley is pushing to an array
-  // that you can access. With that access, you'll need to create the function in your VoteFactory, probably using dependency
-  // injection from her controller. The details page should have something like "upvotes= {{upvotes}}".
-
-
-}]);
-
-app.config(['$routeProvider', function($routeProvider) {
-  var routeDefinition = {
-    templateUrl: 'shares/shares.html',
-    controller: 'SharesCtrl',
-    controllerAs: 'vm'
-  };
-
-  $routeProvider.when('/', routeDefinition);
-  $routeProvider.when('/shares', routeDefinition);
-}])
-.controller('SharesCtrl', [function () {
-  // TODO: load these via AJAX
-  this.shares = [];
-}]);
 app.controller('MainNavCtrl',
   ['$location', 'StringUtil', function($location, StringUtil) {
     var self = this;
@@ -112,15 +15,62 @@ app.controller('MainNavCtrl',
     };
   }]);
 
-// A little string utility... no biggie
-app.factory('StringUtil', function() {
-  return {
-    startsWith: function (str, subStr) {
-      str = str || '';
-      return str.slice(0, subStr.length) === subStr;
-    }
+app.config(['$routeProvider', function ($routeProvider) {
+  $routeProvider.when('/shares/new-share', {
+    controller: 'NewShareCtrl',
+    controllerAs: 'vm',
+    templateUrl: 'shares/new-share.html'
+  });
+}]).controller('NewShareCtrl', ['$location', 'Share', 'shareService', function ($location, Share, shareService) {
+  var self = this;
+
+  self.share = Share();
+
+  self.cancelEdit = function () {
+    self.viewShares();
+  };
+
+  self.viewShares = function () {
+    $location.path('/shares');
+  };
+
+  self.addShare = function () {
+    shareService.addShare(self.share).then(self.viewShares);
+  };
+}]);
+
+
+app.factory('Share', function () {
+  return function (spec) {
+    spec = spec || {};
+    return {
+      url: spec.url,
+      description: spec.description
+    };
   };
 });
+
+app.config(['$routeProvider', function($routeProvider) {
+  var routeDefinition = {
+    templateUrl: 'shares/shares.html',
+    controller: 'SharesCtrl',
+    controllerAs: 'vm',
+    resolve: {
+      shares: ['shareService', function (shareService) {
+        return shareService.list();
+      }]
+    }
+  };
+
+  $routeProvider.when('/', routeDefinition);
+  $routeProvider.when('/shares', routeDefinition);
+}])
+.controller('SharesCtrl', ['shareService', 'shares', 'Share', function (shareService, shares, Share) {
+
+  var self = this;
+
+  self.shares = shares;
+}]);
 
 app.config(['$routeProvider', function($routeProvider) {
   var routeDefinition = {
@@ -159,6 +109,7 @@ app.config(['$routeProvider', function($routeProvider) {
     resolve: {
       users: ['usersService', function (usersService) {
         return usersService.list();
+        //Returns a list of users as an array..
       }]
     }
   };
@@ -189,8 +140,60 @@ app.config(['$routeProvider', function($routeProvider) {
 
     // Clear our newUser property
     self.newUser = User();
+  };
+}]);
 
-    console.log(users);
+// A little string utility... no biggie
+app.factory('StringUtil', function() {
+  return {
+    startsWith: function (str, subStr) {
+      str = str || '';
+      return str.slice(0, subStr.length) === subStr;
+    }
+  };
+});
+
+//Share Store, call AJAX
+
+app.factory('shareService', ['$http', '$log', function ($http, $log) {
+
+  function get(url) {
+    return processAjaxPromise($http.get(url));
+  }
+
+  function post(url, share) {
+    return processAjaxPromise($http.post(url, share));
+  }
+
+  function remove(url) {
+    return processAjaxPromise($http.remove(url));
+  }
+
+  function processAjaxPromise(p) {
+    return p.then(function (result) {
+      return result.data;
+    })
+    .catch(function (error) {
+      $log.log(error);
+    });
+  }
+
+  return {
+    list: function () {
+      return get('/api/res');
+    },
+
+    getByShareId: function (shareId) {
+      return get('/api/res/' + shareId);
+    },
+
+    addShare: function (share) {
+      return post('/api/res', share);
+    },
+
+    deleteShare: function (shareId) {
+      return remove('/api/res/' + shareId);
+    }
   };
 }]);
 
