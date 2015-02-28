@@ -1,0 +1,19 @@
+<h1>Shares</h1>
+
+<ul class="shares-ul">
+<!--   <li ng-repeat="share in shares"> -->
+  <li>
+  	<i ng-click="vm.vote('blue', 'upvote')" class="fa fa-arrow-up"></i> 
+  	<i ng-click="vm.vote('orange', 'downvote')" class="fa fa-arrow-down"></i>
+  </li>
+  <li>
+  	<i ng-click="vm.vote()" ng-class= "{active: true}" class="fa fa-arrow-up"></i> 
+  	<i ng-click="vm.vote()" ng-class= "{active: true}" class="fa fa-arrow-down"></i>
+  </li>
+  <li>
+  	<i ng-click="vm.vote('upvote')" ng-class= "{active: vm.chosen === 'upvote'}" class="fa fa-arrow-up"></i> 
+  	<i ng-click="vm.vote()" ng-class= "{active: true}" class="fa fa-arrow-down"></i>
+  </li>
+</ul>
+
+<!-- "{active: chosen === 'upvote'}" -->

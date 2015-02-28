@@ -1,0 +1,12 @@
+i {
+	cursor: pointer;
+	color: lightgray;
+}
+
+.shares-ul i.active {
+	color: blue;
+}
+
+.shares-ul li i:nth-child(2).active {
+	color: orange;
+}

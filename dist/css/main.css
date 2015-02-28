@@ -124,3 +124,13 @@ button {
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important; }
+
+i {
+  cursor: pointer;
+  color: lightgray; }
+
+.shares-ul i.active {
+  color: blue; }
+
+.shares-ul li i:nth-child(2).active {
+  color: orange; }
