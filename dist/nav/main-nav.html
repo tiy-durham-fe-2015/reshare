@@ -1,6 +1,11 @@
-<nav class="main-nav" ng-controller="MainNavCtrl as vm">
-  <a class="main-nav-link" ng-class="{active: vm.isActive('/shares') || vm.isActive('/')}" href="#/shares">Shares</a>
-  <a class="main-nav-link" ng-class="{active: vm.isActive('/shares/new-share')}" ng-href="#/shares/new-share">+ Share</a>
-  <a class="main-nav-link" ng-class="{active: vm.isActive('/users')}" ng-href="#/users">Users</a>
-  <a class="main-nav-link" href="/auth/github">Login</a>
+<input type="checkbox" class="main-checkbox">
+<div ng-click="vm.changeHeight()" class="for-clicking"></div>
+<nav class="header-index" ng-controller="MainNavCtrl as vm">
+	<div class="links-div">
+	  <a class="header-left header-new-link-button" ng-class="{active: vm.isActive('/shares/new-share')}" ng-href="#/shares/new-share"><span class="plus-sign">+</span> New Link</a>
+	  <a class="header-left header-my-link-button" ng-class="{active: vm.isActive('/shares') || vm.isActive('/')}" href="#/shares">Home</a>
+	  <a class="header-left header-users-button" ng-class="{active: vm.isActive('/users')}" ng-href="#/users">Users</a>
+	  <a class="header-left header-login-button" href="/auth/github">Login</a>
+  </div>
+	<div class="menu-bar-div">Menu</div>
 </nav>

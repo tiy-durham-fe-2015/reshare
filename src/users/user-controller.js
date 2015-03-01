@@ -6,6 +6,7 @@ app.config(['$routeProvider', function($routeProvider) {
     resolve: {
       user: ['$route', 'usersService', function ($route, usersService) {
         var routeParams = $route.current.params;
+        console.log(routeParams.userid)
         return usersService.getByUserId(routeParams.userid);
       }]
     }
@@ -15,4 +16,5 @@ app.config(['$routeProvider', function($routeProvider) {
 }])
 .controller('UserCtrl', ['user', function (user) {
   this.user = user;
+  console.log(user);
 }]);

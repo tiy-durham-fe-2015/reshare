@@ -4,7 +4,9 @@ app.factory('Share', function () {
     spec = spec || {};
     return {
       url: spec.url,
-      description: spec.description
+      description: spec.description,
+      upvoteCounter: spec.upvoteCounter,
+      downvoteCounter: spec.downvoteCounter
     };
   };
 });

@@ -10,7 +10,7 @@ app.config(['$routeProvider', function($routeProvider) {
 }])
 .controller('SharesCtrl', ['VoteFactory', function (VoteFactory) {
   // TODO: load these via AJAX
-  var self = this
+  var self = this;
 
   self.shares = [];
 
