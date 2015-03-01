@@ -5,5 +5,6 @@
 <ul>
   <li ng-repeat="share in vm.shares">
     <a href="{{share.url}}">{{share.description}}</a>
+    <a ng-click="share.deleteShare()">Delete</a>
   </li>
 </ul>

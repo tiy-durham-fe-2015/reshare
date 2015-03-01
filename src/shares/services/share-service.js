@@ -38,6 +38,7 @@ app.factory('shareService', ['$http', '$log', function ($http, $log) {
 
     deleteShare: function (shareId) {
       return remove('/api/res/' + shareId);
-    }
+    },
+
   };
 }]);
