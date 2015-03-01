@@ -1,0 +1,150 @@
+/*************************************************************
+***** BODY/GENERAL *********
+*************************************************************/
+
+body,
+html {
+	width: 100%;
+	height: 100%;
+	font-family: 'Montserrat';
+}
+
+/*************************************************************
+***** HEADER *********
+*************************************************************/
+
+.site-header {
+	height: 50px;
+}
+
+.header-index {
+	height: 50px;
+	width: 100%;
+	border: none;
+	position: fixed;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	background: #363635;
+	color: white;
+	font-size: 102%;
+	padding-right: 25px;
+	margin: 0;
+	font-family: helvetica;
+	z-index: 100;
+}
+
+.links-div {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	flex-wrap: wrap;
+	height: 50px;
+	width: 100%;
+}
+
+.header-index a {
+	text-decoration: none;
+	color: #FFF;
+}
+
+/*header * {
+	border: none;
+}*/
+
+.header-left {
+	padding: 11px 3px 0;
+	margin: 5.5px 0;
+	background: transparent;
+	width: 130px;
+	text-align: center;
+	cursor: pointer;
+/*	border: 1px solid white;*/
+}
+
+.header-left:hover {
+	color: #888f96;
+}
+
+.header-new-link-button:hover {
+	color: #363635;
+}
+
+.header-new-link-button {
+	background: #83BF17;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	flex-wrap: wrap;
+	border-radius: 4px;
+}
+
+.header-login-button {
+	border-left: 1px dashed white;
+}
+
+.plus-sign {
+	margin-top: -2px;
+	margin-right: 10px;
+}
+
+.line {
+	background-color: white;
+	height: 1px;
+	margin: .1% auto;
+	width: 100%;
+	visibility: hidden;
+}
+
+.menu-bar-div {
+	width: 100%;
+	visibility: hidden;
+	cursor: pointer;
+}
+
+.menu-bar-checkbox {
+	opacity: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.main-checkbox {
+	visibility: hidden;
+	position: absolute;
+}
+
+.for-clicking {
+	z-index: 10000;
+	position: absolute;
+	width: 25%;
+	height: 30px;
+	background: transparent;
+	top: 5px;
+	right: 37.5%;
+	cursor: pointer;
+}
+
+
+
+/******************** comment *******************************/
+
+
+
+
+i {
+	cursor: pointer;
+	color: lightgray;
+}
+
+.shares-ul i.active {
+	color: blue;
+}
+
+.shares-ul li i:nth-child(2).active {
+	color: orange;
+}
+
+
+
+

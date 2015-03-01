@@ -11,7 +11,7 @@ app.factory('shareService', ['$http', '$log', function ($http, $log) {
   }
 
   function remove(url) {
-    return processAjaxPromise($http.remove(url));
+    return processAjaxPromise($http.delete(url));
   }
 
   function processAjaxPromise(p) {
@@ -39,6 +39,5 @@ app.factory('shareService', ['$http', '$log', function ($http, $log) {
     deleteShare: function (shareId) {
       return remove('/api/res/' + shareId);
     },
-
   };
 }]);

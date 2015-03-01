@@ -22,20 +22,22 @@ app.config(['$routeProvider', function($routeProvider) {
 
   self.addUser = function () {
     // Make a copy of the 'newUser' object
-    var user = User(self.newUser);
+    var newUser = User(self.newUser);
 
     // Add the user to our service
-    usersService.addUser(user).then(function () {
+    usersService.addUser(newUser).then(function () {
       // If the add succeeded, remove the user from the users array
       self.users = self.users.filter(function (existingUser) {
-        return existingUser.userId !== user.userId;
+        return existingUser.userId !== newUser.userId;
       });
 
       // Add the user to the users array
-      self.users.push(user);
+      self.users.push(newUser);
     });
 
     // Clear our newUser property
     self.newUser = User();
+
+    console.log(users);
   };
 }]);
