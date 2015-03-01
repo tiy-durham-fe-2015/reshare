@@ -1,6 +1,45 @@
 // The root module for our Angular application
 var app = angular.module('app', ['ngRoute']);
 
+$(function () {
+
+	// console.log($('.main-checkbox').prop('checked'))
+
+	// if ($('.main-checkbox').prop('checked')) {
+	// 	console.log('eh')
+	// 	$('.site-header').css({
+	// 		'height': '155px'
+	// 	})
+	// };
+
+	// function screenWidthAdjustment () {
+	// 	console.log('eh')
+	// 	var move = $('.header-new-link-button').detach();
+	// 	move.appendTo('.header-login-button')
+	// }
+
+	// function screenWidthRevert () {
+	// 	var move = $('.header-new-link-button').detach();
+	// 	move.appendTo('.links-div')
+	// }
+
+	// if ($(window).width() < 750) {
+	//     screenWidthAdjustment()
+	// }
+
+	// $(window).resize(function() {
+	//     if ($(window).width() < 750) {
+	//         screenWidthAdjustment()
+	//     }
+	// });
+
+	// $(window).resize(function() {
+	//     if ($(window).width() > 750) {
+	//         screenWidthRevert()
+	//     }
+	// });
+
+});
 app.controller('MainNavCtrl',
   ['$location', 'StringUtil', function($location, StringUtil) {
     var self = this;
@@ -13,7 +52,139 @@ app.controller('MainNavCtrl',
 
       return StringUtil.startsWith($location.path(), path);
     };
+
+    $('.for-clicking').on('click', function () {
+      console.log("eh")
+      $('.main-checkbox').prop('checked', true)
+      $('.site-header').css({
+        'height': '155px',
+      });
+    });
+
+    $('.header-left').on('click', function () {
+      $('.main-checkbox').prop('checked', false)
+      $('.site-header').animate({
+        'height': '50px',
+      }, 500);
+    })
   }]);
+
+// app.factory('UserFactory', function() {
+app.factory('UserFactory', ['$route', 'usersService', function($route, usersService) {
+
+    
+    return {
+    	user: function () {
+    		// var routeParams = $route.current.params;
+    		// console.log(routeParams)
+    		// console.log(routeParams.userid)
+		    // var user = usersService.getByUserId(routeParams.userid);
+		    // console.log(user);
+		    // console.log('hey')
+    	}
+    }
+
+// });
+}]);
+app.factory('VoteFactory', function () {
+	
+	function upvote (color) {		
+		console.log($(this));
+		event.target.style.color = color;
+		var downEl = $(event.target).parent().find('.fa-arrow-down')
+		console.log(downEl.css('color'))
+		if (downEl.css('color') === 'rgb(255, 165, 0)') {
+			console.log('hey')
+			downEl.css({
+				'color': 'lightgray'
+			});
+		};
+		// function that accesses a function in Ashley's code to upvote
+	}
+
+	function downvote (color) {
+		console.log('test1');
+		event.target.style.color = color;
+		var downEl = $(event.target).parent().find('.fa-arrow-up')
+		console.log(downEl.css('color'))
+		if (downEl.css('color') === 'rgb(0, 0, 255)') {
+			console.log('hey')
+			downEl.css({
+				'color': 'lightgray'
+			});
+		};
+		// function that accesses a function in Ashley's code to downvote
+	}
+
+	function eraseVote () {
+		console.log('try again');
+		event.target.style.color = 'lightgray';
+		// function that accesses a function in Ashley's code to erase vote
+	}
+
+	return {
+		vote: function (color, voted) {
+		  	// document.querySelector(el).onclick = function () {
+			  	
+			  // }
+			  console.log($(this));
+		    if (voted === 'upvote' && (event.target.style.color === 'blue')) {
+		    	eraseVote();
+		    } else if (voted === 'downvote' && (event.target.style.color === 'orange')) {
+		    	eraseVote();
+		    } else if (voted === 'upvote') {
+		    	upvote(color);
+		    } else if (voted === 'downvote') {
+		    	downvote(color);
+		    } 
+	    }
+	};
+
+});
+app.config(['$routeProvider', function($routeProvider) {
+  var routeDefinition = {
+    templateUrl: 'shares/shares.html',
+    controller: 'SharesCtrl',
+    controllerAs: 'vm'
+  };
+
+  $routeProvider.when('/', routeDefinition);
+  $routeProvider.when('/shares', routeDefinition);
+}])
+.controller('SharesCtrl', ['VoteFactory', function (VoteFactory) {
+  // TODO: load these via AJAX
+  var self = this;
+
+  self.shares = [];
+
+  // self.chosen;
+  // self.upCounter = 0;
+  // self.downCounter = 0;
+
+  // self.vote = function (direction) {
+  // 	self.chosen = direction;
+  // };
+
+  // self.vote = function (color, vote) {
+  // 	// document.querySelector(el).onclick = function () {
+	 //  	event.target.style.color = color
+	 //  // }
+  //   if (vote = 'upvote') {
+
+  //   }
+  // }
+
+  self.vote = function (color, voted) {
+    VoteFactory.vote(color, voted);
+  };
+
+  // todo:
+  // -add an upvote and downvote counter to each li. Need to create a function within whatever Ashley is pushing to an array
+  // that you can access. With that access, you'll need to create the function in your VoteFactory, probably using dependency
+  // injection from her controller. The details page should have something like "upvotes= {{upvotes}}".
+
+
+}]);
 
 app.config(['$routeProvider', function ($routeProvider) {
   $routeProvider.when('/shares/new-share', {
@@ -45,7 +216,9 @@ app.factory('Share', function () {
     spec = spec || {};
     return {
       url: spec.url,
-      description: spec.description
+      description: spec.description,
+      upvoteCounter: spec.upvoteCounter,
+      downvoteCounter: spec.downvoteCounter
     };
   };
 });
@@ -65,12 +238,26 @@ app.config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/', routeDefinition);
   $routeProvider.when('/shares', routeDefinition);
 }])
-.controller('SharesCtrl', ['shareService', 'shares', 'Share', function (shareService, shares, Share) {
+.controller('SharesCtrl', ['shareService', 'shares', 'Share', 'VoteFactory', function (shareService, shares, Share, VoteFactory) {
 
   var self = this;
 
   self.shares = shares;
+
+  self.vote = function (color, voted) {
+    VoteFactory.vote(color, voted);
+  };
 }]);
+
+// A little string utility... no biggie
+app.factory('StringUtil', function() {
+  return {
+    startsWith: function (str, subStr) {
+      str = str || '';
+      return str.slice(0, subStr.length) === subStr;
+    }
+  };
+});
 
 app.config(['$routeProvider', function($routeProvider) {
   var routeDefinition = {
@@ -80,6 +267,7 @@ app.config(['$routeProvider', function($routeProvider) {
     resolve: {
       user: ['$route', 'usersService', function ($route, usersService) {
         var routeParams = $route.current.params;
+        console.log(routeParams.userid)
         return usersService.getByUserId(routeParams.userid);
       }]
     }
@@ -89,6 +277,7 @@ app.config(['$routeProvider', function($routeProvider) {
 }])
 .controller('UserCtrl', ['user', function (user) {
   this.user = user;
+  console.log(user);
 }]);
 
 app.factory('User', function () {
@@ -125,33 +314,25 @@ app.config(['$routeProvider', function($routeProvider) {
 
   self.addUser = function () {
     // Make a copy of the 'newUser' object
-    var user = User(self.newUser);
+    var newUser = User(self.newUser);
 
     // Add the user to our service
-    usersService.addUser(user).then(function () {
+    usersService.addUser(newUser).then(function () {
       // If the add succeeded, remove the user from the users array
       self.users = self.users.filter(function (existingUser) {
-        return existingUser.userId !== user.userId;
+        return existingUser.userId !== newUser.userId;
       });
 
       // Add the user to the users array
-      self.users.push(user);
+      self.users.push(newUser);
     });
 
     // Clear our newUser property
     self.newUser = User();
+
+    console.log(users);
   };
 }]);
-
-// A little string utility... no biggie
-app.factory('StringUtil', function() {
-  return {
-    startsWith: function (str, subStr) {
-      str = str || '';
-      return str.slice(0, subStr.length) === subStr;
-    }
-  };
-});
 
 //Share Store, call AJAX
 

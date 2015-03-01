@@ -17,3 +17,13 @@
 </ul>
 
 <!-- "{active: chosen === 'upvote'}" -->
+
+<h1>Shares</h1>
+
+<a href="#/shares/new-share">+ Share</a>
+
+<ul>
+  <li ng-repeat="share in vm.shares">
+    <a href="{{share.url}}">{{share.description}}</a>
+  </li>
+</ul>
