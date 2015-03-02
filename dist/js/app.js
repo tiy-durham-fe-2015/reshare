@@ -3,132 +3,56 @@ var app = angular.module('app', ['ngRoute']);
 
 $(function () {
 
-	// console.log($('.main-checkbox').prop('checked'))
+  // console.log($('.main-checkbox').prop('checked'))
 
-	// if ($('.main-checkbox').prop('checked')) {
-	// 	console.log('eh')
-	// 	$('.site-header').css({
-	// 		'height': '155px'
-	// 	})
-	// };
+  // if ($('.main-checkbox').prop('checked')) {
+  //  console.log('eh')
+  //  $('.site-header').css({
+  //    'height': '155px'
+  //  })
+  // };
 
-	// function screenWidthAdjustment () {
-	// 	console.log('eh')
-	// 	var move = $('.header-new-link-button').detach();
-	// 	move.appendTo('.header-login-button')
-	// }
+  // function screenWidthAdjustment () {
+  //  console.log('eh')
+  //  var move = $('.header-new-link-button').detach();
+  //  move.appendTo('.header-login-button')
+  // }
 
-	// function screenWidthRevert () {
-	// 	var move = $('.header-new-link-button').detach();
-	// 	move.appendTo('.links-div')
-	// }
+  // function screenWidthRevert () {
+  //  var move = $('.header-new-link-button').detach();
+  //  move.appendTo('.links-div')
+  // }
 
-	// if ($(window).width() < 750) {
-	//     screenWidthAdjustment()
-	// }
+  // if ($(window).width() < 750) {
+  //     screenWidthAdjustment()
+  // }
 
-	// $(window).resize(function() {
-	//     if ($(window).width() < 750) {
-	//         screenWidthAdjustment()
-	//     }
-	// });
+  // $(window).resize(function() {
+  //     if ($(window).width() < 750) {
+  //         screenWidthAdjustment()
+  //     }
+  // });
 
-	// $(window).resize(function() {
-	//     if ($(window).width() > 750) {
-	//         screenWidthRevert()
-	//     }
-	// });
+  // $(window).resize(function() {
+  //     if ($(window).width() > 750) {
+  //         screenWidthRevert()
+  //     }
+  // });
 
 });
-app.controller('MainNavCtrl',
-  ['$location', 'StringUtil', 'usersService', function($location, StringUtil, usersService) {
-    var self = this;
-
-    self.isActive = function (path) {
-      // The default route is a special case.
-      if (path === '/') {
-        return $location.path() === '/';
-      }
-
-      return StringUtil.startsWith($location.path(), path);
-    };
-
-    self.currentUser = undefined;
-    usersService.currentUser().then(function (data) {
-      self.currentUser = data;
-    });
-
-    function windowWidthLess () {
-      return $(window).width() < 459;
-    }
-
-    function checkbox (bool) {
-      $('.main-checkbox').prop('checked', bool);
-    }
-
-    function changeHeight (hi, sh) {
-      $('.header-index').css({
-        'height': hi + 'px'
-      });
-      $('.site-header').css({
-        'height': sh + 'px'
-      });
-    }
-
-    $('.for-clicking').on('click', function () {
-      if (windowWidthLess()) {
-       checkbox(true);
-        $('.site-header').css({
-          'height': '155px',
-        });
-        if ($('.header-left').length === 5) {
-          changeHeight(180, 185);
-        };
-      };
-    });
-
-    if ($(window).width() > 460) {
-      $('.for-clicking').hide();
-    };
-
-    $(window).resize(function() {
-      if ($(window).width() > 460) {
-        $('.for-clicking').hide();
-      };      
-    });
-
-    $(window).resize(function() {
-        if (windowWidthLess()) {
-          changeHeight(50, 50);
-          checkbox(false);
-          $('.for-clicking').show();
-        };
-    });
-
-    $('.header-left').on('click', function () {
-      if (windowWidthLess()) {
-        checkbox(false);
-        changeHeight(45, 50);
-        $('.site-header').animate({
-          'height': '50px',
-        }, 500);     
-      };
-    });
-  }]);
-
 // app.factory('UserFactory', function() {
 app.factory('UserFactory', ['$route', 'usersService', function($route, usersService) {
 
 
     return {
-    	user: function () {
-    		// var routeParams = $route.current.params;
-    		// console.log(routeParams)
-    		// console.log(routeParams.userid)
-		    // var user = usersService.getByUserId(routeParams.userid);
-		    // console.log(user);
-		    // console.log('hey')
-    	}
+      user: function () {
+        // var routeParams = $route.current.params;
+        // console.log(routeParams)
+        // console.log(routeParams.userid)
+        // var user = usersService.getByUserId(routeParams.userid);
+        // console.log(user);
+        // console.log('hey')
+      }
     };
 
 // });
@@ -136,71 +60,71 @@ app.factory('UserFactory', ['$route', 'usersService', function($route, usersServ
 
 app.factory('VoteFactory', ['shareService', function (shareService) {
 
-	var ups;
-	var downs;
+  var ups;
+  var downs;
 
-	function getVotes (votes, dir, rgb) {
-		console.log(votes);
-		var newVotes = votes + 1;
-		console.log(newVotes);
-		var el = $(event.target).parent().find('.fa-arrow-' + dir);
-		if (el.css('color') !== rgb) {
-			$(event.target).parent().find('.' + dir +'vote-count').html(dir + 'votes: ' + newVotes);
-		}
-	}
+  function getVotes (votes, dir, rgb) {
+    console.log(votes);
+    var newVotes = votes + 1;
+    console.log(newVotes);
+    var el = $(event.target).parent().find('.fa-arrow-' + dir);
+    if (el.css('color') !== rgb) {
+      $(event.target).parent().find('.' + dir +'vote-count').html(dir + 'votes: ' + newVotes);
+    }
+  }
 
-	function upvote (color, id, upvotes, downvotes) {
-		getVotes(upvotes, 'up', 'rgb(0, 0, 255)');
-		ups = (upvotes + 1);
-		console.log(ups);
-		event.target.style.color = color;
-		var downEl = $(event.target).parent().find('.fa-arrow-down');
-		if (downEl.css('color') === 'rgb(255, 165, 0)') {
-			downEl.css({
-				'color': 'lightgray'
-			});
-			shareService.undovote(id, 'down', (downs - 1));
-		}
-		shareService.upvote(id);
-	}
+  function upvote (color, id, upvotes, downvotes) {
+    getVotes(upvotes, 'up', 'rgb(0, 0, 255)');
+    ups = (upvotes + 1);
+    console.log(ups);
+    event.target.style.color = color;
+    var downEl = $(event.target).parent().find('.fa-arrow-down');
+    if (downEl.css('color') === 'rgb(255, 165, 0)') {
+      downEl.css({
+        'color': 'lightgray'
+      });
+      shareService.undovote(id, 'down', (downs - 1));
+    }
+    shareService.upvote(id);
+  }
 
-	function downvote (color, id, downvotes, upvotes) {
-		getVotes(downvotes, 'down', 'rgb(255, 165, 0)');
-		downs = (downvotes + 1);
-		event.target.style.color = color;
+  function downvote (color, id, downvotes, upvotes) {
+    getVotes(downvotes, 'down', 'rgb(255, 165, 0)');
+    downs = (downvotes + 1);
+    event.target.style.color = color;
 
-		console.log(ups);
-		var upEl = $(event.target).parent().find('.fa-arrow-up');
-		if (upEl.css('color') === 'rgb(0, 0, 255)') {
-			// upEl.css({
-			// 	'color': 'lightgray'
-			// });
-			console.log(ups);
-			eraseVote(id, 'up', (ups - 1));
-		}
-		shareService.downvote(id);
-	}
+    console.log(ups);
+    var upEl = $(event.target).parent().find('.fa-arrow-up');
+    if (upEl.css('color') === 'rgb(0, 0, 255)') {
+      // upEl.css({
+      //  'color': 'lightgray'
+      // });
+      console.log(ups);
+      eraseVote(id, 'up', (ups - 1));
+    }
+    shareService.downvote(id);
+  }
 
-	function eraseVote (id, dir, votes) {
-		var el = $(event.target).parent().find('.fa-arrow-' + dir);
-		el.css({'color': 'lightgray'});
-		$(event.target).parent().find('.' + dir +'vote-count').html(dir + 'votes: ' + votes);
-		shareService.undovote(id);
-	}
+  function eraseVote (id, dir, votes) {
+    var el = $(event.target).parent().find('.fa-arrow-' + dir);
+    el.css({'color': 'lightgray'});
+    $(event.target).parent().find('.' + dir +'vote-count').html(dir + 'votes: ' + votes);
+    shareService.undovote(id);
+  }
 
-	return {
-		vote: function (color, voted, id, upvotes, downvotes) {
-		    if (voted === 'upvote' && (event.target.style.color === 'blue')) {
-		    	eraseVote(id, 'up', upvotes);
-		    } else if (voted === 'downvote' && (event.target.style.color === 'orange')) {
-		    	eraseVote(id,'down', downvotes);
-		    } else if (voted === 'upvote') {
-		    	upvote(color, id, upvotes, downvotes);
-		    } else if (voted === 'downvote') {
-		    	downvote(color, id, downvotes, upvotes);
-		    }
-	    }
-	};
+  return {
+    vote: function (color, voted, id, upvotes, downvotes) {
+        if (voted === 'upvote' && (event.target.style.color === 'blue')) {
+          eraseVote(id, 'up', upvotes);
+        } else if (voted === 'downvote' && (event.target.style.color === 'orange')) {
+          eraseVote(id,'down', downvotes);
+        } else if (voted === 'upvote') {
+          upvote(color, id, upvotes, downvotes);
+        } else if (voted === 'downvote') {
+          downvote(color, id, downvotes, upvotes);
+        }
+      }
+  };
 
 }]);
 
@@ -225,13 +149,13 @@ app.config(['$routeProvider', function($routeProvider) {
   // self.downCounter = 0;
 
   // self.vote = function (direction) {
-  // 	self.chosen = direction;
+  //  self.chosen = direction;
   // };
 
   // self.vote = function (color, vote) {
-  // 	// document.querySelector(el).onclick = function () {
-	 //  	event.target.style.color = color
-	 //  // }
+  //  // document.querySelector(el).onclick = function () {
+   //   event.target.style.color = color
+   //  // }
   //   if (vote = 'upvote') {
 
   //   }
@@ -272,10 +196,7 @@ app.config(['$routeProvider', function ($routeProvider) {
     shareService.addShare(self.share).then(self.viewShares);
     console.log(self.share);
   };
-  // 
-  // self.editShare = function (shareId) {
-  //   shareService.addShare(shareId).then(self.viewShares);
-  // }
+
 }]);
 
 app.config(['$routeProvider', function($routeProvider) {
@@ -286,8 +207,8 @@ app.config(['$routeProvider', function($routeProvider) {
     resolve: {
       share: ['$route', 'shareService', function ($route, shareService) {
         var routeParams = $route.current.params;
-        console.log(routeParams.shareId);
-        return shareService.getByShareId(routeParams.shareId);
+        console.log(routeParams.shareid);
+        return shareService.getByShareId(routeParams.shareid);
       }]
     }
   };
@@ -296,7 +217,6 @@ app.config(['$routeProvider', function($routeProvider) {
 }])
 .controller('ShareCtrl', ['share', function (share) {
   this.share = share;
-  console.log(share);
 }]);
 
 
@@ -353,13 +273,13 @@ app.config(['$routeProvider', function($routeProvider) {
   self.delete = function (shareId) {
     shareService.deleteShare(shareId).then($route.reload());
   };
-  //
-  // self.view = function (shareId) {
-  //   shareService.getShareById(shareId).then();
-  // //ng-hide a copy of the form, ng-repeat(?) to populate the form with current share information which is retrieved by
-  // //id when the edit button is ng-click(ed).  Haha.  Submit button submits the form.  The API has function to deal deal
-  // //with duplicate user.  It states to replace current info with new info.
-  // };
+
+  self.view = function (shareId) {
+    shareService.getShareById(shareId).then();
+  //ng-hide a copy of the form, ng-repeat(?) to populate the form with current share information which is retrieved by
+  //id when the edit button is ng-click(ed).  Haha.  Submit button submits the form.  The API has function to deal deal
+  //with duplicate user.  It states to replace current info with new info.
+  };
 
 }]);
 
@@ -444,6 +364,38 @@ app.config(['$routeProvider', function($routeProvider) {
     console.log(users);
   };
 }]);
+
+app.controller('MainNavCtrl',
+  ['$location', 'StringUtil', 'usersService', function($location, StringUtil, usersService) {
+    var self = this;
+
+    self.isActive = function (path) {
+      // The default route is a special case.
+      if (path === '/') {
+        return $location.path() === '/';
+      }
+
+      return StringUtil.startsWith($location.path(), path);
+    };
+
+    usersService.currentUser().then(function (data) {
+      self.currentUser = data;
+    });
+
+    $('.for-clicking').on('click', function () {
+      $('.main-checkbox').prop('checked', true);
+      $('.site-header').css({
+        'height': '155px',
+      });
+    });
+
+    $('.header-left').on('click', function () {
+      $('.main-checkbox').prop('checked', false);
+      $('.site-header').animate({
+        'height': '50px',
+      }, 500);
+    });
+  }]);
 
 // A little string utility... no biggie
 app.factory('StringUtil', function() {

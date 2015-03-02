@@ -11,7 +11,6 @@ app.controller('MainNavCtrl',
       return StringUtil.startsWith($location.path(), path);
     };
 
-    self.currentUser = undefined;
     usersService.currentUser().then(function (data) {
       self.currentUser = data;
     });

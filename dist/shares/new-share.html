@@ -1,16 +1,6 @@
 <!--Create a New Share -->
 
 <h1>Share a Resource</h1>
-<!--
-<div ng-if="!vm.current">
-  <form ng-form="shareForm" ng-submit="vm.addShare()">
-    <input ng-repeat="share in vm.shares">
-    <li><input ng-model="vm.share.url">{{share.url}}</li>
-    <li><input ng-model="vm.share.description">{{share.description}}</li>
-    <input type="textarea" ng-model="vm.share.upvoteCounter" placeholder="Description">
-    <input type="textarea" ng-model="vm.share.downvoteCounter" placeholder="Description">
-    <button>Submit</button>
-  </form> -->
 
 <form ng-submit="vm.addShare()">
   <input type="url" ng-model="vm.share.url" placeholder="www.google.com">
