@@ -348,7 +348,7 @@ i {
     visibility: visible; }
   .main-checkbox:checked ~ .header-index .links-div {
     opacity: 1;
-    margin-top: -7%;
+    margin-top: -7.5%;
     transition: opacity .01s;
     transition: margin-top .7s; }
   .main-checkbox:checked ~ .header-index {

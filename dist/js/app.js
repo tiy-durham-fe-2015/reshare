@@ -3,41 +3,41 @@ var app = angular.module('app', ['ngRoute']);
 
 $(function () {
 
-  // console.log($('.main-checkbox').prop('checked'))
+	// console.log($('.main-checkbox').prop('checked'))
 
-  // if ($('.main-checkbox').prop('checked')) {
-  //  console.log('eh')
-  //  $('.site-header').css({
-  //    'height': '155px'
-  //  })
-  // };
+	// if ($('.main-checkbox').prop('checked')) {
+	// 	console.log('eh')
+	// 	$('.site-header').css({
+	// 		'height': '155px'
+	// 	})
+	// };
 
-  // function screenWidthAdjustment () {
-  //  console.log('eh')
-  //  var move = $('.header-new-link-button').detach();
-  //  move.appendTo('.header-login-button')
-  // }
+	// function screenWidthAdjustment () {
+	// 	console.log('eh')
+	// 	var move = $('.header-new-link-button').detach();
+	// 	move.appendTo('.header-login-button')
+	// }
 
-  // function screenWidthRevert () {
-  //  var move = $('.header-new-link-button').detach();
-  //  move.appendTo('.links-div')
-  // }
+	// function screenWidthRevert () {
+	// 	var move = $('.header-new-link-button').detach();
+	// 	move.appendTo('.links-div')
+	// }
 
-  // if ($(window).width() < 750) {
-  //     screenWidthAdjustment()
-  // }
+	// if ($(window).width() < 750) {
+	//     screenWidthAdjustment()
+	// }
 
-  // $(window).resize(function() {
-  //     if ($(window).width() < 750) {
-  //         screenWidthAdjustment()
-  //     }
-  // });
+	// $(window).resize(function() {
+	//     if ($(window).width() < 750) {
+	//         screenWidthAdjustment()
+	//     }
+	// });
 
-  // $(window).resize(function() {
-  //     if ($(window).width() > 750) {
-  //         screenWidthRevert()
-  //     }
-  // });
+	// $(window).resize(function() {
+	//     if ($(window).width() > 750) {
+	//         screenWidthRevert()
+	//     }
+	// });
 
 });
 app.controller('MainNavCtrl',
@@ -68,6 +68,217 @@ app.controller('MainNavCtrl',
       }, 500);
     })
   }]);
+
+// app.factory('UserFactory', function() {
+app.factory('UserFactory', ['$route', 'usersService', function($route, usersService) {
+
+    
+    return {
+    	user: function () {
+    		// var routeParams = $route.current.params;
+    		// console.log(routeParams)
+    		// console.log(routeParams.userid)
+		    // var user = usersService.getByUserId(routeParams.userid);
+		    // console.log(user);
+		    // console.log('hey')
+    	}
+    }
+
+// });
+}]);
+app.factory('VoteFactory', ['shareService', function (shareService) {
+
+	var ups;
+	var downs;
+
+	function getVotes (votes, dir, rgb) {
+		console.log(votes)
+		var newVotes = votes + 1;
+		console.log(newVotes)
+		var el = $(event.target).parent().find('.fa-arrow-' + dir);
+		if (el.css('color') !== rgb) {
+			$(event.target).parent().find('.' + dir +'vote-count').html(dir + 'votes: ' + newVotes);
+		};
+	}
+
+	function upvote (color, id, upvotes, downvotes) {	
+		getVotes(upvotes, 'up', 'rgb(0, 0, 255)');
+		ups = (upvotes + 1);
+		console.log(ups)
+		event.target.style.color = color;
+		var downEl = $(event.target).parent().find('.fa-arrow-down')
+		if (downEl.css('color') === 'rgb(255, 165, 0)') {
+			downEl.css({
+				'color': 'lightgray'
+			});
+			shareService.undovote(id, 'down', (downs - 1))
+		};
+		shareService.upvote(id);
+	}
+
+	function downvote (color, id, downvotes, upvotes) {
+		getVotes(downvotes, 'down', 'rgb(255, 165, 0)');
+		downs = (downvotes + 1);
+		event.target.style.color = color;
+		
+		console.log(ups)
+		var upEl = $(event.target).parent().find('.fa-arrow-up')
+		if (upEl.css('color') === 'rgb(0, 0, 255)') {
+			// upEl.css({
+			// 	'color': 'lightgray'
+			// });
+			console.log(ups)
+			eraseVote(id, 'up', (ups - 1))
+		};
+		shareService.downvote(id)
+	}
+
+	function eraseVote (id, dir, votes) {
+		var el = $(event.target).parent().find('.fa-arrow-' + dir);
+		el.css({'color': 'lightgray'});
+		$(event.target).parent().find('.' + dir +'vote-count').html(dir + 'votes: ' + votes);
+		shareService.undovote(id)
+	}
+
+	return {
+		vote: function (color, voted, id, upvotes, downvotes) {
+		    if (voted === 'upvote' && (event.target.style.color === 'blue')) {
+		    	eraseVote(id, 'up', upvotes);
+		    } else if (voted === 'downvote' && (event.target.style.color === 'orange')) {
+		    	eraseVote(id,'down', downvotes);
+		    } else if (voted === 'upvote') {
+		    	upvote(color, id, upvotes, downvotes);
+		    } else if (voted === 'downvote') {
+		    	downvote(color, id, downvotes, upvotes);
+		    } 
+	    }
+	};
+
+}]);
+app.config(['$routeProvider', function($routeProvider) {
+  var routeDefinition = {
+    templateUrl: 'shares/shares.html',
+    controller: 'SharesCtrl',
+    controllerAs: 'vm'
+  };
+
+  $routeProvider.when('/', routeDefinition);
+  $routeProvider.when('/shares', routeDefinition);
+}])
+.controller('SharesCtrl', ['VoteFactory', function (VoteFactory) {
+  // TODO: load these via AJAX
+  var self = this;
+
+  self.shares = [];
+
+  // self.chosen;
+  // self.upCounter = 0;
+  // self.downCounter = 0;
+
+  // self.vote = function (direction) {
+  // 	self.chosen = direction;
+  // };
+
+  // self.vote = function (color, vote) {
+  // 	// document.querySelector(el).onclick = function () {
+	 //  	event.target.style.color = color
+	 //  // }
+  //   if (vote = 'upvote') {
+
+  //   }
+  // }
+
+  self.vote = function (color, voted) {
+    VoteFactory.vote(color, voted);
+  };
+
+  // todo:
+  // -add an upvote and downvote counter to each li. Need to create a function within whatever Ashley is pushing to an array
+  // that you can access. With that access, you'll need to create the function in your VoteFactory, probably using dependency
+  // injection from her controller. The details page should have something like "upvotes= {{upvotes}}".
+
+
+}]);
+
+app.config(['$routeProvider', function ($routeProvider) {
+  $routeProvider.when('/shares/new-share', {
+    controller: 'NewShareCtrl',
+    controllerAs: 'vm',
+    templateUrl: 'shares/new-share.html'
+  });
+}]).controller('NewShareCtrl', ['$location', 'Share', 'shareService', function ($location, Share, shareService) {
+  var self = this;
+
+  self.share = Share();
+
+  self.cancelEdit = function () {
+    self.viewShares();
+  };
+
+  self.viewShares = function () {
+    $location.path('/shares');
+  };
+
+  self.addShare = function () {
+    shareService.addShare(self.share).then(self.viewShares);
+    console.log(self.share);
+  };
+
+}]);
+
+
+app.factory('Share', function () {
+  return function (spec) {
+    spec = spec || {};
+    return {
+      url: spec.url,
+      description: spec.description,
+      upvotes: spec.upvotes,
+      downvotes: spec.downvotes
+    };
+  };
+});
+
+app.config(['$routeProvider', function($routeProvider) {
+  var routeDefinition = {
+    templateUrl: 'shares/shares.html',
+    controller: 'SharesCtrl',
+    controllerAs: 'vm',
+    resolve: {
+      shares: ['shareService', function (shareService) {
+        return shareService.list();
+      }],
+    }
+  };
+
+  $routeProvider.when('/', routeDefinition);
+  $routeProvider.when('/shares', routeDefinition);
+}])
+.controller('SharesCtrl', ['shareService', 'users', 'shares', 'Share', 'VoteFactory', 
+  function (shareService, users, shares, Share, VoteFactory) {
+
+  var self = this;
+
+  self.shares = shares;
+
+  // console.log(shares);
+  console.log(self.shares);
+
+  self.vote = function (color, voted) {
+    var indexNum = $(event.target).parent().index();
+    var id = self.shares[indexNum]._id;
+    // var votes = shareService.getVotes(id);
+    // console.log(votes)
+    var upvotes = self.shares[indexNum].upvotes;
+    var downvotes = self.shares[indexNum].downvotes;
+    VoteFactory.vote(color, voted, id, upvotes, downvotes)
+  };
+
+  self.delete = function (shareId) {
+    shareService.deleteShare(shareId).then($route.reload());
+  };
+
+}]);
 
 app.config(['$routeProvider', function($routeProvider) {
   var routeDefinition = {
@@ -119,6 +330,7 @@ app.config(['$routeProvider', function($routeProvider) {
   var self = this;
 
   self.users = users;
+  console.log(users);
 
   self.newUser = User();
 
@@ -144,192 +356,6 @@ app.config(['$routeProvider', function($routeProvider) {
   };
 }]);
 
-// app.factory('UserFactory', function() {
-app.factory('UserFactory', ['$route', 'usersService', function($route, usersService) {
-
-    
-    return {
-      user: function () {
-        // var routeParams = $route.current.params;
-        // console.log(routeParams)
-        // console.log(routeParams.userid)
-        // var user = usersService.getByUserId(routeParams.userid);
-        // console.log(user);
-        // console.log('hey')
-      }
-    }
-
-// });
-}]);
-app.factory('VoteFactory', function () {
-  
-  function upvote (color) {   
-    console.log($(this));
-    event.target.style.color = color;
-    var downEl = $(event.target).parent().find('.fa-arrow-down')
-    console.log(downEl.css('color'))
-    if (downEl.css('color') === 'rgb(255, 165, 0)') {
-      console.log('hey')
-      downEl.css({
-        'color': 'lightgray'
-      });
-    };
-    // function that accesses a function in Ashley's code to upvote
-  }
-
-  function downvote (color) {
-    console.log('test1');
-    event.target.style.color = color;
-    var downEl = $(event.target).parent().find('.fa-arrow-up')
-    console.log(downEl.css('color'))
-    if (downEl.css('color') === 'rgb(0, 0, 255)') {
-      console.log('hey')
-      downEl.css({
-        'color': 'lightgray'
-      });
-    };
-    // function that accesses a function in Ashley's code to downvote
-  }
-
-  function eraseVote () {
-    console.log('try again');
-    event.target.style.color = 'lightgray';
-    // function that accesses a function in Ashley's code to erase vote
-  }
-
-  return {
-    vote: function (color, voted) {
-        // document.querySelector(el).onclick = function () {
-          
-        // }
-        console.log($(this));
-        if (voted === 'upvote' && (event.target.style.color === 'blue')) {
-          eraseVote();
-        } else if (voted === 'downvote' && (event.target.style.color === 'orange')) {
-          eraseVote();
-        } else if (voted === 'upvote') {
-          upvote(color);
-        } else if (voted === 'downvote') {
-          downvote(color);
-        } 
-      }
-  };
-
-});
-app.config(['$routeProvider', function($routeProvider) {
-  var routeDefinition = {
-    templateUrl: 'shares/shares.html',
-    controller: 'SharesCtrl',
-    controllerAs: 'vm'
-  };
-
-  $routeProvider.when('/', routeDefinition);
-  $routeProvider.when('/shares', routeDefinition);
-}])
-.controller('SharesCtrl', ['VoteFactory', function (VoteFactory) {
-  // TODO: load these via AJAX
-  var self = this;
-
-  self.shares = [];
-
-  // self.chosen;
-  // self.upCounter = 0;
-  // self.downCounter = 0;
-
-  // self.vote = function (direction) {
-  //  self.chosen = direction;
-  // };
-
-  // self.vote = function (color, vote) {
-  //  // document.querySelector(el).onclick = function () {
-   //   event.target.style.color = color
-   //  // }
-  //   if (vote = 'upvote') {
-
-  //   }
-  // }
-
-  self.vote = function (color, voted) {
-    VoteFactory.vote(color, voted);
-  };
-
-  // todo:
-  // -add an upvote and downvote counter to each li. Need to create a function within whatever Ashley is pushing to an array
-  // that you can access. With that access, you'll need to create the function in your VoteFactory, probably using dependency
-  // injection from her controller. The details page should have something like "upvotes= {{upvotes}}".
-
-
-}]);
-
-app.config(['$routeProvider', function ($routeProvider) {
-  $routeProvider.when('/shares/new-share', {
-    controller: 'NewShareCtrl',
-    controllerAs: 'vm',
-    templateUrl: 'shares/new-share.html'
-  });
-}]).controller('NewShareCtrl', ['$location', 'Share', 'shareService', function ($location, Share, shareService) {
-  var self = this;
-
-  self.share = Share();
-
-  self.cancelEdit = function () {
-    self.viewShares();
-  };
-
-  self.viewShares = function () {
-    $location.path('/shares');
-  };
-
-  self.addShare = function () {
-    shareService.addShare(self.share).then(self.viewShares);
-  };
-
-}]);
-
-
-app.factory('Share', function () {
-  return function (spec) {
-    spec = spec || {};
-    return {
-      url: spec.url,
-      description: spec.description,
-      upvoteCounter: spec.upvoteCounter,
-      downvoteCounter: spec.downvoteCounter
-    };
-  };
-});
-
-app.config(['$routeProvider', function($routeProvider) {
-  var routeDefinition = {
-    templateUrl: 'shares/shares.html',
-    controller: 'SharesCtrl',
-    controllerAs: 'vm',
-    resolve: {
-      shares: ['shareService', function (shareService) {
-        return shareService.list();
-      }]
-    }
-  };
-
-  $routeProvider.when('/', routeDefinition);
-  $routeProvider.when('/shares', routeDefinition);
-}])
-.controller('SharesCtrl', ['shareService', 'shares', 'Share', 'VoteFactory', '$route', function (shareService, shares, Share, VoteFactory, $route) {
-
-  var self = this;
-
-  self.shares = shares;
-
-  self.vote = function (color, voted) {
-    VoteFactory.vote(color, voted);
-  };
-
-  self.delete = function (shareId) {
-    shareService.deleteShare(shareId).then($route.reload());
-  };
-
-}]);
-
 // A little string utility... no biggie
 app.factory('StringUtil', function() {
   return {
@@ -339,6 +365,67 @@ app.factory('StringUtil', function() {
     }
   };
 });
+
+//Share Store, call AJAX
+
+app.factory('shareService', ['$http', '$log', function ($http, $log) {
+
+  function get(url) {
+    return processAjaxPromise($http.get(url));
+  }
+
+  function post(url, share) {
+    return processAjaxPromise($http.post(url, share));
+  }
+
+  function remove(url) {
+    return processAjaxPromise($http.delete(url));
+  }
+
+  function processAjaxPromise(p) {
+    return p.then(function (result) {
+      return result.data;
+    })
+    .catch(function (error) {
+      $log.log(error);
+    });
+  }
+
+  return {
+    list: function () {
+      return get('/api/res');
+    },
+
+    getByShareId: function (shareId) {
+      return get('/api/res/' + shareId);
+    },
+
+    getVotes: function (shareId) {
+      return get('/api/res/' + shareId + '/votes');
+    },
+
+    addShare: function (share) {
+      return post('/api/res', share);
+    },
+
+    deleteShare: function (shareId) {
+      return remove('/api/res/' + shareId);
+    },
+
+    upvote: function (shareId) {
+      return post('/api/res/' + shareId + '/votes', {vote:1})
+    },
+
+    downvote: function (shareId) {
+      return post('/api/res/' + shareId + '/votes', {vote:-1})
+    },
+
+    undovote: function (shareId) {
+      return post('/api/res/' + shareId + '/votes', {vote:0})
+    }
+
+  };
+}]);
 
 app.factory('usersService', ['$http', '$q', '$log', function($http, $q, $log) {
   // My $http promise then and catch always
@@ -379,46 +466,4 @@ app.factory('usersService', ['$http', '$q', '$log', function($http, $q, $log) {
   };
 }]);
 
-//Share Store, call AJAX
-
-app.factory('shareService', ['$http', '$log', function ($http, $log) {
-
-  function get(url) {
-    return processAjaxPromise($http.get(url));
-  }
-
-  function post(url, share) {
-    return processAjaxPromise($http.post(url, share));
-  }
-
-  function remove(url) {
-    return processAjaxPromise($http.delete(url));
-  }
-
-  function processAjaxPromise(p) {
-    return p.then(function (result) {
-      return result.data;
-    })
-    .catch(function (error) {
-      $log.log(error);
-    });
-  }
-
-  return {
-    list: function () {
-      return get('/api/res');
-    },
-
-    getByShareId: function (shareId) {
-      return get('/api/res/' + shareId);
-    },
-
-    addShare: function (share) {
-      return post('/api/res', share);
-    },
-
-    deleteShare: function (shareId) {
-      return remove('/api/res/' + shareId);
-    },
-  };
-}]);
+//# sourceMappingURL=app.js.map
