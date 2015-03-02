@@ -32,5 +32,9 @@ app.config(['$routeProvider', function($routeProvider) {
     var downvotes = self.shares[indexNum].downvotes;
     VoteFactory.vote(color, voted, id, upvotes, downvotes)
   };
-  
+
+  self.delete = function (shareId) {
+    shareService.deleteShare(shareId).then($route.reload());
+  };
+
 }]);
