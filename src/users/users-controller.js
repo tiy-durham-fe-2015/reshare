@@ -17,6 +17,7 @@ app.config(['$routeProvider', function($routeProvider) {
   var self = this;
 
   self.users = users;
+  console.log(users);
 
   self.newUser = User();
 
