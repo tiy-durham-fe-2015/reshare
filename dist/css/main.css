@@ -273,13 +273,14 @@ i {
 .shares-ul li i:nth-child(2).active {
   color: orange; }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 681px) {
   .header-left {
-    width: 82px; }
+    width: 82px;
+    padding: 10px 3px 0; }
   .header-new-link-button {
     width: 100px; } }
 
-@media screen and (max-width: 414px) {
+@media screen and (max-width: 459px) {
   .site-header {
     background: white;
     /*		height: 50px;*/
@@ -348,7 +349,7 @@ i {
     visibility: visible; }
   .main-checkbox:checked ~ .header-index .links-div {
     opacity: 1;
-    margin-top: -7%;
+    margin-top: -27px;
     transition: opacity .01s;
     transition: margin-top .7s; }
   .main-checkbox:checked ~ .header-index {
