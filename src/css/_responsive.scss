@@ -1,7 +1,8 @@
-@media screen and (max-width:600px) {
+@media screen and (max-width:681px) {
 
 	.header-left {
 		width: 82px;
+		padding: 10px 3px 0;
 	}
 
 	.header-new-link-button {
@@ -10,7 +11,7 @@
 
 }
 
-@media screen and (max-width:414px) {
+@media screen and (max-width:459px) {
 
 	.site-header {
 		background: white;
@@ -108,7 +109,7 @@
 
 	.main-checkbox:checked ~ .header-index .links-div {
 		opacity: 1;
-	    margin-top: -7.5%;
+	    margin-top: -27px;
 		-webkit-transition: opacity .01s;
 		   -moz-transition: opacity .01s;
 		    -ms-transition: opacity .01s;

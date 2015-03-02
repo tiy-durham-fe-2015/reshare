@@ -7,7 +7,7 @@
 	  <a class="header-left header-users-button" ng-class="{active: vm.isActive('/users')}" ng-href="#/users">Users</a>
 	  <a class="header-left header-login-button" ng-if="!vm.currentUser" href="/auth/github">Login</a>
 		<a class="header-left header-login-button" ng-if="vm.currentUser" href="/logout">Logout</a>
-		<a class="header-left header-login-button" ng-if="vm.currentUser" ng-href="/#/users/{{vm.currentUser.userId}}">{{vm.currentUser.userId}}</a>
+		<a class="header-left header-username" ng-if="vm.currentUser" ng-href="/#/users/{{vm.currentUser.userId}}">{{vm.currentUser.userId}}</a>
   </div>
 	<div class="menu-bar-div">Menu</div>
 </nav>

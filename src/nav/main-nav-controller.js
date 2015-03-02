@@ -16,18 +16,60 @@ app.controller('MainNavCtrl',
       self.currentUser = data;
     });
 
-    $('.for-clicking').on('click', function () {
-      console.log("eh");
-      $('.main-checkbox').prop('checked', true);
-      $('.site-header').css({
-        'height': '155px',
+    function windowWidthLess () {
+      return $(window).width() < 459;
+    }
+
+    function checkbox (bool) {
+      $('.main-checkbox').prop('checked', bool);
+    }
+
+    function changeHeight (hi, sh) {
+      $('.header-index').css({
+        'height': hi + 'px'
       });
+      $('.site-header').css({
+        'height': sh + 'px'
+      });
+    }
+
+    $('.for-clicking').on('click', function () {
+      if (windowWidthLess()) {
+       checkbox(true);
+        $('.site-header').css({
+          'height': '155px',
+        });
+        if ($('.header-left').length === 5) {
+          changeHeight(180, 185);
+        };
+      };
+    });
+
+    if ($(window).width() > 460) {
+      $('.for-clicking').hide();
+    };
+
+    $(window).resize(function() {
+      if ($(window).width() > 460) {
+        $('.for-clicking').hide();
+      };      
+    });
+
+    $(window).resize(function() {
+        if (windowWidthLess()) {
+          changeHeight(50, 50);
+          checkbox(false);
+          $('.for-clicking').show();
+        };
     });
 
     $('.header-left').on('click', function () {
-      $('.main-checkbox').prop('checked', false);
-      $('.site-header').animate({
-        'height': '50px',
-      }, 500);
+      if (windowWidthLess()) {
+        checkbox(false);
+        changeHeight(45, 50);
+        $('.site-header').animate({
+          'height': '50px',
+        }, 500);     
+      };
     });
   }]);
