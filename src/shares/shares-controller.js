@@ -7,14 +7,17 @@ app.config(['$routeProvider', function($routeProvider) {
       shares: ['shareService', function (shareService) {
         return shareService.list();
       }],
+      users: ['usersService', function (usersService) {
+        return usersService.list();
+      }]
     }
   };
 
   $routeProvider.when('/', routeDefinition);
   $routeProvider.when('/shares', routeDefinition);
 }])
-.controller('SharesCtrl', ['shareService', 'users', 'shares', 'Share', 'VoteFactory', 
-  function (shareService, users, shares, Share, VoteFactory) {
+.controller('SharesCtrl', ['shareService', 'users', 'shares', '$route', 'Share', 'VoteFactory',
+  function (shareService, users, shares, $route, Share, VoteFactory) {
 
   var self = this;
 
@@ -30,7 +33,7 @@ app.config(['$routeProvider', function($routeProvider) {
     // console.log(votes)
     var upvotes = self.shares[indexNum].upvotes;
     var downvotes = self.shares[indexNum].downvotes;
-    VoteFactory.vote(color, voted, id, upvotes, downvotes)
+    VoteFactory.vote(color, voted, id, upvotes, downvotes);
   };
 
   self.delete = function (shareId) {

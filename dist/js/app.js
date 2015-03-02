@@ -98,27 +98,27 @@ app.factory('VoteFactory', ['shareService', function (shareService) {
 	var downs;
 
 	function getVotes (votes, dir, rgb) {
-		console.log(votes)
+		console.log(votes);
 		var newVotes = votes + 1;
-		console.log(newVotes)
+		console.log(newVotes);
 		var el = $(event.target).parent().find('.fa-arrow-' + dir);
 		if (el.css('color') !== rgb) {
 			$(event.target).parent().find('.' + dir +'vote-count').html(dir + 'votes: ' + newVotes);
-		};
+		}
 	}
 
 	function upvote (color, id, upvotes, downvotes) {
 		getVotes(upvotes, 'up', 'rgb(0, 0, 255)');
 		ups = (upvotes + 1);
-		console.log(ups)
+		console.log(ups);
 		event.target.style.color = color;
-		var downEl = $(event.target).parent().find('.fa-arrow-down')
+		var downEl = $(event.target).parent().find('.fa-arrow-down');
 		if (downEl.css('color') === 'rgb(255, 165, 0)') {
 			downEl.css({
 				'color': 'lightgray'
 			});
-			shareService.undovote(id, 'down', (downs - 1))
-		};
+			shareService.undovote(id, 'down', (downs - 1));
+		}
 		shareService.upvote(id);
 	}
 
@@ -127,23 +127,23 @@ app.factory('VoteFactory', ['shareService', function (shareService) {
 		downs = (downvotes + 1);
 		event.target.style.color = color;
 
-		console.log(ups)
-		var upEl = $(event.target).parent().find('.fa-arrow-up')
+		console.log(ups);
+		var upEl = $(event.target).parent().find('.fa-arrow-up');
 		if (upEl.css('color') === 'rgb(0, 0, 255)') {
 			// upEl.css({
 			// 	'color': 'lightgray'
 			// });
-			console.log(ups)
-			eraseVote(id, 'up', (ups - 1))
-		};
-		shareService.downvote(id)
+			console.log(ups);
+			eraseVote(id, 'up', (ups - 1));
+		}
+		shareService.downvote(id);
 	}
 
 	function eraseVote (id, dir, votes) {
 		var el = $(event.target).parent().find('.fa-arrow-' + dir);
 		el.css({'color': 'lightgray'});
 		$(event.target).parent().find('.' + dir +'vote-count').html(dir + 'votes: ' + votes);
-		shareService.undovote(id)
+		shareService.undovote(id);
 	}
 
 	return {
@@ -230,7 +230,7 @@ app.config(['$routeProvider', function ($routeProvider) {
     shareService.addShare(self.share).then(self.viewShares);
     console.log(self.share);
   };
-  //
+  // 
   // self.editShare = function (shareId) {
   //   shareService.addShare(shareId).then(self.viewShares);
   // }
@@ -279,14 +279,17 @@ app.config(['$routeProvider', function($routeProvider) {
       shares: ['shareService', function (shareService) {
         return shareService.list();
       }],
+      users: ['usersService', function (usersService) {
+        return usersService.list();
+      }]
     }
   };
 
   $routeProvider.when('/', routeDefinition);
   $routeProvider.when('/shares', routeDefinition);
 }])
-.controller('SharesCtrl', ['shareService', 'users', 'shares', 'Share', 'VoteFactory',
-  function (shareService, users, shares, Share, VoteFactory) {
+.controller('SharesCtrl', ['shareService', 'users', 'shares', '$route', 'Share', 'VoteFactory',
+  function (shareService, users, shares, $route, Share, VoteFactory) {
 
   var self = this;
 
@@ -302,7 +305,7 @@ app.config(['$routeProvider', function($routeProvider) {
     // console.log(votes)
     var upvotes = self.shares[indexNum].upvotes;
     var downvotes = self.shares[indexNum].downvotes;
-    VoteFactory.vote(color, voted, id, upvotes, downvotes)
+    VoteFactory.vote(color, voted, id, upvotes, downvotes);
   };
 
   self.delete = function (shareId) {
@@ -457,15 +460,15 @@ app.factory('shareService', ['$http', '$log', function ($http, $log) {
     },
 
     upvote: function (shareId) {
-      return post('/api/res/' + shareId + '/votes', {vote:1})
+      return post('/api/res/' + shareId + '/votes', {vote:1});
     },
 
     downvote: function (shareId) {
-      return post('/api/res/' + shareId + '/votes', {vote:-1})
+      return post('/api/res/' + shareId + '/votes', {vote:-1});
     },
 
     undovote: function (shareId) {
-      return post('/api/res/' + shareId + '/votes', {vote:0})
+      return post('/api/res/' + shareId + '/votes', {vote:0});
     }
 
   };
