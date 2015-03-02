@@ -15,17 +15,17 @@ app.controller('MainNavCtrl',
       self.currentUser = data;
     });
 
-    // $('.for-clicking').on('click', function () {
-    //   $('.main-checkbox').prop('checked', true);
-    //   $('.site-header').css({
-    //     'height': '155px',
-    //   });
-    // });
-    //
-    // $('.header-left').on('click', function () {
-    //   $('.main-checkbox').prop('checked', false);
-    //   $('.site-header').animate({
-    //     'height': '50px',
-    //   }, 500);
-    // });
+    $('.for-clicking').on('click', function () {
+      $('.main-checkbox').prop('checked', true);
+      $('.site-header').css({
+        'height': '155px',
+      });
+    });
+
+    $('.header-left').on('click', function () {
+      $('.main-checkbox').prop('checked', false);
+      $('.site-header').animate({
+        'height': '50px',
+      }, 500);
+    });
   }]);

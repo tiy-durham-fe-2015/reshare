@@ -1,38 +1,45 @@
 // The root module for our Angular application
 var app = angular.module('app', ['ngRoute']);
 
-app.controller('MainNavCtrl',
-  ['$location', 'StringUtil', 'usersService', function($location, StringUtil, usersService) {
-    var self = this;
+$(function () {
 
-    self.isActive = function (path) {
-      // The default route is a special case.
-      if (path === '/') {
-        return $location.path() === '/';
-      }
+	// console.log($('.main-checkbox').prop('checked'))
 
-      return StringUtil.startsWith($location.path(), path);
-    };
+	// if ($('.main-checkbox').prop('checked')) {
+	// 	console.log('eh')
+	// 	$('.site-header').css({
+	// 		'height': '155px'
+	// 	})
+	// };
 
-    usersService.currentUser().then(function (data) {
-      self.currentUser = data;
-    });
+	// function screenWidthAdjustment () {
+	// 	console.log('eh')
+	// 	var move = $('.header-new-link-button').detach();
+	// 	move.appendTo('.header-login-button')
+	// }
 
-    // $('.for-clicking').on('click', function () {
-    //   $('.main-checkbox').prop('checked', true);
-    //   $('.site-header').css({
-    //     'height': '155px',
-    //   });
-    // });
-    //
-    // $('.header-left').on('click', function () {
-    //   $('.main-checkbox').prop('checked', false);
-    //   $('.site-header').animate({
-    //     'height': '50px',
-    //   }, 500);
-    // });
-  }]);
+	// function screenWidthRevert () {
+	// 	var move = $('.header-new-link-button').detach();
+	// 	move.appendTo('.links-div')
+	// }
 
+	// if ($(window).width() < 750) {
+	//     screenWidthAdjustment()
+	// }
+
+	// $(window).resize(function() {
+	//     if ($(window).width() < 750) {
+	//         screenWidthAdjustment()
+	//     }
+	// });
+
+	// $(window).resize(function() {
+	//     if ($(window).width() > 750) {
+	//         screenWidthRevert()
+	//     }
+	// });
+
+});
 // app.factory('UserFactory', function() {
 app.factory('UserFactory', ['$route', 'usersService', function($route, usersService) {
 
@@ -358,6 +365,38 @@ app.config(['$routeProvider', function($routeProvider) {
   };
 }]);
 
+app.controller('MainNavCtrl',
+  ['$location', 'StringUtil', 'usersService', function($location, StringUtil, usersService) {
+    var self = this;
+
+    self.isActive = function (path) {
+      // The default route is a special case.
+      if (path === '/') {
+        return $location.path() === '/';
+      }
+
+      return StringUtil.startsWith($location.path(), path);
+    };
+
+    usersService.currentUser().then(function (data) {
+      self.currentUser = data;
+    });
+
+    $('.for-clicking').on('click', function () {
+      $('.main-checkbox').prop('checked', true);
+      $('.site-header').css({
+        'height': '155px',
+      });
+    });
+
+    $('.header-left').on('click', function () {
+      $('.main-checkbox').prop('checked', false);
+      $('.site-header').animate({
+        'height': '50px',
+      }, 500);
+    });
+  }]);
+
 // A little string utility... no biggie
 app.factory('StringUtil', function() {
   return {
@@ -368,45 +407,6 @@ app.factory('StringUtil', function() {
   };
 });
 
-$(function () {
-
-	// console.log($('.main-checkbox').prop('checked'))
-
-	// if ($('.main-checkbox').prop('checked')) {
-	// 	console.log('eh')
-	// 	$('.site-header').css({
-	// 		'height': '155px'
-	// 	})
-	// };
-
-	// function screenWidthAdjustment () {
-	// 	console.log('eh')
-	// 	var move = $('.header-new-link-button').detach();
-	// 	move.appendTo('.header-login-button')
-	// }
-
-	// function screenWidthRevert () {
-	// 	var move = $('.header-new-link-button').detach();
-	// 	move.appendTo('.links-div')
-	// }
-
-	// if ($(window).width() < 750) {
-	//     screenWidthAdjustment()
-	// }
-
-	// $(window).resize(function() {
-	//     if ($(window).width() < 750) {
-	//         screenWidthAdjustment()
-	//     }
-	// });
-
-	// $(window).resize(function() {
-	//     if ($(window).width() > 750) {
-	//         screenWidthRevert()
-	//     }
-	// });
-
-});
 //Share Store, call AJAX
 
 app.factory('shareService', ['$http', '$log', function ($http, $log) {
