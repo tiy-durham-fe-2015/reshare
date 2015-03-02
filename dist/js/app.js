@@ -92,61 +92,75 @@ app.factory('UserFactory', ['$route', 'usersService', function($route, usersServ
 // });
 }]);
 
-app.factory('VoteFactory', function () {
+app.factory('VoteFactory', ['shareService', function (shareService) {
 
-	function upvote (color) {
-		console.log($(this));
+	var ups;
+	var downs;
+
+	function getVotes (votes, dir, rgb) {
+		console.log(votes)
+		var newVotes = votes + 1;
+		console.log(newVotes)
+		var el = $(event.target).parent().find('.fa-arrow-' + dir);
+		if (el.css('color') !== rgb) {
+			$(event.target).parent().find('.' + dir +'vote-count').html(dir + 'votes: ' + newVotes);
+		};
+	}
+
+	function upvote (color, id, upvotes, downvotes) {
+		getVotes(upvotes, 'up', 'rgb(0, 0, 255)');
+		ups = (upvotes + 1);
+		console.log(ups)
 		event.target.style.color = color;
-		var downEl = $(event.target).parent().find('.fa-arrow-down');
-		console.log(downEl.css('color'));
+		var downEl = $(event.target).parent().find('.fa-arrow-down')
 		if (downEl.css('color') === 'rgb(255, 165, 0)') {
-			console.log('hey');
 			downEl.css({
 				'color': 'lightgray'
 			});
-		}
-		// function that accesses a function in Ashley's code to upvote
+			shareService.undovote(id, 'down', (downs - 1))
+		};
+		shareService.upvote(id);
 	}
 
-	function downvote (color) {
-		console.log('test1');
+	function downvote (color, id, downvotes, upvotes) {
+		getVotes(downvotes, 'down', 'rgb(255, 165, 0)');
+		downs = (downvotes + 1);
 		event.target.style.color = color;
-		var downEl = $(event.target).parent().find('.fa-arrow-up');
-		console.log(downEl.css('color'));
-		if (downEl.css('color') === 'rgb(0, 0, 255)') {
-			console.log('hey');
-			downEl.css({
-				'color': 'lightgray'
-			});
-		}
-		// function that accesses a function in Ashley's code to downvote
+
+		console.log(ups)
+		var upEl = $(event.target).parent().find('.fa-arrow-up')
+		if (upEl.css('color') === 'rgb(0, 0, 255)') {
+			// upEl.css({
+			// 	'color': 'lightgray'
+			// });
+			console.log(ups)
+			eraseVote(id, 'up', (ups - 1))
+		};
+		shareService.downvote(id)
 	}
 
-	function eraseVote () {
-		console.log('try again');
-		event.target.style.color = 'lightgray';
-		// function that accesses a function in Ashley's code to erase vote
+	function eraseVote (id, dir, votes) {
+		var el = $(event.target).parent().find('.fa-arrow-' + dir);
+		el.css({'color': 'lightgray'});
+		$(event.target).parent().find('.' + dir +'vote-count').html(dir + 'votes: ' + votes);
+		shareService.undovote(id)
 	}
 
 	return {
-		vote: function (color, voted) {
-		  	// document.querySelector(el).onclick = function () {
-
-			  // }
-			  console.log($(this));
+		vote: function (color, voted, id, upvotes, downvotes) {
 		    if (voted === 'upvote' && (event.target.style.color === 'blue')) {
-		    	eraseVote();
+		    	eraseVote(id, 'up', upvotes);
 		    } else if (voted === 'downvote' && (event.target.style.color === 'orange')) {
-		    	eraseVote();
+		    	eraseVote(id,'down', downvotes);
 		    } else if (voted === 'upvote') {
-		    	upvote(color);
+		    	upvote(color, id, upvotes, downvotes);
 		    } else if (voted === 'downvote') {
-		    	downvote(color);
+		    	downvote(color, id, downvotes, upvotes);
 		    }
 	    }
 	};
 
-});
+}]);
 
 app.config(['$routeProvider', function($routeProvider) {
   var routeDefinition = {
@@ -214,8 +228,9 @@ app.config(['$routeProvider', function ($routeProvider) {
 
   self.addShare = function () {
     shareService.addShare(self.share).then(self.viewShares);
+    console.log(self.share);
   };
-  // 
+  //
   // self.editShare = function (shareId) {
   //   shareService.addShare(shareId).then(self.viewShares);
   // }
@@ -249,8 +264,8 @@ app.factory('Share', function () {
     return {
       url: spec.url,
       description: spec.description,
-      upvoteCounter: spec.upvoteCounter,
-      downvoteCounter: spec.downvoteCounter
+      upvotes: spec.upvotes,
+      downvotes: spec.downvotes
     };
   };
 });
@@ -263,21 +278,31 @@ app.config(['$routeProvider', function($routeProvider) {
     resolve: {
       shares: ['shareService', function (shareService) {
         return shareService.list();
-      }]
+      }],
     }
   };
 
   $routeProvider.when('/', routeDefinition);
   $routeProvider.when('/shares', routeDefinition);
 }])
-.controller('SharesCtrl', ['shareService', 'shares', 'Share', 'VoteFactory', '$route', function (shareService, shares, Share, VoteFactory, $route) {
+.controller('SharesCtrl', ['shareService', 'users', 'shares', 'Share', 'VoteFactory',
+  function (shareService, users, shares, Share, VoteFactory) {
 
   var self = this;
 
   self.shares = shares;
 
+  // console.log(shares);
+  console.log(self.shares);
+
   self.vote = function (color, voted) {
-    VoteFactory.vote(color, voted);
+    var indexNum = $(event.target).parent().index();
+    var id = self.shares[indexNum]._id;
+    // var votes = shareService.getVotes(id);
+    // console.log(votes)
+    var upvotes = self.shares[indexNum].upvotes;
+    var downvotes = self.shares[indexNum].downvotes;
+    VoteFactory.vote(color, voted, id, upvotes, downvotes)
   };
 
   self.delete = function (shareId) {
@@ -292,16 +317,6 @@ app.config(['$routeProvider', function($routeProvider) {
   // };
 
 }]);
-
-// A little string utility... no biggie
-app.factory('StringUtil', function() {
-  return {
-    startsWith: function (str, subStr) {
-      str = str || '';
-      return str.slice(0, subStr.length) === subStr;
-    }
-  };
-});
 
 app.config(['$routeProvider', function($routeProvider) {
   var routeDefinition = {
@@ -357,6 +372,7 @@ app.config(['$routeProvider', function($routeProvider) {
   var self = this;
 
   self.users = users;
+  console.log(users);
 
   self.currentUser = currentUser;
 
@@ -383,6 +399,16 @@ app.config(['$routeProvider', function($routeProvider) {
     console.log(users);
   };
 }]);
+
+// A little string utility... no biggie
+app.factory('StringUtil', function() {
+  return {
+    startsWith: function (str, subStr) {
+      str = str || '';
+      return str.slice(0, subStr.length) === subStr;
+    }
+  };
+});
 
 //Share Store, call AJAX
 
@@ -418,13 +444,30 @@ app.factory('shareService', ['$http', '$log', function ($http, $log) {
       return get('/api/res/' + shareId);
     },
 
+    getVotes: function (shareId) {
+      return get('/api/res/' + shareId + '/votes');
+    },
+
     addShare: function (share) {
       return post('/api/res', share);
     },
 
     deleteShare: function (shareId) {
       return remove('/api/res/' + shareId);
+    },
+
+    upvote: function (shareId) {
+      return post('/api/res/' + shareId + '/votes', {vote:1})
+    },
+
+    downvote: function (shareId) {
+      return post('/api/res/' + shareId + '/votes', {vote:-1})
+    },
+
+    undovote: function (shareId) {
+      return post('/api/res/' + shareId + '/votes', {vote:0})
     }
+
   };
 }]);
 
