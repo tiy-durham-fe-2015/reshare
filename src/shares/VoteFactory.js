@@ -1,55 +1,69 @@
-app.factory('VoteFactory', function () {
-	
-	function upvote (color) {		
-		console.log($(this));
+app.factory('VoteFactory', ['shareService', function (shareService) {
+
+	var ups;
+	var downs;
+
+	function getVotes (votes, dir, rgb) {
+		console.log(votes)
+		var newVotes = votes + 1;
+		console.log(newVotes)
+		var el = $(event.target).parent().find('.fa-arrow-' + dir);
+		if (el.css('color') !== rgb) {
+			$(event.target).parent().find('.' + dir +'vote-count').html(dir + 'votes: ' + newVotes);
+		};
+	}
+
+	function upvote (color, id, upvotes, downvotes) {	
+		getVotes(upvotes, 'up', 'rgb(0, 0, 255)');
+		ups = (upvotes + 1);
+		console.log(ups)
 		event.target.style.color = color;
 		var downEl = $(event.target).parent().find('.fa-arrow-down')
-		console.log(downEl.css('color'))
 		if (downEl.css('color') === 'rgb(255, 165, 0)') {
-			console.log('hey')
 			downEl.css({
 				'color': 'lightgray'
 			});
+			shareService.undovote(id, 'down', (downs - 1))
 		};
-		// function that accesses a function in Ashley's code to upvote
+		shareService.upvote(id);
 	}
 
-	function downvote (color) {
-		console.log('test1');
+	function downvote (color, id, downvotes, upvotes) {
+		getVotes(downvotes, 'down', 'rgb(255, 165, 0)');
+		downs = (downvotes + 1);
 		event.target.style.color = color;
-		var downEl = $(event.target).parent().find('.fa-arrow-up')
-		console.log(downEl.css('color'))
-		if (downEl.css('color') === 'rgb(0, 0, 255)') {
-			console.log('hey')
-			downEl.css({
-				'color': 'lightgray'
-			});
+		
+		console.log(ups)
+		var upEl = $(event.target).parent().find('.fa-arrow-up')
+		if (upEl.css('color') === 'rgb(0, 0, 255)') {
+			// upEl.css({
+			// 	'color': 'lightgray'
+			// });
+			console.log(ups)
+			eraseVote(id, 'up', (ups - 1))
 		};
-		// function that accesses a function in Ashley's code to downvote
+		shareService.downvote(id)
 	}
 
-	function eraseVote () {
-		console.log('try again');
-		event.target.style.color = 'lightgray';
-		// function that accesses a function in Ashley's code to erase vote
+	function eraseVote (id, dir, votes) {
+		var el = $(event.target).parent().find('.fa-arrow-' + dir);
+		el.css({'color': 'lightgray'});
+		$(event.target).parent().find('.' + dir +'vote-count').html(dir + 'votes: ' + votes);
+		shareService.undovote(id)
 	}
 
 	return {
-		vote: function (color, voted) {
-		  	// document.querySelector(el).onclick = function () {
-			  	
-			  // }
-			  console.log($(this));
+		vote: function (color, voted, id, upvotes, downvotes) {
 		    if (voted === 'upvote' && (event.target.style.color === 'blue')) {
-		    	eraseVote();
+		    	eraseVote(id, 'up', upvotes);
 		    } else if (voted === 'downvote' && (event.target.style.color === 'orange')) {
-		    	eraseVote();
+		    	eraseVote(id,'down', downvotes);
 		    } else if (voted === 'upvote') {
-		    	upvote(color);
+		    	upvote(color, id, upvotes, downvotes);
 		    } else if (voted === 'downvote') {
-		    	downvote(color);
+		    	downvote(color, id, downvotes, upvotes);
 		    } 
 	    }
 	};
 
-});
+}]);

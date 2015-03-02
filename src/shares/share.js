@@ -5,8 +5,8 @@ app.factory('Share', function () {
     return {
       url: spec.url,
       description: spec.description,
-      upvoteCounter: spec.upvoteCounter,
-      downvoteCounter: spec.downvoteCounter
+      upvotes: spec.upvotes,
+      downvotes: spec.downvotes
     };
   };
 });

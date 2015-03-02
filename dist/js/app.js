@@ -3,41 +3,41 @@ var app = angular.module('app', ['ngRoute']);
 
 $(function () {
 
-	// console.log($('.main-checkbox').prop('checked'))
+  // console.log($('.main-checkbox').prop('checked'))
 
-	// if ($('.main-checkbox').prop('checked')) {
-	// 	console.log('eh')
-	// 	$('.site-header').css({
-	// 		'height': '155px'
-	// 	})
-	// };
+  // if ($('.main-checkbox').prop('checked')) {
+  //  console.log('eh')
+  //  $('.site-header').css({
+  //    'height': '155px'
+  //  })
+  // };
 
-	// function screenWidthAdjustment () {
-	// 	console.log('eh')
-	// 	var move = $('.header-new-link-button').detach();
-	// 	move.appendTo('.header-login-button')
-	// }
+  // function screenWidthAdjustment () {
+  //  console.log('eh')
+  //  var move = $('.header-new-link-button').detach();
+  //  move.appendTo('.header-login-button')
+  // }
 
-	// function screenWidthRevert () {
-	// 	var move = $('.header-new-link-button').detach();
-	// 	move.appendTo('.links-div')
-	// }
+  // function screenWidthRevert () {
+  //  var move = $('.header-new-link-button').detach();
+  //  move.appendTo('.links-div')
+  // }
 
-	// if ($(window).width() < 750) {
-	//     screenWidthAdjustment()
-	// }
+  // if ($(window).width() < 750) {
+  //     screenWidthAdjustment()
+  // }
 
-	// $(window).resize(function() {
-	//     if ($(window).width() < 750) {
-	//         screenWidthAdjustment()
-	//     }
-	// });
+  // $(window).resize(function() {
+  //     if ($(window).width() < 750) {
+  //         screenWidthAdjustment()
+  //     }
+  // });
 
-	// $(window).resize(function() {
-	//     if ($(window).width() > 750) {
-	//         screenWidthRevert()
-	//     }
-	// });
+  // $(window).resize(function() {
+  //     if ($(window).width() > 750) {
+  //         screenWidthRevert()
+  //     }
+  // });
 
 });
 app.controller('MainNavCtrl',
@@ -149,71 +149,71 @@ app.factory('UserFactory', ['$route', 'usersService', function($route, usersServ
 
     
     return {
-    	user: function () {
-    		// var routeParams = $route.current.params;
-    		// console.log(routeParams)
-    		// console.log(routeParams.userid)
-		    // var user = usersService.getByUserId(routeParams.userid);
-		    // console.log(user);
-		    // console.log('hey')
-    	}
+      user: function () {
+        // var routeParams = $route.current.params;
+        // console.log(routeParams)
+        // console.log(routeParams.userid)
+        // var user = usersService.getByUserId(routeParams.userid);
+        // console.log(user);
+        // console.log('hey')
+      }
     }
 
 // });
 }]);
 app.factory('VoteFactory', function () {
-	
-	function upvote (color) {		
-		console.log($(this));
-		event.target.style.color = color;
-		var downEl = $(event.target).parent().find('.fa-arrow-down')
-		console.log(downEl.css('color'))
-		if (downEl.css('color') === 'rgb(255, 165, 0)') {
-			console.log('hey')
-			downEl.css({
-				'color': 'lightgray'
-			});
-		};
-		// function that accesses a function in Ashley's code to upvote
-	}
+  
+  function upvote (color) {   
+    console.log($(this));
+    event.target.style.color = color;
+    var downEl = $(event.target).parent().find('.fa-arrow-down')
+    console.log(downEl.css('color'))
+    if (downEl.css('color') === 'rgb(255, 165, 0)') {
+      console.log('hey')
+      downEl.css({
+        'color': 'lightgray'
+      });
+    };
+    // function that accesses a function in Ashley's code to upvote
+  }
 
-	function downvote (color) {
-		console.log('test1');
-		event.target.style.color = color;
-		var downEl = $(event.target).parent().find('.fa-arrow-up')
-		console.log(downEl.css('color'))
-		if (downEl.css('color') === 'rgb(0, 0, 255)') {
-			console.log('hey')
-			downEl.css({
-				'color': 'lightgray'
-			});
-		};
-		// function that accesses a function in Ashley's code to downvote
-	}
+  function downvote (color) {
+    console.log('test1');
+    event.target.style.color = color;
+    var downEl = $(event.target).parent().find('.fa-arrow-up')
+    console.log(downEl.css('color'))
+    if (downEl.css('color') === 'rgb(0, 0, 255)') {
+      console.log('hey')
+      downEl.css({
+        'color': 'lightgray'
+      });
+    };
+    // function that accesses a function in Ashley's code to downvote
+  }
 
-	function eraseVote () {
-		console.log('try again');
-		event.target.style.color = 'lightgray';
-		// function that accesses a function in Ashley's code to erase vote
-	}
+  function eraseVote () {
+    console.log('try again');
+    event.target.style.color = 'lightgray';
+    // function that accesses a function in Ashley's code to erase vote
+  }
 
-	return {
-		vote: function (color, voted) {
-		  	// document.querySelector(el).onclick = function () {
-			  	
-			  // }
-			  console.log($(this));
-		    if (voted === 'upvote' && (event.target.style.color === 'blue')) {
-		    	eraseVote();
-		    } else if (voted === 'downvote' && (event.target.style.color === 'orange')) {
-		    	eraseVote();
-		    } else if (voted === 'upvote') {
-		    	upvote(color);
-		    } else if (voted === 'downvote') {
-		    	downvote(color);
-		    } 
-	    }
-	};
+  return {
+    vote: function (color, voted) {
+        // document.querySelector(el).onclick = function () {
+          
+        // }
+        console.log($(this));
+        if (voted === 'upvote' && (event.target.style.color === 'blue')) {
+          eraseVote();
+        } else if (voted === 'downvote' && (event.target.style.color === 'orange')) {
+          eraseVote();
+        } else if (voted === 'upvote') {
+          upvote(color);
+        } else if (voted === 'downvote') {
+          downvote(color);
+        } 
+      }
+  };
 
 });
 app.config(['$routeProvider', function($routeProvider) {
@@ -237,13 +237,13 @@ app.config(['$routeProvider', function($routeProvider) {
   // self.downCounter = 0;
 
   // self.vote = function (direction) {
-  // 	self.chosen = direction;
+  //  self.chosen = direction;
   // };
 
   // self.vote = function (color, vote) {
-  // 	// document.querySelector(el).onclick = function () {
-	 //  	event.target.style.color = color
-	 //  // }
+  //  // document.querySelector(el).onclick = function () {
+   //   event.target.style.color = color
+   //  // }
   //   if (vote = 'upvote') {
 
   //   }
@@ -422,5 +422,3 @@ app.factory('shareService', ['$http', '$log', function ($http, $log) {
     },
   };
 }]);
-
-//# sourceMappingURL=app.js.map
