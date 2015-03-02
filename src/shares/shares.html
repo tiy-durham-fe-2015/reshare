@@ -6,10 +6,11 @@
   <li class="link-li" ng-repeat="share in vm.shares">
     <i ng-click="vm.vote('blue', 'upvote')" class="fa fa-arrow-up"></i>
     <i ng-click="vm.vote('orange', 'downvote')" class="fa fa-arrow-down"></i>
-    <a href="{{share.url}}">{{share.description}}</a>
+    <a href="{{share.url}}" ng-click="">{{share.description}}</a>
     <p class="upvote-count">Upvotes: {{share.upvoteCounter}}</p>
     <p class="downvote-count">Downvotes: {{share.downvoteCounter}}</p>
 
     <button ng-click="vm.delete(share._id)">delete</button>
+    <button ng-click="vm.view(share._id)">edit</button>
   </li>
 </ul>

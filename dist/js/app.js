@@ -41,7 +41,7 @@ $(function () {
 
 });
 app.controller('MainNavCtrl',
-  ['$location', 'StringUtil', function($location, StringUtil) {
+  ['$location', 'StringUtil', 'usersService', function($location, StringUtil, usersService) {
     var self = this;
 
     self.isActive = function (path) {
@@ -53,101 +53,31 @@ app.controller('MainNavCtrl',
       return StringUtil.startsWith($location.path(), path);
     };
 
+    self.currentUser = undefined;
+    usersService.currentUser().then(function (data) {
+      self.currentUser = data;
+    });
+
     $('.for-clicking').on('click', function () {
-      console.log("eh")
-      $('.main-checkbox').prop('checked', true)
+      console.log("eh");
+      $('.main-checkbox').prop('checked', true);
       $('.site-header').css({
         'height': '155px',
       });
     });
 
     $('.header-left').on('click', function () {
-      $('.main-checkbox').prop('checked', false)
+      $('.main-checkbox').prop('checked', false);
       $('.site-header').animate({
         'height': '50px',
       }, 500);
-    })
-  }]);
-
-app.config(['$routeProvider', function($routeProvider) {
-  var routeDefinition = {
-    templateUrl: 'users/user.html',
-    controller: 'UserCtrl',
-    controllerAs: 'vm',
-    resolve: {
-      user: ['$route', 'usersService', function ($route, usersService) {
-        var routeParams = $route.current.params;
-        console.log(routeParams.userid)
-        return usersService.getByUserId(routeParams.userid);
-      }]
-    }
-  };
-
-  $routeProvider.when('/users/:userid', routeDefinition);
-}])
-.controller('UserCtrl', ['user', function (user) {
-  this.user = user;
-  console.log(user);
-}]);
-
-app.factory('User', function () {
-  return function (spec) {
-    spec = spec || {};
-    return {
-      userId: spec.userId || '',
-      role: spec.role || 'user'
-    };
-  };
-});
-
-app.config(['$routeProvider', function($routeProvider) {
-  var routeDefinition = {
-    templateUrl: 'users/users.html',
-    controller: 'UsersCtrl',
-    controllerAs: 'vm',
-    resolve: {
-      users: ['usersService', function (usersService) {
-        return usersService.list();
-        //Returns a list of users as an array..
-      }]
-    }
-  };
-
-  $routeProvider.when('/users', routeDefinition);
-}])
-.controller('UsersCtrl', ['users', 'usersService', 'User', function (users, usersService, User) {
-  var self = this;
-
-  self.users = users;
-
-  self.newUser = User();
-
-  self.addUser = function () {
-    // Make a copy of the 'newUser' object
-    var newUser = User(self.newUser);
-
-    // Add the user to our service
-    usersService.addUser(newUser).then(function () {
-      // If the add succeeded, remove the user from the users array
-      self.users = self.users.filter(function (existingUser) {
-        return existingUser.userId !== newUser.userId;
-      });
-
-      // Add the user to the users array
-      self.users.push(newUser);
     });
-
-    // Clear our newUser property
-    self.newUser = User();
-
-    console.log(users);
-  };
-}]);
+  }]);
 
 // app.factory('UserFactory', function() {
 app.factory('UserFactory', ['$route', 'usersService', function($route, usersService) {
 
-    
+
     return {
     	user: function () {
     		// var routeParams = $route.current.params;
@@ -157,37 +87,38 @@ app.factory('UserFactory', ['$route', 'usersService', function($route, usersServ
 		    // console.log(user);
 		    // console.log('hey')
     	}
-    }
+    };
 
 // });
 }]);
+
 app.factory('VoteFactory', function () {
-	
-	function upvote (color) {		
+
+	function upvote (color) {
 		console.log($(this));
 		event.target.style.color = color;
-		var downEl = $(event.target).parent().find('.fa-arrow-down')
-		console.log(downEl.css('color'))
+		var downEl = $(event.target).parent().find('.fa-arrow-down');
+		console.log(downEl.css('color'));
 		if (downEl.css('color') === 'rgb(255, 165, 0)') {
-			console.log('hey')
+			console.log('hey');
 			downEl.css({
 				'color': 'lightgray'
 			});
-		};
+		}
 		// function that accesses a function in Ashley's code to upvote
 	}
 
 	function downvote (color) {
 		console.log('test1');
 		event.target.style.color = color;
-		var downEl = $(event.target).parent().find('.fa-arrow-up')
-		console.log(downEl.css('color'))
+		var downEl = $(event.target).parent().find('.fa-arrow-up');
+		console.log(downEl.css('color'));
 		if (downEl.css('color') === 'rgb(0, 0, 255)') {
-			console.log('hey')
+			console.log('hey');
 			downEl.css({
 				'color': 'lightgray'
 			});
-		};
+		}
 		// function that accesses a function in Ashley's code to downvote
 	}
 
@@ -200,7 +131,7 @@ app.factory('VoteFactory', function () {
 	return {
 		vote: function (color, voted) {
 		  	// document.querySelector(el).onclick = function () {
-			  	
+
 			  // }
 			  console.log($(this));
 		    if (voted === 'upvote' && (event.target.style.color === 'blue')) {
@@ -211,11 +142,12 @@ app.factory('VoteFactory', function () {
 		    	upvote(color);
 		    } else if (voted === 'downvote') {
 		    	downvote(color);
-		    } 
+		    }
 	    }
 	};
 
 });
+
 app.config(['$routeProvider', function($routeProvider) {
   var routeDefinition = {
     templateUrl: 'shares/shares.html',
@@ -283,7 +215,31 @@ app.config(['$routeProvider', function ($routeProvider) {
   self.addShare = function () {
     shareService.addShare(self.share).then(self.viewShares);
   };
+  // 
+  // self.editShare = function (shareId) {
+  //   shareService.addShare(shareId).then(self.viewShares);
+  // }
+}]);
 
+app.config(['$routeProvider', function($routeProvider) {
+  var routeDefinition = {
+    templateUrl: 'shares/share.html',
+    controller: 'ShareCtrl',
+    controllerAs: 'vm',
+    resolve: {
+      share: ['$route', 'shareService', function ($route, shareService) {
+        var routeParams = $route.current.params;
+        console.log(routeParams.shareId);
+        return shareService.getByShareId(routeParams.shareId);
+      }]
+    }
+  };
+
+  $routeProvider.when('/shares/:shareid', routeDefinition);
+}])
+.controller('ShareCtrl', ['share', function (share) {
+  this.share = share;
+  console.log(share);
 }]);
 
 
@@ -327,6 +283,13 @@ app.config(['$routeProvider', function($routeProvider) {
   self.delete = function (shareId) {
     shareService.deleteShare(shareId).then($route.reload());
   };
+  //
+  // self.view = function (shareId) {
+  //   shareService.getShareById(shareId).then();
+  // //ng-hide a copy of the form, ng-repeat(?) to populate the form with current share information which is retrieved by
+  // //id when the edit button is ng-click(ed).  Haha.  Submit button submits the form.  The API has function to deal deal
+  // //with duplicate user.  It states to replace current info with new info.
+  // };
 
 }]);
 
@@ -340,42 +303,84 @@ app.factory('StringUtil', function() {
   };
 });
 
-app.factory('usersService', ['$http', '$q', '$log', function($http, $q, $log) {
-  // My $http promise then and catch always
-  // does the same thing, so I'll put the
-  // processing of it here. What you probably
-  // want to do instead is create a convenience object
-  // that makes $http calls for you in a standard
-  // way, handling post, put, delete, etc
-  function get(url) {
-    return processAjaxPromise($http.get(url));
-  }
-
-  function processAjaxPromise(p) {
-    return p.then(function (result) {
-      return result.data;
-    })
-    .catch(function (error) {
-      $log.log(error);
-    });
-  }
-
-  return {
-    list: function () {
-      return get('/api/users');
-    },
-
-    getByUserId: function (userId) {
-      if (!userId) {
-        throw new Error('getByUserId requires a user id');
-      }
-
-      return get('/api/users/' + userId);
-    },
-
-    addUser: function (user) {
-      return processAjaxPromise($http.post('/api/users', user));
+app.config(['$routeProvider', function($routeProvider) {
+  var routeDefinition = {
+    templateUrl: 'users/user.html',
+    controller: 'UserCtrl',
+    controllerAs: 'vm',
+    resolve: {
+      user: ['$route', 'usersService', function ($route, usersService) {
+        var routeParams = $route.current.params;
+        console.log(routeParams.userid);
+        return usersService.getByUserId(routeParams.userid);
+      }]
     }
+  };
+
+  $routeProvider.when('/users/:userid', routeDefinition);
+}])
+.controller('UserCtrl', ['user', function (user) {
+  this.user = user;
+  console.log(user);
+}]);
+
+app.factory('User', function () {
+  return function (spec) {
+    spec = spec || {};
+    return {
+      userId: spec.userId || '',
+      role: spec.role || 'user'
+    };
+  };
+});
+
+app.config(['$routeProvider', function($routeProvider) {
+  var routeDefinition = {
+    templateUrl: 'users/users.html',
+    controller: 'UsersCtrl',
+    controllerAs: 'vm',
+    resolve: {
+      users: ['usersService', function (usersService) {
+        return usersService.list();
+        //Returns a list of users as an array..
+      }],
+
+      currentUser: ['usersService', function (usersService) {
+        return usersService.currentUser();
+      }]
+    }
+  };
+
+  $routeProvider.when('/users', routeDefinition);
+}])
+.controller('UsersCtrl', ['users', 'currentUser', 'usersService', 'User', function (users, currentUser, usersService, User) {
+  var self = this;
+
+  self.users = users;
+
+  self.currentUser = currentUser;
+
+  self.newUser = User();
+
+  self.addUser = function () {
+    // Make a copy of the 'newUser' object
+    var newUser = User(self.newUser);
+
+    // Add the user to our service
+    usersService.addUser(newUser).then(function () {
+      // If the add succeeded, remove the user from the users array
+      self.users = self.users.filter(function (existingUser) {
+        return existingUser.userId !== newUser.userId;
+      });
+
+      // Add the user to the users array
+      self.users.push(newUser);
+    });
+
+    // Clear our newUser property
+    self.newUser = User();
+
+    console.log(users);
   };
 }]);
 
@@ -419,7 +424,50 @@ app.factory('shareService', ['$http', '$log', function ($http, $log) {
 
     deleteShare: function (shareId) {
       return remove('/api/res/' + shareId);
+    }
+  };
+}]);
+
+app.factory('usersService', ['$http', '$q', '$log', function($http, $q, $log) {
+  // My $http promise then and catch always
+  // does the same thing, so I'll put the
+  // processing of it here. What you probably
+  // want to do instead is create a convenience object
+  // that makes $http calls for you in a standard
+  // way, handling post, put, delete, etc
+  function get(url) {
+    return processAjaxPromise($http.get(url));
+  }
+
+  function processAjaxPromise(p) {
+    return p.then(function (result) {
+      return result.data;
+    })
+    .catch(function (error) {
+      $log.log(error);
+    });
+  }
+
+  return {
+    list: function () {
+      return get('/api/users');
     },
+
+    getByUserId: function (userId) {
+      if (!userId) {
+        throw new Error('getByUserId requires a user id');
+      }
+
+      return get('/api/users/' + userId);
+    },
+
+    addUser: function (user) {
+      return processAjaxPromise($http.post('/api/users', user));
+    },
+
+    currentUser: function () {
+      return get('/api/users/me');
+    }
   };
 }]);
 

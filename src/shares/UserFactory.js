@@ -1,7 +1,7 @@
 // app.factory('UserFactory', function() {
 app.factory('UserFactory', ['$route', 'usersService', function($route, usersService) {
 
-    
+
     return {
     	user: function () {
     		// var routeParams = $route.current.params;
@@ -11,7 +11,7 @@ app.factory('UserFactory', ['$route', 'usersService', function($route, usersServ
 		    // console.log(user);
 		    // console.log('hey')
     	}
-    }
+    };
 
 // });
 }]);

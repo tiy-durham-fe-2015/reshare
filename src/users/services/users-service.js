@@ -33,6 +33,10 @@ app.factory('usersService', ['$http', '$q', '$log', function($http, $q, $log) {
 
     addUser: function (user) {
       return processAjaxPromise($http.post('/api/users', user));
+    },
+
+    currentUser: function () {
+      return get('/api/users/me');
     }
   };
 }]);

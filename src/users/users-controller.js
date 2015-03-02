@@ -7,16 +7,22 @@ app.config(['$routeProvider', function($routeProvider) {
       users: ['usersService', function (usersService) {
         return usersService.list();
         //Returns a list of users as an array..
+      }],
+
+      currentUser: ['usersService', function (usersService) {
+        return usersService.currentUser();
       }]
     }
   };
 
   $routeProvider.when('/users', routeDefinition);
 }])
-.controller('UsersCtrl', ['users', 'usersService', 'User', function (users, usersService, User) {
+.controller('UsersCtrl', ['users', 'currentUser', 'usersService', 'User', function (users, currentUser, usersService, User) {
   var self = this;
 
   self.users = users;
+
+  self.currentUser = currentUser;
 
   self.newUser = User();
 

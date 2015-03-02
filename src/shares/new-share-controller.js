@@ -20,5 +20,8 @@ app.config(['$routeProvider', function ($routeProvider) {
   self.addShare = function () {
     shareService.addShare(self.share).then(self.viewShares);
   };
-
+  // 
+  // self.editShare = function (shareId) {
+  //   shareService.addShare(shareId).then(self.viewShares);
+  // }
 }]);
