@@ -45,15 +45,15 @@ app.factory('shareService', ['$http', '$log', function ($http, $log) {
     },
 
     upvote: function (shareId) {
-      return post('/api/res/' + shareId + '/votes', {vote:1})
+      return post('/api/res/' + shareId + '/votes', {vote:1});
     },
 
     downvote: function (shareId) {
-      return post('/api/res/' + shareId + '/votes', {vote:-1})
+      return post('/api/res/' + shareId + '/votes', {vote:-1});
     },
 
     undovote: function (shareId) {
-      return post('/api/res/' + shareId + '/votes', {vote:0})
+      return post('/api/res/' + shareId + '/votes', {vote:0});
     }
 
   };

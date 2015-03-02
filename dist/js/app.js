@@ -3,45 +3,45 @@ var app = angular.module('app', ['ngRoute']);
 
 $(function () {
 
-	// console.log($('.main-checkbox').prop('checked'))
+  // console.log($('.main-checkbox').prop('checked'))
 
-	// if ($('.main-checkbox').prop('checked')) {
-	// 	console.log('eh')
-	// 	$('.site-header').css({
-	// 		'height': '155px'
-	// 	})
-	// };
+  // if ($('.main-checkbox').prop('checked')) {
+  //  console.log('eh')
+  //  $('.site-header').css({
+  //    'height': '155px'
+  //  })
+  // };
 
-	// function screenWidthAdjustment () {
-	// 	console.log('eh')
-	// 	var move = $('.header-new-link-button').detach();
-	// 	move.appendTo('.header-login-button')
-	// }
+  // function screenWidthAdjustment () {
+  //  console.log('eh')
+  //  var move = $('.header-new-link-button').detach();
+  //  move.appendTo('.header-login-button')
+  // }
 
-	// function screenWidthRevert () {
-	// 	var move = $('.header-new-link-button').detach();
-	// 	move.appendTo('.links-div')
-	// }
+  // function screenWidthRevert () {
+  //  var move = $('.header-new-link-button').detach();
+  //  move.appendTo('.links-div')
+  // }
 
-	// if ($(window).width() < 750) {
-	//     screenWidthAdjustment()
-	// }
+  // if ($(window).width() < 750) {
+  //     screenWidthAdjustment()
+  // }
 
-	// $(window).resize(function() {
-	//     if ($(window).width() < 750) {
-	//         screenWidthAdjustment()
-	//     }
-	// });
+  // $(window).resize(function() {
+  //     if ($(window).width() < 750) {
+  //         screenWidthAdjustment()
+  //     }
+  // });
 
-	// $(window).resize(function() {
-	//     if ($(window).width() > 750) {
-	//         screenWidthRevert()
-	//     }
-	// });
+  // $(window).resize(function() {
+  //     if ($(window).width() > 750) {
+  //         screenWidthRevert()
+  //     }
+  // });
 
 });
 app.controller('MainNavCtrl',
-  ['$location', 'StringUtil', function($location, StringUtil) {
+  ['$location', 'StringUtil', 'usersService', function($location, StringUtil, usersService) {
     var self = this;
 
     self.isActive = function (path) {
@@ -53,108 +53,115 @@ app.controller('MainNavCtrl',
       return StringUtil.startsWith($location.path(), path);
     };
 
+    self.currentUser = undefined;
+    usersService.currentUser().then(function (data) {
+      self.currentUser = data;
+    });
+
     $('.for-clicking').on('click', function () {
-      console.log("eh")
-      $('.main-checkbox').prop('checked', true)
+      console.log("eh");
+      $('.main-checkbox').prop('checked', true);
       $('.site-header').css({
         'height': '155px',
       });
     });
 
     $('.header-left').on('click', function () {
-      $('.main-checkbox').prop('checked', false)
+      $('.main-checkbox').prop('checked', false);
       $('.site-header').animate({
         'height': '50px',
       }, 500);
-    })
+    });
   }]);
 
 // app.factory('UserFactory', function() {
 app.factory('UserFactory', ['$route', 'usersService', function($route, usersService) {
 
-    
+
     return {
-    	user: function () {
-    		// var routeParams = $route.current.params;
-    		// console.log(routeParams)
-    		// console.log(routeParams.userid)
-		    // var user = usersService.getByUserId(routeParams.userid);
-		    // console.log(user);
-		    // console.log('hey')
-    	}
-    }
+      user: function () {
+        // var routeParams = $route.current.params;
+        // console.log(routeParams)
+        // console.log(routeParams.userid)
+        // var user = usersService.getByUserId(routeParams.userid);
+        // console.log(user);
+        // console.log('hey')
+      }
+    };
 
 // });
 }]);
+
 app.factory('VoteFactory', ['shareService', function (shareService) {
 
-	var ups;
-	var downs;
+  var ups;
+  var downs;
 
-	function getVotes (votes, dir, rgb) {
-		console.log(votes)
-		var newVotes = votes + 1;
-		console.log(newVotes)
-		var el = $(event.target).parent().find('.fa-arrow-' + dir);
-		if (el.css('color') !== rgb) {
-			$(event.target).parent().find('.' + dir +'vote-count').html(dir + 'votes: ' + newVotes);
-		};
-	}
+  function getVotes (votes, dir, rgb) {
+    console.log(votes);
+    var newVotes = votes + 1;
+    console.log(newVotes);
+    var el = $(event.target).parent().find('.fa-arrow-' + dir);
+    if (el.css('color') !== rgb) {
+      $(event.target).parent().find('.' + dir +'vote-count').html(dir + 'votes: ' + newVotes);
+    }
+  }
 
-	function upvote (color, id, upvotes, downvotes) {	
-		getVotes(upvotes, 'up', 'rgb(0, 0, 255)');
-		ups = (upvotes + 1);
-		console.log(ups)
-		event.target.style.color = color;
-		var downEl = $(event.target).parent().find('.fa-arrow-down')
-		if (downEl.css('color') === 'rgb(255, 165, 0)') {
-			downEl.css({
-				'color': 'lightgray'
-			});
-			shareService.undovote(id, 'down', (downs - 1))
-		};
-		shareService.upvote(id);
-	}
+  function upvote (color, id, upvotes, downvotes) {
+    getVotes(upvotes, 'up', 'rgb(0, 0, 255)');
+    ups = (upvotes + 1);
+    console.log(ups);
+    event.target.style.color = color;
+    var downEl = $(event.target).parent().find('.fa-arrow-down');
+    if (downEl.css('color') === 'rgb(255, 165, 0)') {
+      downEl.css({
+        'color': 'lightgray'
+      });
+      shareService.undovote(id, 'down', (downs - 1));
+    }
+    shareService.upvote(id);
+  }
 
-	function downvote (color, id, downvotes, upvotes) {
-		getVotes(downvotes, 'down', 'rgb(255, 165, 0)');
-		downs = (downvotes + 1);
-		event.target.style.color = color;
-		
-		console.log(ups)
-		var upEl = $(event.target).parent().find('.fa-arrow-up')
-		if (upEl.css('color') === 'rgb(0, 0, 255)') {
-			// upEl.css({
-			// 	'color': 'lightgray'
-			// });
-			console.log(ups)
-			eraseVote(id, 'up', (ups - 1))
-		};
-		shareService.downvote(id)
-	}
+  function downvote (color, id, downvotes, upvotes) {
+    getVotes(downvotes, 'down', 'rgb(255, 165, 0)');
+    downs = (downvotes + 1);
+    event.target.style.color = color;
 
-	function eraseVote (id, dir, votes) {
-		var el = $(event.target).parent().find('.fa-arrow-' + dir);
-		el.css({'color': 'lightgray'});
-		$(event.target).parent().find('.' + dir +'vote-count').html(dir + 'votes: ' + votes);
-		shareService.undovote(id)
-	}
+    console.log(ups);
+    var upEl = $(event.target).parent().find('.fa-arrow-up');
+    if (upEl.css('color') === 'rgb(0, 0, 255)') {
+      // upEl.css({
+      //  'color': 'lightgray'
+      // });
+      console.log(ups);
+      eraseVote(id, 'up', (ups - 1));
+    }
+    shareService.downvote(id);
+  }
 
-	return {
-		vote: function (color, voted, id, upvotes, downvotes) {
-		    if (voted === 'upvote' && (event.target.style.color === 'blue')) {
-		    	eraseVote(id, 'up', upvotes);
-		    } else if (voted === 'downvote' && (event.target.style.color === 'orange')) {
-		    	eraseVote(id,'down', downvotes);
-		    } else if (voted === 'upvote') {
-		    	upvote(color, id, upvotes, downvotes);
-		    } else if (voted === 'downvote') {
-		    	downvote(color, id, downvotes, upvotes);
-		    } 
-	    }
-	};
+  function eraseVote (id, dir, votes) {
+    var el = $(event.target).parent().find('.fa-arrow-' + dir);
+    el.css({'color': 'lightgray'});
+    $(event.target).parent().find('.' + dir +'vote-count').html(dir + 'votes: ' + votes);
+    shareService.undovote(id);
+  }
+
+  return {
+    vote: function (color, voted, id, upvotes, downvotes) {
+        if (voted === 'upvote' && (event.target.style.color === 'blue')) {
+          eraseVote(id, 'up', upvotes);
+        } else if (voted === 'downvote' && (event.target.style.color === 'orange')) {
+          eraseVote(id,'down', downvotes);
+        } else if (voted === 'upvote') {
+          upvote(color, id, upvotes, downvotes);
+        } else if (voted === 'downvote') {
+          downvote(color, id, downvotes, upvotes);
+        }
+      }
+  };
 
 }]);
+
 app.config(['$routeProvider', function($routeProvider) {
   var routeDefinition = {
     templateUrl: 'shares/shares.html',
@@ -176,13 +183,13 @@ app.config(['$routeProvider', function($routeProvider) {
   // self.downCounter = 0;
 
   // self.vote = function (direction) {
-  // 	self.chosen = direction;
+  //  self.chosen = direction;
   // };
 
   // self.vote = function (color, vote) {
-  // 	// document.querySelector(el).onclick = function () {
-	 //  	event.target.style.color = color
-	 //  // }
+  //  // document.querySelector(el).onclick = function () {
+   //   event.target.style.color = color
+   //  // }
   //   if (vote = 'upvote') {
 
   //   }
@@ -223,7 +230,31 @@ app.config(['$routeProvider', function ($routeProvider) {
     shareService.addShare(self.share).then(self.viewShares);
     console.log(self.share);
   };
+  // 
+  // self.editShare = function (shareId) {
+  //   shareService.addShare(shareId).then(self.viewShares);
+  // }
+}]);
 
+app.config(['$routeProvider', function($routeProvider) {
+  var routeDefinition = {
+    templateUrl: 'shares/share.html',
+    controller: 'ShareCtrl',
+    controllerAs: 'vm',
+    resolve: {
+      share: ['$route', 'shareService', function ($route, shareService) {
+        var routeParams = $route.current.params;
+        console.log(routeParams.shareId);
+        return shareService.getByShareId(routeParams.shareId);
+      }]
+    }
+  };
+
+  $routeProvider.when('/shares/:shareid', routeDefinition);
+}])
+.controller('ShareCtrl', ['share', function (share) {
+  this.share = share;
+  console.log(share);
 }]);
 
 
@@ -248,14 +279,17 @@ app.config(['$routeProvider', function($routeProvider) {
       shares: ['shareService', function (shareService) {
         return shareService.list();
       }],
+      users: ['usersService', function (usersService) {
+        return usersService.list();
+      }]
     }
   };
 
   $routeProvider.when('/', routeDefinition);
   $routeProvider.when('/shares', routeDefinition);
 }])
-.controller('SharesCtrl', ['shareService', 'users', 'shares', 'Share', 'VoteFactory', 
-  function (shareService, users, shares, Share, VoteFactory) {
+.controller('SharesCtrl', ['shareService', 'users', 'shares', '$route', 'Share', 'VoteFactory',
+  function (shareService, users, shares, $route, Share, VoteFactory) {
 
   var self = this;
 
@@ -271,12 +305,19 @@ app.config(['$routeProvider', function($routeProvider) {
     // console.log(votes)
     var upvotes = self.shares[indexNum].upvotes;
     var downvotes = self.shares[indexNum].downvotes;
-    VoteFactory.vote(color, voted, id, upvotes, downvotes)
+    VoteFactory.vote(color, voted, id, upvotes, downvotes);
   };
 
   self.delete = function (shareId) {
     shareService.deleteShare(shareId).then($route.reload());
   };
+  //
+  // self.view = function (shareId) {
+  //   shareService.getShareById(shareId).then();
+  // //ng-hide a copy of the form, ng-repeat(?) to populate the form with current share information which is retrieved by
+  // //id when the edit button is ng-click(ed).  Haha.  Submit button submits the form.  The API has function to deal deal
+  // //with duplicate user.  It states to replace current info with new info.
+  // };
 
 }]);
 
@@ -288,7 +329,7 @@ app.config(['$routeProvider', function($routeProvider) {
     resolve: {
       user: ['$route', 'usersService', function ($route, usersService) {
         var routeParams = $route.current.params;
-        console.log(routeParams.userid)
+        console.log(routeParams.userid);
         return usersService.getByUserId(routeParams.userid);
       }]
     }
@@ -320,17 +361,23 @@ app.config(['$routeProvider', function($routeProvider) {
       users: ['usersService', function (usersService) {
         return usersService.list();
         //Returns a list of users as an array..
+      }],
+
+      currentUser: ['usersService', function (usersService) {
+        return usersService.currentUser();
       }]
     }
   };
 
   $routeProvider.when('/users', routeDefinition);
 }])
-.controller('UsersCtrl', ['users', 'usersService', 'User', function (users, usersService, User) {
+.controller('UsersCtrl', ['users', 'currentUser', 'usersService', 'User', function (users, currentUser, usersService, User) {
   var self = this;
 
   self.users = users;
   console.log(users);
+
+  self.currentUser = currentUser;
 
   self.newUser = User();
 
@@ -413,15 +460,15 @@ app.factory('shareService', ['$http', '$log', function ($http, $log) {
     },
 
     upvote: function (shareId) {
-      return post('/api/res/' + shareId + '/votes', {vote:1})
+      return post('/api/res/' + shareId + '/votes', {vote:1});
     },
 
     downvote: function (shareId) {
-      return post('/api/res/' + shareId + '/votes', {vote:-1})
+      return post('/api/res/' + shareId + '/votes', {vote:-1});
     },
 
     undovote: function (shareId) {
-      return post('/api/res/' + shareId + '/votes', {vote:0})
+      return post('/api/res/' + shareId + '/votes', {vote:0});
     }
 
   };
@@ -462,6 +509,10 @@ app.factory('usersService', ['$http', '$q', '$log', function($http, $q, $log) {
 
     addUser: function (user) {
       return processAjaxPromise($http.post('/api/users', user));
+    },
+
+    currentUser: function () {
+      return get('/api/users/me');
     }
   };
 }]);

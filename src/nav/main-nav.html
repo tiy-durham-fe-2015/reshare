@@ -5,7 +5,9 @@
 	  <a class="header-left header-new-link-button" ng-class="{active: vm.isActive('/shares/new-share')}" ng-href="#/shares/new-share"><span class="plus-sign">+</span> New Link</a>
 	  <a class="header-left header-my-link-button" ng-class="{active: vm.isActive('/shares') || vm.isActive('/')}" href="#/shares">Home</a>
 	  <a class="header-left header-users-button" ng-class="{active: vm.isActive('/users')}" ng-href="#/users">Users</a>
-	  <a class="header-left header-login-button" href="/auth/github">Login</a>
+	  <a class="header-left header-login-button" ng-if="!vm.currentUser" href="/auth/github">Login</a>
+		<a class="header-left header-login-button" ng-if="vm.currentUser" href="/logout">Logout</a>
+		<a class="header-left header-login-button" ng-if="vm.currentUser" ng-href="/#/users/{{vm.currentUser.userId}}">{{vm.currentUser.userId}}</a>
   </div>
 	<div class="menu-bar-div">Menu</div>
 </nav>
