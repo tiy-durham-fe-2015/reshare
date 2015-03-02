@@ -1,45 +1,6 @@
 // The root module for our Angular application
 var app = angular.module('app', ['ngRoute']);
 
-$(function () {
-
-	// console.log($('.main-checkbox').prop('checked'))
-
-	// if ($('.main-checkbox').prop('checked')) {
-	// 	console.log('eh')
-	// 	$('.site-header').css({
-	// 		'height': '155px'
-	// 	})
-	// };
-
-	// function screenWidthAdjustment () {
-	// 	console.log('eh')
-	// 	var move = $('.header-new-link-button').detach();
-	// 	move.appendTo('.header-login-button')
-	// }
-
-	// function screenWidthRevert () {
-	// 	var move = $('.header-new-link-button').detach();
-	// 	move.appendTo('.links-div')
-	// }
-
-	// if ($(window).width() < 750) {
-	//     screenWidthAdjustment()
-	// }
-
-	// $(window).resize(function() {
-	//     if ($(window).width() < 750) {
-	//         screenWidthAdjustment()
-	//     }
-	// });
-
-	// $(window).resize(function() {
-	//     if ($(window).width() > 750) {
-	//         screenWidthRevert()
-	//     }
-	// });
-
-});
 app.controller('MainNavCtrl',
   ['$location', 'StringUtil', 'usersService', function($location, StringUtil, usersService) {
     var self = this;
@@ -228,10 +189,7 @@ app.config(['$routeProvider', function ($routeProvider) {
     shareService.addShare(self.share).then(self.viewShares);
     console.log(self.share);
   };
-  // 
-  // self.editShare = function (shareId) {
-  //   shareService.addShare(shareId).then(self.viewShares);
-  // }
+
 }]);
 
 app.config(['$routeProvider', function($routeProvider) {
@@ -410,6 +368,45 @@ app.factory('StringUtil', function() {
   };
 });
 
+$(function () {
+
+	// console.log($('.main-checkbox').prop('checked'))
+
+	// if ($('.main-checkbox').prop('checked')) {
+	// 	console.log('eh')
+	// 	$('.site-header').css({
+	// 		'height': '155px'
+	// 	})
+	// };
+
+	// function screenWidthAdjustment () {
+	// 	console.log('eh')
+	// 	var move = $('.header-new-link-button').detach();
+	// 	move.appendTo('.header-login-button')
+	// }
+
+	// function screenWidthRevert () {
+	// 	var move = $('.header-new-link-button').detach();
+	// 	move.appendTo('.links-div')
+	// }
+
+	// if ($(window).width() < 750) {
+	//     screenWidthAdjustment()
+	// }
+
+	// $(window).resize(function() {
+	//     if ($(window).width() < 750) {
+	//         screenWidthAdjustment()
+	//     }
+	// });
+
+	// $(window).resize(function() {
+	//     if ($(window).width() > 750) {
+	//         screenWidthRevert()
+	//     }
+	// });
+
+});
 //Share Store, call AJAX
 
 app.factory('shareService', ['$http', '$log', function ($http, $log) {
