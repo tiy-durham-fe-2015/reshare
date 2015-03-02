@@ -39,12 +39,12 @@ app.config(['$routeProvider', function($routeProvider) {
   self.delete = function (shareId) {
     shareService.deleteShare(shareId).then($route.reload());
   };
-  //
-  // self.view = function (shareId) {
-  //   shareService.getShareById(shareId).then();
-  // //ng-hide a copy of the form, ng-repeat(?) to populate the form with current share information which is retrieved by
-  // //id when the edit button is ng-click(ed).  Haha.  Submit button submits the form.  The API has function to deal deal
-  // //with duplicate user.  It states to replace current info with new info.
-  // };
+
+  self.view = function (shareId) {
+    shareService.getShareById(shareId).then();
+  //ng-hide a copy of the form, ng-repeat(?) to populate the form with current share information which is retrieved by
+  //id when the edit button is ng-click(ed).  Haha.  Submit button submits the form.  The API has function to deal deal
+  //with duplicate user.  It states to replace current info with new info.
+  };
 
 }]);

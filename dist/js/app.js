@@ -53,25 +53,23 @@ app.controller('MainNavCtrl',
       return StringUtil.startsWith($location.path(), path);
     };
 
-    self.currentUser = undefined;
     usersService.currentUser().then(function (data) {
       self.currentUser = data;
     });
 
-    $('.for-clicking').on('click', function () {
-      console.log("eh");
-      $('.main-checkbox').prop('checked', true);
-      $('.site-header').css({
-        'height': '155px',
-      });
-    });
-
-    $('.header-left').on('click', function () {
-      $('.main-checkbox').prop('checked', false);
-      $('.site-header').animate({
-        'height': '50px',
-      }, 500);
-    });
+    // $('.for-clicking').on('click', function () {
+    //   $('.main-checkbox').prop('checked', true);
+    //   $('.site-header').css({
+    //     'height': '155px',
+    //   });
+    // });
+    //
+    // $('.header-left').on('click', function () {
+    //   $('.main-checkbox').prop('checked', false);
+    //   $('.site-header').animate({
+    //     'height': '50px',
+    //   }, 500);
+    // });
   }]);
 
 // app.factory('UserFactory', function() {
@@ -244,8 +242,8 @@ app.config(['$routeProvider', function($routeProvider) {
     resolve: {
       share: ['$route', 'shareService', function ($route, shareService) {
         var routeParams = $route.current.params;
-        console.log(routeParams.shareId);
-        return shareService.getByShareId(routeParams.shareId);
+        console.log(routeParams.shareid);
+        return shareService.getByShareId(routeParams.shareid);
       }]
     }
   };
@@ -254,7 +252,6 @@ app.config(['$routeProvider', function($routeProvider) {
 }])
 .controller('ShareCtrl', ['share', function (share) {
   this.share = share;
-  console.log(share);
 }]);
 
 
@@ -311,13 +308,13 @@ app.config(['$routeProvider', function($routeProvider) {
   self.delete = function (shareId) {
     shareService.deleteShare(shareId).then($route.reload());
   };
-  //
-  // self.view = function (shareId) {
-  //   shareService.getShareById(shareId).then();
-  // //ng-hide a copy of the form, ng-repeat(?) to populate the form with current share information which is retrieved by
-  // //id when the edit button is ng-click(ed).  Haha.  Submit button submits the form.  The API has function to deal deal
-  // //with duplicate user.  It states to replace current info with new info.
-  // };
+
+  self.view = function (shareId) {
+    shareService.getShareById(shareId).then();
+  //ng-hide a copy of the form, ng-repeat(?) to populate the form with current share information which is retrieved by
+  //id when the edit button is ng-click(ed).  Haha.  Submit button submits the form.  The API has function to deal deal
+  //with duplicate user.  It states to replace current info with new info.
+  };
 
 }]);
 

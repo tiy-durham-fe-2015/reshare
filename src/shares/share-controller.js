@@ -6,8 +6,8 @@ app.config(['$routeProvider', function($routeProvider) {
     resolve: {
       share: ['$route', 'shareService', function ($route, shareService) {
         var routeParams = $route.current.params;
-        console.log(routeParams.shareId);
-        return shareService.getByShareId(routeParams.shareId);
+        console.log(routeParams.shareid);
+        return shareService.getByShareId(routeParams.shareid);
       }]
     }
   };
@@ -16,5 +16,4 @@ app.config(['$routeProvider', function($routeProvider) {
 }])
 .controller('ShareCtrl', ['share', function (share) {
   this.share = share;
-  console.log(share);
 }]);
