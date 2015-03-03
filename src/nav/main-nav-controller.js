@@ -23,23 +23,22 @@ app.controller('MainNavCtrl',
       $('.main-checkbox').prop('checked', bool);
     }
 
-    function changeHeight (hi, sh) {
+    function changeHeight (height) {
       $('.header-index').css({
-        'height': hi + 'px'
+        'height': height + 'px'
       });
       $('.site-header').css({
-        'height': sh + 'px'
+        'height': height + 'px'
       });
     }
 
     $('.for-clicking').on('click', function () {
       if (windowWidthLess()) {
-       checkbox(true);
-        $('.site-header').css({
-          'height': '155px',
-        });
+        console.log('hey')
+        checkbox(true);
+        changeHeight(150);
         if ($('.header-left').length === 5) {
-          changeHeight(180, 185);
+          changeHeight(180);
         };
       };
     });
@@ -55,17 +54,17 @@ app.controller('MainNavCtrl',
     });
 
     $(window).resize(function() {
-        if (windowWidthLess()) {
-          changeHeight(50, 50);
+        if (windowWidthLess()) {         
           checkbox(false);
           $('.for-clicking').show();
+          changeHeight(50);
         };
     });
 
     $('.header-left').on('click', function () {
       if (windowWidthLess()) {
         checkbox(false);
-        changeHeight(45, 50);
+        changeHeight(50);
         $('.site-header').animate({
           'height': '50px',
         }, 500);     

@@ -58,10 +58,6 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 100;
   line-height: 1.3em; }
 
-p {
-  line-height: 1.4em;
-  margin-bottom: 1em; }
-
 a {
   color: #4F9EE5;
   text-decoration: none;
@@ -140,6 +136,9 @@ body, html {
   width: 100%;
   height: 100%;
   font-family: 'Montserrat'; }
+
+body {
+  background: #F15D58; }
 
 /*************************************************************
 ***** HEADER *********
@@ -264,6 +263,50 @@ body, html {
   right: 37.5%;
   cursor: pointer; }
 
+/*************************************************************
+***** NEW LINK PAGE *********
+*************************************************************/
+.new-share-div {
+  margin: 0 auto;
+  width: 400px;
+  /*	background: yellow;*/ }
+
+.new-link-input {
+  width: 99%;
+  padding: 4px 2px;
+  box-shadow: 0px 0px 2px #999999;
+  border: none;
+  color: #2E2E2D; }
+
+.new-share-h1 {
+  margin-top: 24px;
+  /*	color: #F15D58;*/
+  color: white; }
+
+.desc-p {
+  margin-top: 12px; }
+
+.new-link-button {
+  border-radius: 4px;
+  padding: 12px 20px;
+  border: none;
+  box-shadow: 0px 0px 2px #999999;
+  background: white;
+  color: #2E2E2D;
+  font-weight: bold;
+  cursor: pointer; }
+
+.new-link-submit-button {
+  float: right;
+  margin: 24px 20% 0 0;
+  /*	background: #999;*/ }
+
+.new-link-cancel-button {
+  float: left;
+  margin: 24px 0 0 20%;
+  background: #DBDECB;
+  /*	background: #999;*/ }
+
 /******************** comment *******************************/
 i {
   cursor: pointer;
@@ -284,14 +327,13 @@ i {
 
 @media screen and (max-width: 459px) {
   .site-header {
-    background: white;
     /*		height: 50px;*/
     line-height: 1.5em; }
   .header-index {
     margin: 0 auto;
     text-align: center;
     width: 100%;
-    height: 45px;
+    height: 50px;
     /*		  font-size: 1.2em;*/
     transition: .12s; }
   .header-login-button {
@@ -369,5 +411,12 @@ i {
     transition: .7s; }
   .main-checkbox:checked ~ .for-clicking {
     visibility: hidden;
-    transition: .7s; } }
+    transition: .7s; }
+  /******************** NEW LINK *******************************/
+  .new-share-div {
+    width: 95%; }
+  .new-link-submit-button {
+    margin: 24px 15% 0 0; }
+  .new-link-cancel-button {
+    margin: 24px 0 0 15%; } }
 

@@ -14,7 +14,6 @@
 @media screen and (max-width:459px) {
 
 	.site-header {
-		background: white;
 /*		height: 50px;*/
 		line-height: 1.5em;
 	}
@@ -23,7 +22,7 @@
 		  margin: 0 auto;
 		  text-align: center;
 		  width: 100%;
-		  height: 45px;
+		  height: 50px;
 /*		  font-size: 1.2em;*/
 		-webkit-transition: .12s;
 		   -moz-transition: .12s;
@@ -168,7 +167,19 @@
 		        transition: .7s;
 	}
 
+/******************** NEW LINK *******************************/
 
+	.new-share-div {
+		width: 95%;
+	}
+
+	.new-link-submit-button {
+		margin: 24px 15% 0 0;
+	}
+
+	.new-link-cancel-button {
+		margin: 24px 0 0 15%;
+	}
 
 }
 
