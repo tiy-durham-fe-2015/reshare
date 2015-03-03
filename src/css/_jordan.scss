@@ -9,6 +9,10 @@ html {
 	font-family: 'Montserrat';
 }
 
+body {
+	background: #F15D58;
+}
+
 /*************************************************************
 ***** HEADER *********
 *************************************************************/
@@ -124,6 +128,63 @@ html {
 	right: 37.5%;
 	cursor: pointer;
 }
+
+/*************************************************************
+***** NEW LINK PAGE *********
+*************************************************************/
+
+.new-share-div {
+	margin: 0 auto;
+	width: 400px;
+/*	background: yellow;*/
+}
+
+.new-link-input {
+	width: 99%;
+	padding: 4px 2px;
+	box-shadow: 0px 0px 2px #999999;
+	border: none;
+	color: #2E2E2D;
+}
+
+.new-share-h1 {
+	margin-top: 24px;
+/*	color: #F15D58;*/
+	color: white;
+}
+
+.desc-p {
+	margin-top: 12px;
+}
+
+.new-link-button {
+	border-radius: 4px;
+	padding: 12px 20px;
+	border: none;
+	box-shadow: 0px 0px 2px #999999;
+	background: white;
+	color: #2E2E2D;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.new-link-submit-button {	
+	float: right;
+	margin: 24px 20% 0 0;
+/*	background: #999;*/
+}
+
+.new-link-cancel-button {
+	float: left;
+	margin: 24px 0 0 20%;
+	background: #DBDECB;
+/*	background: #999;*/
+}
+
+
+
+
+
 
 
 
