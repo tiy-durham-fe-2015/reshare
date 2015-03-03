@@ -40,18 +40,18 @@ app.controller('MainNavCtrl',
         });
         if ($('.header-left').length === 5) {
           changeHeight(180, 185);
-        };
-      };
+        }
+      }
     });
 
     if ($(window).width() > 460) {
       $('.for-clicking').hide();
-    };
+    }
 
     $(window).resize(function() {
       if ($(window).width() > 460) {
         $('.for-clicking').hide();
-      };      
+      }
     });
 
     $(window).resize(function() {
@@ -59,7 +59,7 @@ app.controller('MainNavCtrl',
           changeHeight(50, 50);
           checkbox(false);
           $('.for-clicking').show();
-        };
+        }
     });
 
     $('.header-left').on('click', function () {
@@ -68,7 +68,7 @@ app.controller('MainNavCtrl',
         changeHeight(45, 50);
         $('.site-header').animate({
           'height': '50px',
-        }, 500);     
-      };
+        }, 500);
+      }
     });
   }]);

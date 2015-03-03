@@ -1,6 +1,45 @@
 // The root module for our Angular application
 var app = angular.module('app', ['ngRoute']);
 
+$(function () {
+
+	// console.log($('.main-checkbox').prop('checked'))
+
+	// if ($('.main-checkbox').prop('checked')) {
+	// 	console.log('eh')
+	// 	$('.site-header').css({
+	// 		'height': '155px'
+	// 	})
+	// };
+
+	// function screenWidthAdjustment () {
+	// 	console.log('eh')
+	// 	var move = $('.header-new-link-button').detach();
+	// 	move.appendTo('.header-login-button')
+	// }
+
+	// function screenWidthRevert () {
+	// 	var move = $('.header-new-link-button').detach();
+	// 	move.appendTo('.links-div')
+	// }
+
+	// if ($(window).width() < 750) {
+	//     screenWidthAdjustment()
+	// }
+
+	// $(window).resize(function() {
+	//     if ($(window).width() < 750) {
+	//         screenWidthAdjustment()
+	//     }
+	// });
+
+	// $(window).resize(function() {
+	//     if ($(window).width() > 750) {
+	//         screenWidthRevert()
+	//     }
+	// });
+
+});
 app.controller('MainNavCtrl',
   ['$location', 'StringUtil', 'usersService', function($location, StringUtil, usersService) {
     var self = this;
@@ -43,18 +82,18 @@ app.controller('MainNavCtrl',
         });
         if ($('.header-left').length === 5) {
           changeHeight(180, 185);
-        };
-      };
+        }
+      }
     });
 
     if ($(window).width() > 460) {
       $('.for-clicking').hide();
-    };
+    }
 
     $(window).resize(function() {
       if ($(window).width() > 460) {
         $('.for-clicking').hide();
-      };      
+      }
     });
 
     $(window).resize(function() {
@@ -62,7 +101,7 @@ app.controller('MainNavCtrl',
           changeHeight(50, 50);
           checkbox(false);
           $('.for-clicking').show();
-        };
+        }
     });
 
     $('.header-left').on('click', function () {
@@ -71,8 +110,8 @@ app.controller('MainNavCtrl',
         changeHeight(45, 50);
         $('.site-header').animate({
           'height': '50px',
-        }, 500);     
-      };
+        }, 500);
+      }
     });
   }]);
 
@@ -163,6 +202,8 @@ app.factory('VoteFactory', ['shareService', function (shareService) {
 	};
 
 }]);
+
+//Factory for comments that brings in individual share
 
 app.config(['$routeProvider', function($routeProvider) {
   var routeDefinition = {
@@ -319,55 +360,6 @@ app.config(['$routeProvider', function($routeProvider) {
 
 }]);
 
-$(function () {
-
-	// console.log($('.main-checkbox').prop('checked'))
-
-	// if ($('.main-checkbox').prop('checked')) {
-	// 	console.log('eh')
-	// 	$('.site-header').css({
-	// 		'height': '155px'
-	// 	})
-	// };
-
-	// function screenWidthAdjustment () {
-	// 	console.log('eh')
-	// 	var move = $('.header-new-link-button').detach();
-	// 	move.appendTo('.header-login-button')
-	// }
-
-	// function screenWidthRevert () {
-	// 	var move = $('.header-new-link-button').detach();
-	// 	move.appendTo('.links-div')
-	// }
-
-	// if ($(window).width() < 750) {
-	//     screenWidthAdjustment()
-	// }
-
-	// $(window).resize(function() {
-	//     if ($(window).width() < 750) {
-	//         screenWidthAdjustment()
-	//     }
-	// });
-
-	// $(window).resize(function() {
-	//     if ($(window).width() > 750) {
-	//         screenWidthRevert()
-	//     }
-	// });
-
-});
-// A little string utility... no biggie
-app.factory('StringUtil', function() {
-  return {
-    startsWith: function (str, subStr) {
-      str = str || '';
-      return str.slice(0, subStr.length) === subStr;
-    }
-  };
-});
-
 app.config(['$routeProvider', function($routeProvider) {
   var routeDefinition = {
     templateUrl: 'users/user.html',
@@ -449,6 +441,16 @@ app.config(['$routeProvider', function($routeProvider) {
     console.log(users);
   };
 }]);
+
+// A little string utility... no biggie
+app.factory('StringUtil', function() {
+  return {
+    startsWith: function (str, subStr) {
+      str = str || '';
+      return str.slice(0, subStr.length) === subStr;
+    }
+  };
+});
 
 //Share Store, call AJAX
 
