@@ -10,8 +10,8 @@ app.factory('VoteFactory', ['shareService', function (shareService) {
 		var el = $(event.target).parent().find('.fa-arrow-' + dir);
 		if (el.css('color') !== rgb) {
 			$(event.target).parent().find('.' + dir +'vote-count').html(dir + 'votes: ' + newVotes);
-		}
-	}
+		};
+	};
 
 	function upvote (color, id, upvotes, downvotes) {
 		getVotes(upvotes, 'up', 'rgb(0, 0, 255)');
@@ -24,9 +24,9 @@ app.factory('VoteFactory', ['shareService', function (shareService) {
 				'color': 'lightgray'
 			});
 			shareService.undovote(id, 'down', (downs - 1));
-		}
+		}x
 		shareService.upvote(id);
-	}
+	};
 
 	function downvote (color, id, downvotes, upvotes) {
 		getVotes(downvotes, 'down', 'rgb(255, 165, 0)');

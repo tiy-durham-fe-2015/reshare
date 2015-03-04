@@ -70,4 +70,14 @@ app.controller('MainNavCtrl',
         }, 500);
       }
     });
+
+    $('.root-content').on('click', function () {
+      if (windowWidthLess()) {
+        checkbox(false);
+        changeHeight(50);
+        $('.site-header').animate({
+          'height': '50px',
+        }, 500);
+      }
+    });
   }]);

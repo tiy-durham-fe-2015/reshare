@@ -11,6 +11,21 @@ html {
 
 body {
 	background: #F15D58;
+	color: white;
+}
+
+h1 { 
+	font-size: 2em; 
+	margin: .67em 0; 
+}
+
+p {
+	margin: .5em 0;
+}
+
+input, textarea {
+  font-size: 1em;
+  padding: 0.25em;
 }
 
 /*************************************************************
@@ -33,7 +48,6 @@ body {
 	background: #363635;
 	color: white;
 	font-size: 102%;
-	padding-right: 25px;
 	margin: 0;
 	font-family: helvetica;
 	z-index: 100;
@@ -105,6 +119,7 @@ body {
 	width: 100%;
 	visibility: hidden;
 	cursor: pointer;
+	text-align: center;
 }
 
 .menu-bar-checkbox {
@@ -133,12 +148,6 @@ body {
 ***** NEW LINK PAGE *********
 *************************************************************/
 
-.new-share-div {
-	margin: 0 auto;
-	width: 400px;
-/*	background: yellow;*/
-}
-
 .new-link-input {
 	width: 99%;
 	padding: 4px 2px;
@@ -151,6 +160,10 @@ body {
 	margin-top: 24px;
 /*	color: #F15D58;*/
 	color: white;
+}
+
+.new-p {
+	color: #2E2E2D;
 }
 
 .desc-p {
@@ -181,10 +194,79 @@ body {
 /*	background: #999;*/
 }
 
+/*************************************************************
+***** USER/USERS PAGE *********
+*************************************************************/
 
+.main-divs {
+	width: 400px;
+	margin: 0 auto;	
+}
 
+.users-page-div form {
+	height: 40px;
+}
 
+/******************** CUSTOM SELECTS *******************************/
 
+.role-select {
+	border: none;
+	outline: none;
+	background: white;
+	font-family: helvetica;
+	-webkit-border-radius: 5% / 17%;
+	        border-radius: 5% / 17%;
+	height: 30px;
+	box-shadow: 0 0 1px 0 #606060;	
+	font-size: 1.2em;
+	padding: 6px;
+	padding-right: 21px;
+    display: inline-block;
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    appearance:none;
+    cursor: pointer;
+    color: #2E2E2D;
+}
+
+.role-label {
+	position:relative;
+}
+
+.role-label:after {
+    content:'<>';
+ /*   width: 2px;*/
+    letter-spacing: 6px;
+    font:12px "Consolas", monospace;
+    color: #2E2E2D;
+    -webkit-transform:rotate(90deg);
+    -moz-transform:rotate(90deg);
+    -ms-transform:rotate(90deg);
+    transform:rotate(90deg);
+    right: 2px; 
+    top:0px;
+/*    margin: 12px 0 0px 0;*/
+    padding:0 0 3px 5px;
+    border-bottom:1px solid #ddd;
+    position:absolute;
+    pointer-events:none;
+}
+
+.role-label:before {
+    content:'';
+    right:4px; 
+    top:-4px;
+    width:20px; 
+    height:28px;
+    background:white;
+    position:absolute;
+    pointer-events:none;
+    display:block;
+    -webkit-border-top-right-radius: 15%;
+            border-top-right-radius: 15%;
+    -webkit-border-bottom-right-radius: 15%;
+            border-bottom-right-radius: 15%;
+}
 
 
 
