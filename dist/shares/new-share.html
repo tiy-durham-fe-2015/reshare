@@ -1,14 +1,14 @@
 <!--Create a New Share -->
-<div class="new-share-div">
-	<h1 class="new-share-h1">Share a Resource</h1>
+<div class="main-divs new-share-div">
+    <h1 class="new-share-h1">Share a Resource</h1>
 
-	<form ng-submit="vm.addShare()">
-		<p class="new-p what-link-p">What link do you have to share with everyone?</p>
-	  <input class="new-link-url new-link-input" type="url" ng-model="vm.share.url" placeholder="www.google.com">
-	  <p class="new-p desc-p">Give us a quick description!</p>
-	  <input class="new-link-desc new-link-input" type="text" ng-model="vm.share.description" placeholder="Description">
-	  <button class="new-link-button new-link-submit-button">Submit</button>
-	</form>
+    <form ng-submit="vm.addShare()">
+        <p class="new-p what-link-p">What link do you have to share with everyone?</p>
+        <input class="new-link-url new-link-input" type="url" ng-model="vm.share.url" placeholder="www.google.com">
+        <p class="new-p desc-p">Give us a quick description!</p>
+        <input class="new-link-desc new-link-input" type="text" ng-model="vm.share.description" placeholder="Description">
+        <button class="new-link-button new-link-submit-button">Submit</button>
+    </form>
 
-	<button class="new-link-button new-link-cancel-button" ng-click="vm.cancelEdit()">Cancel</button>
+    <button class="new-link-button new-link-cancel-button" ng-click="vm.cancelEdit()">Cancel</button>
 </div>

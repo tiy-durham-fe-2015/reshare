@@ -1,0 +1,298 @@
+/*************************************************************
+***** BODY/GENERAL *********
+*************************************************************/
+
+body, html {
+    width: 100%;
+    height: 100%;
+    font-family: $helvetica;
+}
+body {
+    background: #F15D58;
+    color: white;
+}
+h1 {
+    font-size: 2em;
+    margin: .67em 0;
+}
+p {
+    margin: .5em 0;
+}
+input, textarea {
+    font-size: 1em;
+    padding: 0.25em;
+}
+a {
+    text-decoration: none;
+}
+a:hover {
+    color: #83BF17;
+}
+i {
+    cursor: pointer;
+    color: #ecf0f1;
+}
+.shares-ul i.active {
+    color: blue;
+}
+.shares-ul li i:nth-child(2).active {
+    color: orange;
+}
+
+/*************************************************************
+***** HEADER *********
+*************************************************************/
+
+.site-header {
+    height: 50px;
+}
+.header-index {
+    height: 50px;
+    width: 100%;
+    border: none;
+    position: fixed;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    background: #363635;
+    color: white;
+    font-size: 102%;
+    margin: 0;
+    font-family: helvetica;
+    z-index: 100;
+}
+.links-div {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-pack: end;
+    -webkit-justify-content: flex-end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    height: 50px;
+    width: 100%;
+}
+.header-index a {
+    text-decoration: none;
+    color: #FFF;
+}
+.header-left {
+    padding: 11px 3px 0;
+    margin: 5.5px 0;
+    background: transparent;
+    width: 130px;
+    text-align: center;
+    cursor: pointer;
+}
+.header-left:hover {
+    color: #888f96;
+}
+.header-new-link-button:hover {
+    color: #363635;
+}
+.header-new-link-button {
+    background: #83BF17;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    border-radius: 4px;
+}
+.header-login-button {
+    border-left: 1px dashed white;
+}
+.plus-sign {
+    margin-top: -2px;
+    margin-right: 10px;
+}
+.line {
+    background-color: white;
+    height: 1px;
+    margin: .1% auto;
+    width: 100%;
+    visibility: hidden;
+}
+.menu-bar-div {
+    width: 100%;
+    visibility: hidden;
+    cursor: pointer;
+    text-align: center;
+}
+.menu-bar-checkbox {
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+}
+.main-checkbox {
+    visibility: hidden;
+    position: absolute;
+}
+.for-clicking {
+    z-index: 10000;
+    position: absolute;
+    width: 25%;
+    height: 30px;
+    background: transparent;
+    top: 5px;
+    right: 37.5%;
+    cursor: pointer;
+}
+
+/*************************************************************
+***** NEW LINK PAGE *********
+*************************************************************/
+
+.new-link-input {
+    width: 99%;
+    padding: 4px 2px;
+    -webkit-box-shadow: 0px 0px 2px #999999;
+    box-shadow: 0px 0px 2px #999999;
+    border: none;
+    color: #2E2E2D;
+}
+.new-share-h1 {
+    margin-top: 24px;
+    color: white;
+}
+.new-p {
+    color: #2E2E2D;
+}
+.desc-p {
+    margin-top: 12px;
+}
+.new-link-button {
+    border-radius: 4px;
+    padding: 12px 20px;
+    border: none;
+    -webkit-box-shadow: 0px 0px 2px #999999;
+    box-shadow: 0px 0px 2px #999999;
+    background: white;
+    color: #2E2E2D;
+    font-weight: bold;
+    cursor: pointer;
+}
+.new-link-submit-button {
+    float: right;
+    margin: 24px 20% 0 0;
+}
+.new-link-cancel-button {
+    float: left;
+    margin: 24px 0 0 20%;
+    background: #DBDECB;
+}
+/*************************************************************
+***** USER/USERS PAGE *********
+*************************************************************/
+
+.main-divs {
+    width: 400px;
+    margin: 0 auto;
+}
+.new-share-div {
+    font-family: 'Montserrat';
+}
+.users-page-div form {
+    height: 40px;
+}
+.add-user-button {
+    font-family: 'Montserrat';
+    font-size: 100%;
+    padding: 6px 9px 5px;
+}
+.users-page-div ul {
+    margin-top: 15px;
+}
+.users-page-div ul a {
+    padding-top: 3px;
+    color: #2E2E2D;
+}
+.users-page-div ul a:hover {
+    color: white;
+}
+
+/******************** CUSTOM SELECTS *******************************/
+
+.role-select {
+    border: none;
+    outline: none;
+    font-family: helvetica;
+    border-radius: 5% / 17%;
+    height: 30px;
+    -webkit-box-shadow: 0 0 1px 0 #606060;
+    box-shadow: 0 0 1px 0 #606060;
+    font-size: 1.2em;
+    padding: 6px;
+    padding-right: 21px;
+    display: inline-block;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    color: #2E2E2D;
+    background: white;
+}
+.role-label {
+    position: relative;
+}
+.role-label:after {
+    content: '<>';
+    letter-spacing: 6px;
+    font: 12px "Consolas", monospace;
+    color: #2E2E2D;
+    -webkit-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+    right: 2px;
+    top: 0px;
+    padding: 0 0 3px 5px;
+    border-bottom: 1px solid #bBbEaB;
+    position: absolute;
+    pointer-events: none;
+}
+.role-label:before {
+    content: '';
+    right: 4px;
+    top: -4px;
+    width: 20px;
+    height: 28px;
+    background: white;
+    position: absolute;
+    pointer-events: none;
+    display: block;
+    border-top-right-radius: 15%;
+    border-bottom-right-radius: 15%;
+}

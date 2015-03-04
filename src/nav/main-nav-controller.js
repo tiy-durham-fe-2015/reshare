@@ -45,10 +45,12 @@ app.controller('MainNavCtrl',
 
     if ($(window).width() > 460) {
       $('.for-clicking').hide();
+      changeHeight(45)
     }
 
     $(window).resize(function() {
       if ($(window).width() > 460) {
+        changeHeight(45)
         $('.for-clicking').hide();
       }
     });
@@ -62,6 +64,16 @@ app.controller('MainNavCtrl',
     });
 
     $('.header-left').on('click', function () {
+      if (windowWidthLess()) {
+        checkbox(false);
+        changeHeight(50);
+        $('.site-header').animate({
+          'height': '50px',
+        }, 500);
+      }
+    });
+
+    $('.root-content').on('click', function () {
       if (windowWidthLess()) {
         checkbox(false);
         changeHeight(50);
