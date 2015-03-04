@@ -4,16 +4,33 @@ app.config(['$routeProvider', function($routeProvider) {
     controller: 'ShareCtrl',
     controllerAs: 'vm',
     resolve: {
-      share: ['$route', 'shareService', function ($route, shareService) {
+      share: ['$route', 'Comment', 'shareService', function ($route, Comment, shareService) {
         var routeParams = $route.current.params;
         console.log(routeParams.shareid);
         return shareService.getByShareId(routeParams.shareid);
+      }],
+      comments: ['$route', 'shareService', function ($route, shareService) {
+        var routeParams = $route.current.params;
+        return shareService.listComments(routeParams.shareid);
       }]
     }
   };
 
   $routeProvider.when('/shares/:shareid', routeDefinition);
-}])
-.controller('ShareCtrl', ['share', function (share) {
-  this.share = share;
+  $routeProvider.when('/shares/:shareid/comments', routeDefinition);
+}]).controller('ShareCtrl', ['share', 'shareService', 'Comment', 'comments', function (share, shareService, Comment, comments) {
+  var self = this;
+
+  self.share = share;
+  self.comments = comments;
+  self.comment = Comment();
+
+  self.addComment = function () {
+    shareService.addComment(self.comment);
+  };
+
+  self.listComments = function () {
+    shareService.listComments(self.share._id);
+  };
+
 }]);

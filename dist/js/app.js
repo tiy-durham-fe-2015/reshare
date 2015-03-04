@@ -76,13 +76,13 @@ app.controller('MainNavCtrl',
 
     $('.for-clicking').on('click', function () {
       if (windowWidthLess()) {
-        console.log('hey')
+        console.log('hey');
         checkbox(true);
         changeHeight(150);
         if ($('.header-left').length === 5) {
           changeHeight(180);
-        };
-      };
+        }
+      }
     });
 
     if ($(window).width() > 460) {
@@ -100,7 +100,7 @@ app.controller('MainNavCtrl',
           checkbox(false);
           $('.for-clicking').show();
           changeHeight(50);
-        };
+        }
     });
 
     $('.header-left').on('click', function () {
@@ -202,7 +202,17 @@ app.factory('VoteFactory', ['shareService', function (shareService) {
 
 }]);
 
-//Factory for comments that brings in individual share
+app.factory('Comment', function () {
+  return function (spec) {
+    spec = spec || {};
+    return {
+      userId: spec.userId,
+      text: spec.text,
+      subjectId: spec.shareId,
+      created: Date.now()
+    };
+  };
+});
 
 app.config(['$routeProvider', function($routeProvider) {
   var routeDefinition = {
@@ -281,18 +291,35 @@ app.config(['$routeProvider', function($routeProvider) {
     controller: 'ShareCtrl',
     controllerAs: 'vm',
     resolve: {
-      share: ['$route', 'shareService', function ($route, shareService) {
+      share: ['$route', 'Comment', 'shareService', function ($route, Comment, shareService) {
         var routeParams = $route.current.params;
         console.log(routeParams.shareid);
         return shareService.getByShareId(routeParams.shareid);
+      }],
+      comments: ['$route', 'shareService', function ($route, shareService) {
+        var routeParams = $route.current.params;
+        return shareService.listComments(routeParams.shareid);
       }]
     }
   };
 
   $routeProvider.when('/shares/:shareid', routeDefinition);
-}])
-.controller('ShareCtrl', ['share', function (share) {
-  this.share = share;
+  $routeProvider.when('/shares/:shareid/comments', routeDefinition);
+}]).controller('ShareCtrl', ['share', 'shareService', 'Comment', 'comments', function (share, shareService, Comment, comments) {
+  var self = this;
+
+  self.share = share;
+  self.comments = comments;
+  self.comment = Comment();
+
+  self.addComment = function () {
+    shareService.addComment(self.comment);
+  };
+
+  self.listComments = function () {
+    shareService.listComments(self.share._id);
+  };
+
 }]);
 
 
@@ -507,9 +534,23 @@ app.factory('shareService', ['$http', '$log', function ($http, $log) {
 
     undovote: function (shareId) {
       return post('/api/res/' + shareId + '/votes', {vote:0});
-    }
+    },
+
+    listComments: function (shareId) {
+      return get('/api/res/' + shareId + '/comments');
+    },
+
+    addComment: function (shareId, comment) {
+      return post('/api/res' + shareId + '/comments');
+
+    },
+
+    deleteComment: function (shareId, comment) {
+      return delete('/api/res/' + shareId + '/comments/:id');
+    },
 
   };
+
 }]);
 
 app.factory('usersService', ['$http', '$q', '$log', function($http, $q, $log) {

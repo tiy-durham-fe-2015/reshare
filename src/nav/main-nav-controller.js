@@ -34,13 +34,13 @@ app.controller('MainNavCtrl',
 
     $('.for-clicking').on('click', function () {
       if (windowWidthLess()) {
-        console.log('hey')
+        console.log('hey');
         checkbox(true);
         changeHeight(150);
         if ($('.header-left').length === 5) {
           changeHeight(180);
-        };
-      };
+        }
+      }
     });
 
     if ($(window).width() > 460) {
@@ -58,7 +58,7 @@ app.controller('MainNavCtrl',
           checkbox(false);
           $('.for-clicking').show();
           changeHeight(50);
-        };
+        }
     });
 
     $('.header-left').on('click', function () {
