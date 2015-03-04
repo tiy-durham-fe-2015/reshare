@@ -23,14 +23,9 @@ app.config(['$routeProvider', function($routeProvider) {
 
   self.shares = shares;
 
-  // console.log(shares);
-  console.log(self.shares);
-
   self.vote = function (color, voted) {
     var indexNum = $(event.target).parent().index();
     var id = self.shares[indexNum]._id;
-    // var votes = shareService.getVotes(id);
-    // console.log(votes)
     var upvotes = self.shares[indexNum].upvotes;
     var downvotes = self.shares[indexNum].downvotes;
     VoteFactory.vote(color, voted, id, upvotes, downvotes);

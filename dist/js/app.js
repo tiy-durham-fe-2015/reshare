@@ -40,6 +40,92 @@ $(function () {
 	// });
 
 });
+app.controller('MainNavCtrl',
+  ['$location', 'StringUtil', 'usersService', function($location, StringUtil, usersService) {
+    var self = this;
+
+    self.isActive = function (path) {
+      // The default route is a special case.
+      if (path === '/') {
+        return $location.path() === '/';
+      }
+
+      return StringUtil.startsWith($location.path(), path);
+    };
+
+    usersService.currentUser().then(function (data) {
+      self.currentUser = data;
+    });
+
+    function windowWidthLess () {
+      return $(window).width() < 459;
+    }
+
+    function checkbox (bool) {
+      $('.main-checkbox').prop('checked', bool);
+    }
+
+    function changeHeight (height) {
+      $('.header-index').css({
+        'height': height + 'px'
+      });
+      $('.site-header').css({
+        'height': height + 'px'
+      });
+    }
+
+    $('.for-clicking').on('click', function () {
+      if (windowWidthLess()) {
+        console.log('hey');
+        checkbox(true);
+        changeHeight(150);
+        if ($('.header-left').length === 5) {
+          changeHeight(180);
+        }
+      }
+    });
+
+    if ($(window).width() > 460) {
+      $('.for-clicking').hide();
+      changeHeight(45)
+    }
+
+    $(window).resize(function() {
+      if ($(window).width() > 460) {
+        changeHeight(45)
+        $('.for-clicking').hide();
+      }
+    });
+
+    $(window).resize(function() {
+        if (windowWidthLess()) {
+          checkbox(false);
+          $('.for-clicking').show();
+          changeHeight(50);
+        }
+    });
+
+    $('.header-left').on('click', function () {
+      if (windowWidthLess()) {
+        checkbox(false);
+        changeHeight(50);
+        $('.site-header').animate({
+          'height': '50px',
+        }, 500);
+      }
+    });
+
+    $('.root-content').on('click', function () {
+      if (windowWidthLess()) {
+        checkbox(false);
+        changeHeight(50);
+        $('.site-header').animate({
+          'height': '50px',
+        }, 500);
+      }
+    });
+  }]);
+
 // app.factory('UserFactory', function() {
 app.factory('UserFactory', ['$route', 'usersService', function($route, usersService) {
 
@@ -64,9 +150,7 @@ app.factory('VoteFactory', ['shareService', function (shareService) {
 	var downs;
 
 	function getVotes (votes, dir, rgb) {
-		console.log(votes);
 		var newVotes = votes + 1;
-		console.log(newVotes);
 		var el = $(event.target).parent().find('.fa-arrow-' + dir);
 		if (el.css('color') !== rgb) {
 			$(event.target).parent().find('.' + dir +'vote-count').html(dir + 'votes: ' + newVotes);
@@ -76,12 +160,11 @@ app.factory('VoteFactory', ['shareService', function (shareService) {
 	function upvote (color, id, upvotes, downvotes) {
 		getVotes(upvotes, 'up', 'rgb(0, 0, 255)');
 		ups = (upvotes + 1);
-		console.log(ups);
 		event.target.style.color = color;
 		var downEl = $(event.target).parent().find('.fa-arrow-down');
 		if (downEl.css('color') === 'rgb(255, 165, 0)') {
 			downEl.css({
-				'color': 'lightgray'
+				'color': '#ecf0f1'
 			});
 			shareService.undovote(id, 'down', (downs - 1));
 		}x
@@ -96,9 +179,6 @@ app.factory('VoteFactory', ['shareService', function (shareService) {
 		console.log(ups);
 		var upEl = $(event.target).parent().find('.fa-arrow-up');
 		if (upEl.css('color') === 'rgb(0, 0, 255)') {
-			// upEl.css({
-			// 	'color': 'lightgray'
-			// });
 			console.log(ups);
 			eraseVote(id, 'up', (ups - 1));
 		}
@@ -107,7 +187,7 @@ app.factory('VoteFactory', ['shareService', function (shareService) {
 
 	function eraseVote (id, dir, votes) {
 		var el = $(event.target).parent().find('.fa-arrow-' + dir);
-		el.css({'color': 'lightgray'});
+		el.css({'color': '#ecf0f1'});
 		$(event.target).parent().find('.' + dir +'vote-count').html(dir + 'votes: ' + votes);
 		shareService.undovote(id);
 	}
@@ -311,92 +391,6 @@ app.config(['$routeProvider', function($routeProvider) {
   };
 
 }]);
-
-app.controller('MainNavCtrl',
-  ['$location', 'StringUtil', 'usersService', function($location, StringUtil, usersService) {
-    var self = this;
-
-    self.isActive = function (path) {
-      // The default route is a special case.
-      if (path === '/') {
-        return $location.path() === '/';
-      }
-
-      return StringUtil.startsWith($location.path(), path);
-    };
-
-    usersService.currentUser().then(function (data) {
-      self.currentUser = data;
-    });
-
-    function windowWidthLess () {
-      return $(window).width() < 459;
-    }
-
-    function checkbox (bool) {
-      $('.main-checkbox').prop('checked', bool);
-    }
-
-    function changeHeight (height) {
-      $('.header-index').css({
-        'height': height + 'px'
-      });
-      $('.site-header').css({
-        'height': height + 'px'
-      });
-    }
-
-    $('.for-clicking').on('click', function () {
-      if (windowWidthLess()) {
-        console.log('hey');
-        checkbox(true);
-        changeHeight(150);
-        if ($('.header-left').length === 5) {
-          changeHeight(180);
-        }
-      }
-    });
-
-    if ($(window).width() > 460) {
-      $('.for-clicking').hide();
-      changeHeight(45)
-    }
-
-    $(window).resize(function() {
-      if ($(window).width() > 460) {
-        changeHeight(45)
-        $('.for-clicking').hide();
-      }
-    });
-
-    $(window).resize(function() {
-        if (windowWidthLess()) {
-          checkbox(false);
-          $('.for-clicking').show();
-          changeHeight(50);
-        }
-    });
-
-    $('.header-left').on('click', function () {
-      if (windowWidthLess()) {
-        checkbox(false);
-        changeHeight(50);
-        $('.site-header').animate({
-          'height': '50px',
-        }, 500);
-      }
-    });
-
-    $('.root-content').on('click', function () {
-      if (windowWidthLess()) {
-        checkbox(false);
-        changeHeight(50);
-        $('.site-header').animate({
-          'height': '50px',
-        }, 500);
-      }
-    });
-  }]);
 
 app.config(['$routeProvider', function($routeProvider) {
   var routeDefinition = {

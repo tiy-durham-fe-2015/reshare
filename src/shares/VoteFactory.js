@@ -4,9 +4,7 @@ app.factory('VoteFactory', ['shareService', function (shareService) {
 	var downs;
 
 	function getVotes (votes, dir, rgb) {
-		console.log(votes);
 		var newVotes = votes + 1;
-		console.log(newVotes);
 		var el = $(event.target).parent().find('.fa-arrow-' + dir);
 		if (el.css('color') !== rgb) {
 			$(event.target).parent().find('.' + dir +'vote-count').html(dir + 'votes: ' + newVotes);
@@ -16,12 +14,11 @@ app.factory('VoteFactory', ['shareService', function (shareService) {
 	function upvote (color, id, upvotes, downvotes) {
 		getVotes(upvotes, 'up', 'rgb(0, 0, 255)');
 		ups = (upvotes + 1);
-		console.log(ups);
 		event.target.style.color = color;
 		var downEl = $(event.target).parent().find('.fa-arrow-down');
 		if (downEl.css('color') === 'rgb(255, 165, 0)') {
 			downEl.css({
-				'color': 'lightgray'
+				'color': '#ecf0f1'
 			});
 			shareService.undovote(id, 'down', (downs - 1));
 		}x
@@ -36,9 +33,6 @@ app.factory('VoteFactory', ['shareService', function (shareService) {
 		console.log(ups);
 		var upEl = $(event.target).parent().find('.fa-arrow-up');
 		if (upEl.css('color') === 'rgb(0, 0, 255)') {
-			// upEl.css({
-			// 	'color': 'lightgray'
-			// });
 			console.log(ups);
 			eraseVote(id, 'up', (ups - 1));
 		}
@@ -47,7 +41,7 @@ app.factory('VoteFactory', ['shareService', function (shareService) {
 
 	function eraseVote (id, dir, votes) {
 		var el = $(event.target).parent().find('.fa-arrow-' + dir);
-		el.css({'color': 'lightgray'});
+		el.css({'color': '#ecf0f1'});
 		$(event.target).parent().find('.' + dir +'vote-count').html(dir + 'votes: ' + votes);
 		shareService.undovote(id);
 	}

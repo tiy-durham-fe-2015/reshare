@@ -34,9 +34,6 @@ html {
 *, *:before, *:after {
   box-sizing: inherit; }
 
-/*
-@import 'base/base';
-*/
 /*body {
   font-family: sans-serif;
   line-height: 1.4em;
@@ -157,9 +154,12 @@ input, textarea {
 a {
   text-decoration: none; }
 
+a:hover {
+  color: #83BF17; }
+
 i {
   cursor: pointer;
-  color: lightgray; }
+  color: #ecf0f1; }
 
 .shares-ul i.active {
   color: blue; }
@@ -217,17 +217,13 @@ i {
   text-decoration: none;
   color: #FFF; }
 
-/*header * {
-	border: none;
-}*/
 .header-left {
   padding: 11px 3px 0;
   margin: 5.5px 0;
   background: transparent;
   width: 130px;
   text-align: center;
-  cursor: pointer;
-  /*	border: 1px solid white;*/ }
+  cursor: pointer; }
 
 .header-left:hover {
   color: #888f96; }
@@ -302,7 +298,6 @@ i {
 
 .new-share-h1 {
   margin-top: 24px;
-  /*	color: #F15D58;*/
   color: white; }
 
 .new-p {
@@ -323,14 +318,12 @@ i {
 
 .new-link-submit-button {
   float: right;
-  margin: 24px 20% 0 0;
-  /*	background: #999;*/ }
+  margin: 24px 20% 0 0; }
 
 .new-link-cancel-button {
   float: left;
   margin: 24px 0 0 20%;
-  background: #DBDECB;
-  /*	background: #999;*/ }
+  background: #DBDECB; }
 
 /*************************************************************
 ***** USER/USERS PAGE *********
@@ -350,6 +343,16 @@ i {
   font-size: 100%;
   padding: 6px 9px 5px; }
 
+.users-page-div ul {
+  margin-top: 15px; }
+
+.users-page-div ul a {
+  padding-top: 3px;
+  color: #2E2E2D; }
+
+.users-page-div ul a:hover {
+  color: white; }
+
 /******************** CUSTOM SELECTS *******************************/
 .role-select {
   border: none;
@@ -367,14 +370,13 @@ i {
   appearance: none;
   cursor: pointer;
   color: #2E2E2D;
-  background: #DBDECB; }
+  background: white; }
 
 .role-label {
   position: relative; }
 
 .role-label:after {
   content: '<>';
-  /*   width: 2px;*/
   letter-spacing: 6px;
   font: 12px "Consolas", monospace;
   color: #2E2E2D;
@@ -382,7 +384,6 @@ i {
   transform: rotate(90deg);
   right: 2px;
   top: 0px;
-  /*    margin: 12px 0 0px 0;*/
   padding: 0 0 3px 5px;
   border-bottom: 1px solid #bBbEaB;
   position: absolute;
@@ -394,63 +395,50 @@ i {
   top: -4px;
   width: 20px;
   height: 28px;
-  background: #DBDECB;
+  background: white;
   position: absolute;
   pointer-events: none;
   display: block;
   border-top-right-radius: 15%;
   border-bottom-right-radius: 15%; }
 
-/******************** comment *******************************/
 @media screen and (max-width: 681px) {
   .header-left {
     width: 82px;
     padding: 10px 3px 0; }
   .header-new-link-button {
     width: 100px; }
-  .shares-wrapper {
-    max-width: 95%;
-    margin-left: auto;
-    margin-right: auto; }
-    .shares-wrapper::after {
-      clear: both;
-      content: "";
-      display: table; }
-    .shares-wrapper .indi-share {
-      float: left;
-      display: block;
-      margin-right: 2.35765%;
-      width: 100%; }
-      .shares-wrapper .indi-share:last-child {
-        margin-right: 0; }
-      .shares-wrapper .indi-share:nth-child(1n) {
-        margin-right: 0; }
-      .shares-wrapper .indi-share:nth-child(1n+1) {
-        clear: left; }
-    .shares-wrapper .featured-share-wrapper {
-      float: left;
-      display: block;
-      margin-right: 2.35765%;
-      width: 100%;
-      height: 10em;
-      margin-top: 2em; }
-      .shares-wrapper .featured-share-wrapper:last-child {
-        margin-right: 0; }
-      .shares-wrapper .featured-share-wrapper:nth-child(1n) {
-        margin-right: 0; }
-      .shares-wrapper .featured-share-wrapper:nth-child(1n+1) {
-        clear: left; } }
+  .shares-wrapper .indi-share {
+    margin-top: 20px;
+    width: 95%; }
+  .shares-wrapper .featured-share-wrapper {
+    padding-top: 30px;
+    width: 95%; }
+  .share-listings {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    height: 110%; } }
 
 @media screen and (max-width: 459px) {
+  .share-listings {
+    width: 95%; }
   .site-header {
-    /*		height: 50px;*/
     line-height: 1.5em; }
   .header-index {
     margin: 0 auto;
     text-align: center;
     width: 100%;
     height: 50px;
-    /*		  font-size: 1.2em;*/
     transition: .12s; }
   .header-login-button {
     border-left: none; }
@@ -460,11 +448,7 @@ i {
     margin: 0;
     visibility: visible; }
   .menu-bar-div {
-    /*	    margin-top: 1.1em;
-	    margin-bottom: -.25em;*/
     visibility: visible;
-    /*	    font-weight: 300;*/
-    /*	    font-size: .9em;*/
     color: white;
     padding-bottom: 10px; }
   .for-clicking:hover ~ .header-index .menu-bar-div {
@@ -537,13 +521,16 @@ i {
     margin: 24px 0 0 15%; }
   /******************** USER/USERS PAGE *******************************/
   .user-details-div {
-    width: 95%; } }
+    width: 95%; }
+  .users-page-div {
+    width: 95%; }
+  .new-username-input {
+    width: 35%; } }
 
 .shares-wrapper {
   max-width: 95%;
   margin-left: auto;
-  margin-right: auto;
-  font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif; }
+  margin-right: auto; }
   .shares-wrapper::after {
     clear: both;
     content: "";
@@ -560,7 +547,8 @@ i {
     display: block;
     margin-right: 2.35765%;
     width: 31.76157%;
-    height: 10em; }
+    height: 10em;
+    margin-top: 20px; }
     .shares-wrapper .featured-share-wrapper:last-child {
       margin-right: 0; }
 
@@ -571,7 +559,8 @@ i {
   table-layout: fixed; }
 
 .shares-header a {
-  font-size: 1.5em;
+  font-size: 1.2em;
+  margin-top: 20px;
   color: #2e2e2d; }
 
 .link-li {
@@ -580,6 +569,9 @@ i {
 .share-url {
   font-size: 1.9em;
   color: #ecf0f1; }
+
+.share-url:hover {
+  color: #2e2e2d; }
 
 .share-comments {
   display: -webkit-flex;
@@ -600,3 +592,9 @@ i {
 .share-comments a {
   margin-right: 1em;
   color: #2e2e2d; }
+
+.resources-header {
+  margin: 20px 0 0; }
+
+.share-new-link-a:hover {
+  color: #ecf0f1; }

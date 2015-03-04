@@ -1,8 +1,8 @@
 <h1>{{vm.share.description}}</h1>
 <a href="{{vm.share.url}}">{{vm.share.url}}</a>
 <form ng-submit="vm.addComment()">
-  <input type="textbox" ng-model="vm.comment.text">
-  <button ng-click="vm.addComment()">Submit</button>
+    <input type="textbox" ng-model="vm.comment.text">
+    <button ng-click="vm.addComment()">Submit</button>
 </form>
 
 <h3>upvotes: {{vm.share.upvotes}}</h3>
@@ -10,7 +10,7 @@
 <a href="/#/users/{{vm.share.userId}}">{{vm.share.userId}}</a>
 
 <ul>
-  <li ng-repeat="comment in vm.comments">
-    <p>{{comment.text}}</p>
-  </li>
+    <li ng-repeat="comment in vm.comments">
+        <p>{{comment.text}}</p>
+    </li>
 </ul>

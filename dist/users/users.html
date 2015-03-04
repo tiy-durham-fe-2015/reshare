@@ -2,8 +2,8 @@
 
   <h1>Users</h1>
 
-  <form ng-submit="vm.addUser()">
-    <input ng-model="vm.newUser.userId" placeholder="GitHub username">
+  <form class="users-page-form" ng-submit="vm.addUser()">
+    <input class="new-username-input" ng-model="vm.newUser.userId" placeholder="GitHub username">
     <label class="role-label">
       <select class="role-select" ng-model="vm.newUser.role">
         <option value="admin">
@@ -17,7 +17,7 @@
     <button class="new-link-button add-user-button">+ Add User</button>
   </form>
 
-  <ul>
+  <ul>Registered:
     <li ng-repeat="user in vm.users | orderBy:'userId'">
       <a href="#/users/{{user.userId}}">{{user.userId}}</a>
     </li>
