@@ -1,5 +1,6 @@
 .shares-wrapper {
   @include outer-container(95%);
+  font-family: $helvetica;
   .indi-share {
     @include span-columns(8);
   }

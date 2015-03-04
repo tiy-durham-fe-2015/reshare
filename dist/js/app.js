@@ -128,7 +128,17 @@ app.factory('VoteFactory', ['shareService', function (shareService) {
 
 }]);
 
-//Factory for comments that brings in individual share
+app.factory('Comment', function () {
+  return function (spec) {
+    spec = spec || {};
+    return {
+      userId: spec.userId,
+      text: spec.text,
+      subjectId: spec.shareId,
+      created: Date.now()
+    };
+  };
+});
 
 app.config(['$routeProvider', function($routeProvider) {
   var routeDefinition = {
@@ -207,18 +217,35 @@ app.config(['$routeProvider', function($routeProvider) {
     controller: 'ShareCtrl',
     controllerAs: 'vm',
     resolve: {
-      share: ['$route', 'shareService', function ($route, shareService) {
+      share: ['$route', 'Comment', 'shareService', function ($route, Comment, shareService) {
         var routeParams = $route.current.params;
         console.log(routeParams.shareid);
         return shareService.getByShareId(routeParams.shareid);
+      }],
+      comments: ['$route', 'shareService', function ($route, shareService) {
+        var routeParams = $route.current.params;
+        return shareService.listComments(routeParams.shareid);
       }]
     }
   };
 
   $routeProvider.when('/shares/:shareid', routeDefinition);
-}])
-.controller('ShareCtrl', ['share', function (share) {
-  this.share = share;
+  $routeProvider.when('/shares/:shareid/comments', routeDefinition);
+}]).controller('ShareCtrl', ['share', 'shareService', 'Comment', 'comments', function (share, shareService, Comment, comments) {
+  var self = this;
+
+  self.share = share;
+  self.comments = comments;
+  self.comment = Comment();
+
+  self.addComment = function () {
+    shareService.addComment(self.comment);
+  };
+
+  self.listComments = function () {
+    shareService.listComments(self.share._id);
+  };
+
 }]);
 
 
@@ -284,6 +311,92 @@ app.config(['$routeProvider', function($routeProvider) {
   };
 
 }]);
+
+app.controller('MainNavCtrl',
+  ['$location', 'StringUtil', 'usersService', function($location, StringUtil, usersService) {
+    var self = this;
+
+    self.isActive = function (path) {
+      // The default route is a special case.
+      if (path === '/') {
+        return $location.path() === '/';
+      }
+
+      return StringUtil.startsWith($location.path(), path);
+    };
+
+    usersService.currentUser().then(function (data) {
+      self.currentUser = data;
+    });
+
+    function windowWidthLess () {
+      return $(window).width() < 459;
+    }
+
+    function checkbox (bool) {
+      $('.main-checkbox').prop('checked', bool);
+    }
+
+    function changeHeight (height) {
+      $('.header-index').css({
+        'height': height + 'px'
+      });
+      $('.site-header').css({
+        'height': height + 'px'
+      });
+    }
+
+    $('.for-clicking').on('click', function () {
+      if (windowWidthLess()) {
+        console.log('hey');
+        checkbox(true);
+        changeHeight(150);
+        if ($('.header-left').length === 5) {
+          changeHeight(180);
+        }
+      }
+    });
+
+    if ($(window).width() > 460) {
+      $('.for-clicking').hide();
+      changeHeight(45)
+    }
+
+    $(window).resize(function() {
+      if ($(window).width() > 460) {
+        changeHeight(45)
+        $('.for-clicking').hide();
+      }
+    });
+
+    $(window).resize(function() {
+        if (windowWidthLess()) {
+          checkbox(false);
+          $('.for-clicking').show();
+          changeHeight(50);
+        }
+    });
+
+    $('.header-left').on('click', function () {
+      if (windowWidthLess()) {
+        checkbox(false);
+        changeHeight(50);
+        $('.site-header').animate({
+          'height': '50px',
+        }, 500);
+      }
+    });
+
+    $('.root-content').on('click', function () {
+      if (windowWidthLess()) {
+        checkbox(false);
+        changeHeight(50);
+        $('.site-header').animate({
+          'height': '50px',
+        }, 500);
+      }
+    });
+  }]);
 
 app.config(['$routeProvider', function($routeProvider) {
   var routeDefinition = {
@@ -377,90 +490,6 @@ app.factory('StringUtil', function() {
   };
 });
 
-app.controller('MainNavCtrl',
-  ['$location', 'StringUtil', 'usersService', function($location, StringUtil, usersService) {
-    var self = this;
-
-    self.isActive = function (path) {
-      // The default route is a special case.
-      if (path === '/') {
-        return $location.path() === '/';
-      }
-
-      return StringUtil.startsWith($location.path(), path);
-    };
-
-    usersService.currentUser().then(function (data) {
-      self.currentUser = data;
-    });
-
-    function windowWidthLess () {
-      return $(window).width() < 459;
-    }
-
-    function checkbox (bool) {
-      $('.main-checkbox').prop('checked', bool);
-    }
-
-    function changeHeight (height) {
-      $('.header-index').css({
-        'height': height + 'px'
-      });
-      $('.site-header').css({
-        'height': height + 'px'
-      });
-    }
-
-    $('.for-clicking').on('click', function () {
-      if (windowWidthLess()) {
-        console.log('hey')
-        checkbox(true);
-        changeHeight(150);
-        if ($('.header-left').length === 5) {
-          changeHeight(180);
-        };
-      };
-    });
-
-    if ($(window).width() > 460) {
-      $('.for-clicking').hide();
-    }
-
-    $(window).resize(function() {
-      if ($(window).width() > 460) {
-        $('.for-clicking').hide();
-      }
-    });
-
-    $(window).resize(function() {
-        if (windowWidthLess()) {
-          checkbox(false);
-          $('.for-clicking').show();
-          changeHeight(50);
-        };
-    });
-
-    $('.header-left').on('click', function () {
-      if (windowWidthLess()) {
-        checkbox(false);
-        changeHeight(50);
-        $('.site-header').animate({
-          'height': '50px',
-        }, 500);
-      }
-    });
-
-    $('.root-content').on('click', function () {
-      if (windowWidthLess()) {
-        checkbox(false);
-        changeHeight(50);
-        $('.site-header').animate({
-          'height': '50px',
-        }, 500);
-      }
-    });
-  }]);
-
 //Share Store, call AJAX
 
 app.factory('shareService', ['$http', '$log', function ($http, $log) {
@@ -517,9 +546,23 @@ app.factory('shareService', ['$http', '$log', function ($http, $log) {
 
     undovote: function (shareId) {
       return post('/api/res/' + shareId + '/votes', {vote:0});
-    }
+    },
+
+    listComments: function (shareId) {
+      return get('/api/res/' + shareId + '/comments');
+    },
+
+    addComment: function (shareId, comment) {
+      return post('/api/res' + shareId + '/comments');
+
+    },
+
+    deleteComment: function (shareId, comment) {
+      return delete('/api/res/' + shareId + '/comments/:id');
+    },
 
   };
+
 }]);
 
 app.factory('usersService', ['$http', '$q', '$log', function($http, $q, $log) {

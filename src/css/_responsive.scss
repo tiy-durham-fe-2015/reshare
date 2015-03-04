@@ -9,6 +9,20 @@
 		width: 100px;
 	}
 
+	.shares-wrapper {
+	  @include outer-container(95%);
+	  .indi-share {
+	    @include span-columns(12);
+	    @include omega(1n);
+	  }
+	  .featured-share-wrapper {
+	  	@include span-columns(12);
+	  	@include omega(1n);
+	    height: 10em;
+	    margin-top: 2em;
+	  }
+	}
+
 }
 
 @media screen and (max-width:459px) {

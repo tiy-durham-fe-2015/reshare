@@ -45,10 +45,12 @@ app.controller('MainNavCtrl',
 
     if ($(window).width() > 460) {
       $('.for-clicking').hide();
+      changeHeight(45)
     }
 
     $(window).resize(function() {
       if ($(window).width() > 460) {
+        changeHeight(45)
         $('.for-clicking').hide();
       }
     });
