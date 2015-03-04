@@ -11,7 +11,8 @@
 
 <ul>
   <li ng-repeat="comment in vm.comments">
-    <p>{{comment.text}}</p>
-    <p>{{comment.created | date:"MM/dd/yyyy 'at' h:mma"}}</p>
+    <div class="comment-text">{{comment.text}}</div>
+    <a href="/#/users/{{comment.userId}}" class="comment-userId">{{comment.userId}}</a>
+    <span class="comment-date">{{comment.created | date:"MM/dd/yyyy 'at' h:mma"}}</span>
   </li>
 </ul>
