@@ -43,6 +43,9 @@
 }
 
 @media screen and (max-width: 459px) {
+	.featured-share-wrapper {
+		visibility: hidden;
+	}
     .share-listings {
         width: 95%;
     }

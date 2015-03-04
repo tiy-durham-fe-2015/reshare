@@ -1,92 +1,90 @@
 // The root module for our Angular application
 var app = angular.module('app', ['ngRoute']);
+app.controller('MainNavCtrl',
+  ['$location', 'StringUtil', 'usersService', function($location, StringUtil, usersService) {
+    var self = this;
 
-app.controller('MainNavCtrl', ['$location', 'StringUtil', 'usersService',
-    function($location, StringUtil, usersService) {
-        var self = this;
+    self.isActive = function (path) {
+      // The default route is a special case.
+      if (path === '/') {
+        return $location.path() === '/';
+      }
 
-        self.isActive = function(path) {
-            // The default route is a special case.
-            if (path === '/') {
-                return $location.path() === '/';
-            }
+      return StringUtil.startsWith($location.path(), path);
+    };
 
-            return StringUtil.startsWith($location.path(), path);
-        };
+    usersService.currentUser().then(function (data) {
+      self.currentUser = data;
+    });
 
-        usersService.currentUser().then(function(data) {
-            self.currentUser = data;
-        });
-
-        function windowWidthLess() {
-            return $(window).width() < 459;
-        }
-
-        function checkbox(bool) {
-            $('.main-checkbox').prop('checked', bool);
-        }
-
-        function changeHeight(height) {
-            $('.header-index').css({
-                'height': height + 'px'
-            });
-            $('.site-header').css({
-                'height': height + 'px'
-            });
-        }
-
-        $('.for-clicking').on('click', function() {
-            if (windowWidthLess()) {
-                console.log('hey');
-                checkbox(true);
-                changeHeight(150);
-                if ($('.header-left').length === 5) {
-                    changeHeight(180);
-                }
-            }
-        });
-
-        if ($(window).width() > 460) {
-            $('.for-clicking').hide();
-            changeHeight(45)
-        }
-
-        $(window).resize(function() {
-            if ($(window).width() > 460) {
-                changeHeight(45)
-                $('.for-clicking').hide();
-            }
-        });
-
-        $(window).resize(function() {
-            if (windowWidthLess()) {
-                checkbox(false);
-                $('.for-clicking').show();
-                changeHeight(50);
-            }
-        });
-
-        $('.header-left').on('click', function() {
-            if (windowWidthLess()) {
-                checkbox(false);
-                changeHeight(50);
-                $('.site-header').animate({
-                    'height': '50px',
-                }, 500);
-            }
-        });
-
-        $('.root-content').on('click', function() {
-            if (windowWidthLess()) {
-                checkbox(false);
-                changeHeight(50);
-                $('.site-header').animate({
-                    'height': '50px',
-                }, 500);
-            }
-        });
+    function windowWidthLess () {
+      return $(window).width() < 459;
     }
-]);
+
+    function checkbox (bool) {
+      $('.main-checkbox').prop('checked', bool);
+    }
+
+    function changeHeight (height) {
+      $('.header-index').css({
+        'height': height + 'px'
+      });
+      $('.site-header').css({
+        'height': height + 'px'
+      });
+    }
+
+    $('.for-clicking').on('click', function () {
+      if (windowWidthLess()) {
+        console.log('hey');
+        checkbox(true);
+        changeHeight(150);
+        if ($('.header-left').length === 5) {
+          changeHeight(180);
+        }
+      }
+    });
+
+    if ($(window).width() > 460) {
+      $('.for-clicking').hide();
+      changeHeight(45)
+    }
+
+    $(window).resize(function() {
+      if ($(window).width() > 460) {
+        changeHeight(45)
+        $('.for-clicking').hide();
+      }
+    });
+
+    $(window).resize(function() {
+        if (windowWidthLess()) {
+          checkbox(false);
+          $('.for-clicking').show();
+          changeHeight(50);
+        }
+    });
+
+    $('.header-left').on('click', function () {
+      if (windowWidthLess()) {
+        checkbox(false);
+        changeHeight(50);
+        $('.site-header').animate({
+          'height': '50px',
+        }, 500);
+      }
+    });
+
+    $('.root-content').on('click', function () {
+      if (windowWidthLess()) {
+        checkbox(false);
+        changeHeight(50);
+        $('.site-header').animate({
+          'height': '50px',
+        }, 500);
+      }
+    });
+  }]);
 
 app.factory('VoteFactory', ['shareService',
     function(shareService) {
@@ -113,7 +111,6 @@ app.factory('VoteFactory', ['shareService',
                 });
                 shareService.undovote(id, 'down', (downs - 1));
             }
-            x
             shareService.upvote(id);
         };
 
@@ -156,7 +153,6 @@ app.factory('VoteFactory', ['shareService',
 
     }
 ]);
-
 app.factory('Comment', function() {
     return function(spec) {
         spec = spec || {};
@@ -168,36 +164,31 @@ app.factory('Comment', function() {
         };
     };
 });
+app.config(['$routeProvider', function ($routeProvider) {
+  $routeProvider.when('/shares/new-share', {
+    controller: 'NewShareCtrl',
+    controllerAs: 'vm',
+    templateUrl: 'shares/new-share.html'
+  });
+}]).controller('NewShareCtrl', ['$location', 'Share', 'shareService', function ($location, Share, shareService) {
+  var self = this;
 
-app.config(['$routeProvider',
-    function($routeProvider) {
-        $routeProvider.when('/shares/new-share', {
-            controller: 'NewShareCtrl',
-            controllerAs: 'vm',
-            templateUrl: 'shares/new-share.html'
-        });
-    }
-]).controller('NewShareCtrl', ['$location', 'Share', 'shareService',
-    function($location, Share, shareService) {
-        var self = this;
+  self.share = Share();
 
-        self.share = Share();
+  self.cancelEdit = function () {
+    self.viewShares();
+  };
 
-        self.cancelEdit = function() {
-            self.viewShares();
-        };
+  self.viewShares = function () {
+    $location.path('/shares');
+  };
 
-        self.viewShares = function() {
-            $location.path('/shares');
-        };
+  self.addShare = function () {
+    shareService.addShare(self.share).then(self.viewShares);
+    console.log(self.share);
+  };
 
-        self.addShare = function() {
-            shareService.addShare(self.share).then(self.viewShares);
-            console.log(self.share);
-        };
-
-    }
-]);
+}]);
 
 app.config(['$routeProvider',
     function($routeProvider) {
@@ -246,8 +237,6 @@ app.config(['$routeProvider',
 
     }
 ]);
-
-
 app.factory('Share', function() {
     return function(spec) {
         spec = spec || {};
@@ -259,7 +248,6 @@ app.factory('Share', function() {
         };
     };
 });
-
 app.config(['$routeProvider',
     function($routeProvider) {
         var routeDefinition = {
@@ -312,7 +300,6 @@ app.config(['$routeProvider',
 
         }
     ]);
-
 app.config(['$routeProvider',
     function($routeProvider) {
         var routeDefinition = {
@@ -339,7 +326,6 @@ app.config(['$routeProvider',
             console.log(user);
         }
     ]);
-
 app.factory('User', function() {
     return function(spec) {
         spec = spec || {};
@@ -349,7 +335,6 @@ app.factory('User', function() {
         };
     };
 });
-
 app.config(['$routeProvider',
     function($routeProvider) {
         var routeDefinition = {
@@ -408,7 +393,6 @@ app.config(['$routeProvider',
             };
         }
     ]);
-
 // A little string utility... no biggie
 app.factory('StringUtil', function() {
     return {
@@ -418,7 +402,6 @@ app.factory('StringUtil', function() {
         }
     };
 });
-
 //Share Store, call AJAX
 
 app.factory('shareService', ['$http', '$log',
@@ -500,7 +483,6 @@ app.factory('shareService', ['$http', '$log',
 
     }
 ]);
-
 app.factory('usersService', ['$http', '$q', '$log',
     function($http, $q, $log) {
         // My $http promise then and catch always
@@ -545,5 +527,4 @@ app.factory('usersService', ['$http', '$q', '$log',
         };
     }
 ]);
-
 //# sourceMappingURL=app.js.map
