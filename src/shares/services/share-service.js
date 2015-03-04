@@ -54,7 +54,21 @@ app.factory('shareService', ['$http', '$log', function ($http, $log) {
 
     undovote: function (shareId) {
       return post('/api/res/' + shareId + '/votes', {vote:0});
-    }
+    },
+
+    listComments: function (shareId) {
+      return get('/api/res/' + shareId + '/comments');
+    },
+
+    addComment: function (shareId, comment) {
+      return post('/api/res' + shareId + '/comments');
+
+    },
+
+    deleteComment: function (shareId, comment) {
+      return delete('/api/res/' + shareId + '/comments/:id');
+    },
 
   };
+
 }]);
