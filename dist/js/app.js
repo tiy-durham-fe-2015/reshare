@@ -1,45 +1,6 @@
 // The root module for our Angular application
 var app = angular.module('app', ['ngRoute']);
 
-$(function () {
-
-	// console.log($('.main-checkbox').prop('checked'))
-
-	// if ($('.main-checkbox').prop('checked')) {
-	// 	console.log('eh')
-	// 	$('.site-header').css({
-	// 		'height': '155px'
-	// 	})
-	// };
-
-	// function screenWidthAdjustment () {
-	// 	console.log('eh')
-	// 	var move = $('.header-new-link-button').detach();
-	// 	move.appendTo('.header-login-button')
-	// }
-
-	// function screenWidthRevert () {
-	// 	var move = $('.header-new-link-button').detach();
-	// 	move.appendTo('.links-div')
-	// }
-
-	// if ($(window).width() < 750) {
-	//     screenWidthAdjustment()
-	// }
-
-	// $(window).resize(function() {
-	//     if ($(window).width() < 750) {
-	//         screenWidthAdjustment()
-	//     }
-	// });
-
-	// $(window).resize(function() {
-	//     if ($(window).width() > 750) {
-	//         screenWidthRevert()
-	//     }
-	// });
-
-});
 app.controller('MainNavCtrl',
   ['$location', 'StringUtil', 'usersService', function($location, StringUtil, usersService) {
     var self = this;
@@ -114,6 +75,45 @@ app.controller('MainNavCtrl',
     });
   }]);
 
+$(function () {
+
+	// console.log($('.main-checkbox').prop('checked'))
+
+	// if ($('.main-checkbox').prop('checked')) {
+	// 	console.log('eh')
+	// 	$('.site-header').css({
+	// 		'height': '155px'
+	// 	})
+	// };
+
+	// function screenWidthAdjustment () {
+	// 	console.log('eh')
+	// 	var move = $('.header-new-link-button').detach();
+	// 	move.appendTo('.header-login-button')
+	// }
+
+	// function screenWidthRevert () {
+	// 	var move = $('.header-new-link-button').detach();
+	// 	move.appendTo('.links-div')
+	// }
+
+	// if ($(window).width() < 750) {
+	//     screenWidthAdjustment()
+	// }
+
+	// $(window).resize(function() {
+	//     if ($(window).width() < 750) {
+	//         screenWidthAdjustment()
+	//     }
+	// });
+
+	// $(window).resize(function() {
+	//     if ($(window).width() > 750) {
+	//         screenWidthRevert()
+	//     }
+	// });
+
+});
 // app.factory('UserFactory', function() {
 app.factory('UserFactory', ['$route', 'usersService', function($route, usersService) {
 
@@ -313,7 +313,10 @@ app.config(['$routeProvider', function($routeProvider) {
   self.comment = Comment();
 
   self.addComment = function () {
-    shareService.addComment(self.comment);
+    shareService.addComment(self.share._id, self.comment).then(function(comment) {
+      self.comments.push(comment);
+      self.comment.text = '';
+    });
   };
 
   self.listComments = function () {
@@ -385,6 +388,16 @@ app.config(['$routeProvider', function($routeProvider) {
   };
 
 }]);
+
+// A little string utility... no biggie
+app.factory('StringUtil', function() {
+  return {
+    startsWith: function (str, subStr) {
+      str = str || '';
+      return str.slice(0, subStr.length) === subStr;
+    }
+  };
+});
 
 app.config(['$routeProvider', function($routeProvider) {
   var routeDefinition = {
@@ -468,16 +481,6 @@ app.config(['$routeProvider', function($routeProvider) {
   };
 }]);
 
-// A little string utility... no biggie
-app.factory('StringUtil', function() {
-  return {
-    startsWith: function (str, subStr) {
-      str = str || '';
-      return str.slice(0, subStr.length) === subStr;
-    }
-  };
-});
-
 //Share Store, call AJAX
 
 app.factory('shareService', ['$http', '$log', function ($http, $log) {
@@ -541,13 +544,12 @@ app.factory('shareService', ['$http', '$log', function ($http, $log) {
     },
 
     addComment: function (shareId, comment) {
-      return post('/api/res' + shareId + '/comments');
-
+      return post('/api/res/' + shareId + '/comments', comment);
     },
 
     deleteComment: function (shareId, comment) {
       return delete('/api/res/' + shareId + '/comments/:id');
-    },
+    }
 
   };
 
