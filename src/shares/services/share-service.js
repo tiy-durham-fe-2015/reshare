@@ -61,13 +61,12 @@ app.factory('shareService', ['$http', '$log', function ($http, $log) {
     },
 
     addComment: function (shareId, comment) {
-      return post('/api/res' + shareId + '/comments');
-
+      return post('/api/res/' + shareId + '/comments', comment);
     },
 
     deleteComment: function (shareId, comment) {
       return delete('/api/res/' + shareId + '/comments/:id');
-    },
+    }
 
   };
 

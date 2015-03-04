@@ -1,45 +1,6 @@
 // The root module for our Angular application
 var app = angular.module('app', ['ngRoute']);
 
-$(function () {
-
-	// console.log($('.main-checkbox').prop('checked'))
-
-	// if ($('.main-checkbox').prop('checked')) {
-	// 	console.log('eh')
-	// 	$('.site-header').css({
-	// 		'height': '155px'
-	// 	})
-	// };
-
-	// function screenWidthAdjustment () {
-	// 	console.log('eh')
-	// 	var move = $('.header-new-link-button').detach();
-	// 	move.appendTo('.header-login-button')
-	// }
-
-	// function screenWidthRevert () {
-	// 	var move = $('.header-new-link-button').detach();
-	// 	move.appendTo('.links-div')
-	// }
-
-	// if ($(window).width() < 750) {
-	//     screenWidthAdjustment()
-	// }
-
-	// $(window).resize(function() {
-	//     if ($(window).width() < 750) {
-	//         screenWidthAdjustment()
-	//     }
-	// });
-
-	// $(window).resize(function() {
-	//     if ($(window).width() > 750) {
-	//         screenWidthRevert()
-	//     }
-	// });
-
-});
 app.controller('MainNavCtrl',
   ['$location', 'StringUtil', 'usersService', function($location, StringUtil, usersService) {
     var self = this;
@@ -126,24 +87,6 @@ app.controller('MainNavCtrl',
     });
   }]);
 
-// app.factory('UserFactory', function() {
-app.factory('UserFactory', ['$route', 'usersService', function($route, usersService) {
-
-
-    return {
-    	user: function () {
-    		// var routeParams = $route.current.params;
-    		// console.log(routeParams)
-    		// console.log(routeParams.userid)
-		    // var user = usersService.getByUserId(routeParams.userid);
-		    // console.log(user);
-		    // console.log('hey')
-    	}
-    };
-
-// });
-}]);
-
 app.factory('VoteFactory', ['shareService', function (shareService) {
 
 	var ups;
@@ -220,51 +163,6 @@ app.factory('Comment', function () {
   };
 });
 
-app.config(['$routeProvider', function($routeProvider) {
-  var routeDefinition = {
-    templateUrl: 'shares/shares.html',
-    controller: 'SharesCtrl',
-    controllerAs: 'vm'
-  };
-
-  $routeProvider.when('/', routeDefinition);
-  $routeProvider.when('/shares', routeDefinition);
-}])
-.controller('SharesCtrl', ['VoteFactory', function (VoteFactory) {
-  // TODO: load these via AJAX
-  var self = this;
-
-  self.shares = [];
-
-  // self.chosen;
-  // self.upCounter = 0;
-  // self.downCounter = 0;
-
-  // self.vote = function (direction) {
-  // 	self.chosen = direction;
-  // };
-
-  // self.vote = function (color, vote) {
-  // 	// document.querySelector(el).onclick = function () {
-	 //  	event.target.style.color = color
-	 //  // }
-  //   if (vote = 'upvote') {
-
-  //   }
-  // }
-
-  self.vote = function (color, voted) {
-    VoteFactory.vote(color, voted);
-  };
-
-  // todo:
-  // -add an upvote and downvote counter to each li. Need to create a function within whatever Ashley is pushing to an array
-  // that you can access. With that access, you'll need to create the function in your VoteFactory, probably using dependency
-  // injection from her controller. The details page should have something like "upvotes= {{upvotes}}".
-
-
-}]);
-
 app.config(['$routeProvider', function ($routeProvider) {
   $routeProvider.when('/shares/new-share', {
     controller: 'NewShareCtrl',
@@ -319,7 +217,10 @@ app.config(['$routeProvider', function($routeProvider) {
   self.comment = Comment();
 
   self.addComment = function () {
-    shareService.addComment(self.comment);
+    shareService.addComment(self.share._id, self.comment).then(function(comment) {
+      self.comments.push(comment);
+      self.comment.text = '';
+    });
   };
 
   self.listComments = function () {
@@ -366,14 +267,9 @@ app.config(['$routeProvider', function($routeProvider) {
 
   self.shares = shares;
 
-  // console.log(shares);
-  console.log(self.shares);
-
   self.vote = function (color, voted) {
     var indexNum = $(event.target).parent().index();
     var id = self.shares[indexNum]._id;
-    // var votes = shareService.getVotes(id);
-    // console.log(votes)
     var upvotes = self.shares[indexNum].upvotes;
     var downvotes = self.shares[indexNum].downvotes;
     VoteFactory.vote(color, voted, id, upvotes, downvotes);
@@ -547,13 +443,12 @@ app.factory('shareService', ['$http', '$log', function ($http, $log) {
     },
 
     addComment: function (shareId, comment) {
-      return post('/api/res' + shareId + '/comments');
-
+      return post('/api/res/' + shareId + '/comments', comment);
     },
 
     deleteComment: function (shareId, comment) {
       return delete('/api/res/' + shareId + '/comments/:id');
-    },
+    }
 
   };
 
