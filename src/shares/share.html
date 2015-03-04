@@ -12,5 +12,6 @@
 <ul>
   <li ng-repeat="comment in vm.comments">
     <p>{{comment.text}}</p>
+    <p>{{comment.created | date:"MM/dd/yyyy 'at' h:mma"}}</p>
   </li>
 </ul>
