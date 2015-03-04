@@ -10,7 +10,7 @@
   <button>Submit</button>
 </form>
 
-<ul>
+<ul class="comment-section">
   <li ng-repeat="comment in vm.comments">
     <div class="comment-text">{{comment.text}}</div>
     <a href="/#/users/{{comment.userId}}" class="comment-userId">{{comment.userId}}</a>

@@ -412,7 +412,7 @@ i {
     margin-top: 20px;
     width: 95%; }
   .shares-wrapper .featured-share-wrapper {
-    padding-top: 30px;
+    display: none;
     width: 95%; }
   .share-listings {
     display: -webkit-flex;
