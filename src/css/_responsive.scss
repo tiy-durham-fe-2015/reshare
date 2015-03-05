@@ -15,7 +15,7 @@
         }
         .featured-share-wrapper {
             @include reset-all;
-            padding-top: 30px;
+            display: none;
             width: 95%;
         }
         @include reset-all;
@@ -163,7 +163,7 @@
     }
 
     /******************** NEW LINK *******************************/
-    
+
     .new-share-div {
         width: 95%;
     }
@@ -173,9 +173,9 @@
     .new-link-cancel-button {
         margin: 24px 0 0 15%;
     }
-    
+
     /******************** USER/USERS PAGE *******************************/
-    
+
     .user-details-div {
         width: 95%;
     }

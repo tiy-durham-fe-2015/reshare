@@ -1,0 +1,73 @@
+.share-wrapper {
+  margin-left: 7%;
+  padding-top: 2em;
+}
+
+.share-description-title {
+  margin-bottom: 0.3em;
+}
+
+.share-url-link {
+  font-size: 1.5em;
+  margin-top: .1em;
+  color: black;
+}
+
+.vote-counts {
+  margin-top: 3em;
+  margin-bottom: 2em;
+}
+
+.shared-by {
+  margin: 1em 0 2em 0;
+}
+
+.share-userId {
+  color: black;
+}
+
+.share.fa.fa-arrow-up.fa-2x {
+  color: blue;
+  padding-right: 1%;
+}
+
+.share.fa.fa-arrow-down.fa-2x {
+  color: orange;
+}
+
+.share-wrapper input {
+  padding: 7px;
+  width: 30%;
+}
+
+.comment-section {
+  margin-top: 1em;
+  color: black;
+}
+
+.comment-text {
+  font-size: 1.25em;
+  padding-top: 1em;
+}
+
+.comment-userId {
+  color: white;
+}
+
+.comment-date {
+  color: white;
+  font-size: .8em;
+  margin-left: 1em;
+}
+
+.submit-comment {
+  border-radius: 4px;
+  padding: 12px 20px;
+  border: none;
+  -webkit-box-shadow: 0px 0px 2px #999999;
+  box-shadow: 0px 0px 2px #999999;
+  background: white;
+  color: #2E2E2D;
+  font-weight: bold;
+  cursor: pointer;
+}
