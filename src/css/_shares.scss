@@ -2,6 +2,7 @@
   @include outer-container(95%);
   .indi-share {
     @include span-columns(8);
+    margin-top: 3em;
   }
   .featured-share-wrapper {
     @include span-columns(4);
@@ -29,6 +30,8 @@
 .share-url {
   font-size: 1.9em;
   color: #ecf0f1;
+  margin-left: 1em;
+  letter-spacing: .1em;
 }
 
 .share-url:hover {
@@ -52,7 +55,7 @@
   -webkit-flex-wrap: wrap;
       -ms-flex-wrap: wrap;
           flex-wrap: wrap;
-  margin-left: 4.3em;
+  margin-left: 6.1em;
   cursor: pointer;
 }
 
