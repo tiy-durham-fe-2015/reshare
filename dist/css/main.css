@@ -558,7 +558,7 @@ i {
 
 .resources-header {
   margin-bottom: .3em;
-  font-family: 'Poiret One', cursive;
+  font-family: 'Poiret One', Helvetica;
   font-size: 3em;
   color: black; }
 
@@ -605,7 +605,7 @@ i {
 
 .share-wrapper {
   margin-left: 7%;
-  padding-top: 1.5em; }
+  padding-top: 2em; }
 
 .share-description-title {
   margin-bottom: 0.3em; }
@@ -637,17 +637,18 @@ i {
   width: 30%; }
 
 .comment-section {
-  margin-top: 1em; }
+  margin-top: 1em;
+  color: black; }
 
 .comment-text {
   font-size: 1.25em;
   padding-top: 1em; }
 
 .comment-userId {
-  color: black; }
+  color: white; }
 
 .comment-date {
-  color: black;
+  color: white;
   font-size: .8em;
   margin-left: 1em; }
 
