@@ -35,12 +35,18 @@
   color: orange;
 }
 
+.share-wrapper input {
+  padding: 7px;
+  width: 30%;
+}
+
 .comment-section {
   margin-top: 1em;
 }
 
 .comment-text {
   font-size: 1.25em;
+  padding-top: 1em;
 }
 
 .comment-userId {
