@@ -11,6 +11,7 @@
 .share-url-link {
   font-size: 1.5em;
   margin-top: .1em;
+  color: black;
 }
 
 .vote-counts {
@@ -20,6 +21,10 @@
 
 .shared-by {
   margin: 2em 0 2em 0;
+}
+
+.share-userId {
+  color: black;
 }
 
 .share.fa.fa-arrow-up.fa-2x {
@@ -36,6 +41,10 @@
 
 .comment-text {
   font-size: 1.2em;
+}
+
+.comment-userId {
+  color: black;
 }
 
 .comment-date {
