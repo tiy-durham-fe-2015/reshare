@@ -291,13 +291,16 @@ i {
 *************************************************************/
 .new-link-input {
   width: 99%;
-  padding: 4px 2px;
+  padding: 10px 10px;
   box-shadow: 0px 0px 2px #999999;
   border: none;
   color: #2E2E2D; }
 
+.link-input {
+  margin-bottom: 2em; }
+
 .new-share-h1 {
-  margin-top: 24px;
+  margin: 1.5em 0 1.5em 0;
   color: white; }
 
 .new-p {
@@ -541,39 +544,35 @@ i {
     float: left;
     display: block;
     margin-right: 2.35765%;
-    width: 65.88078%;
+    width: 82.94039%;
     margin-top: 3em; }
     .shares-wrapper .indi-share:last-child {
-      margin-right: 0; }
-  .shares-wrapper .featured-share-wrapper {
-    float: left;
-    display: block;
-    margin-right: 2.35765%;
-    width: 31.76157%;
-    height: 10em;
-    margin-top: 20px; }
-    .shares-wrapper .featured-share-wrapper:last-child {
       margin-right: 0; }
 
 .shares-header {
   width: 100%;
   display: table;
   width: 100%;
-  table-layout: fixed; }
+  table-layout: fixed;
+  margin: 2em 0 0 7em; }
 
-.shares-header a {
-  font-size: 1.2em;
-  margin-top: 20px;
+.resources-header {
+  margin-bottom: 1em; }
+
+.share-new-link-a {
+  font-size: 1.5em;
   color: #2e2e2d; }
 
+.share-new-link-a:hover {
+  color: #83BF17; }
+
 .link-li {
-  padding: 2% 1%; }
+  padding: 0 0 2% 1%; }
 
 .share-url {
   font-size: 1.9em;
   color: #ecf0f1;
-  margin-left: 1em;
-  letter-spacing: .1em; }
+  margin-left: 1em; }
 
 .share-url:hover {
   color: #2e2e2d; }
@@ -591,23 +590,19 @@ i {
   -webkit-flex-wrap: wrap;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
-  margin-left: 6.1em;
+  margin-left: 6.3em;
   cursor: pointer; }
 
 .share-comments a {
   margin-right: 1em;
   color: #2e2e2d; }
 
-.resources-header {
-  margin: 20px 0 0; }
-
-.share-new-link-a:hover {
+.share-comments a:hover {
   color: #ecf0f1; }
 
 .share-wrapper {
   margin-left: 7%;
-  padding-top: 1.5em;
-  letter-spacing: .1em; }
+  padding-top: 1.5em; }
 
 .share-description-title {
   margin-bottom: 0.3em; }
@@ -618,17 +613,18 @@ i {
   color: black; }
 
 .vote-counts {
-  margin-top: 2em;
+  margin-top: 3em;
   margin-bottom: 2em; }
 
 .shared-by {
-  margin: 2em 0 2em 0; }
+  margin: 1em 0 2em 0; }
 
 .share-userId {
   color: black; }
 
 .share.fa.fa-arrow-up.fa-2x {
-  color: blue; }
+  color: blue;
+  padding-right: 1%; }
 
 .share.fa.fa-arrow-down.fa-2x {
   color: orange; }
@@ -637,11 +633,22 @@ i {
   margin-top: 1em; }
 
 .comment-text {
-  font-size: 1.2em; }
+  font-size: 1.25em; }
 
 .comment-userId {
   color: black; }
 
 .comment-date {
   color: black;
-  font-size: .7em; }
+  font-size: .8em;
+  margin-left: 1em; }
+
+.submit-comment {
+  border-radius: 4px;
+  padding: 12px 20px;
+  border: none;
+  box-shadow: 0px 0px 2px #999999;
+  background: white;
+  color: #2E2E2D;
+  font-weight: bold;
+  cursor: pointer; }

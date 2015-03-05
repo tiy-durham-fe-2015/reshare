@@ -1,7 +1,7 @@
 <div class="shares-wrapper">
   <div class="shares-header">
     <h1 class="resources-header">Resources</h1>
-    <a class="share-new-link-a" href="#/shares/new-share">+ Share</a>
+    <a class="share-new-link-a" href="#/shares/new-share">+ Share a Link</a>
   </div>
   <div class="share-listings">
     <ul class="indi-share">
@@ -13,14 +13,14 @@
         </div>
 
         <div class="share-comments">
-          <a href="/#/users/{{share.userId}}">by {{share.userId}}</a>
+          <a class="shared-by-userId" href="/#/users/{{share.userId}}">by {{share.userId}}</a>
           <a href="/#/shares/{{share._id}}">Comments</a>
           <a class="indi-share-delete" ng-click="vm.delete(share._id)">Delete</a>
         </div>
       </li>
     </ul>
 
-    <div class="featured-share-wrapper">
+    <!-- <div class="featured-share-wrapper">
       <h2>Featured Article</h2>
       <div class="share">
         <i ng-click="vm.vote('blue', 'upvote')" class="fa fa-arrow-up fa-2x"></i>
@@ -30,6 +30,6 @@
       <div class="comments">
         <p>This is where the comments go!</p>
       </div>
-    </div>
+    </div> -->
   </div>
 </div>
