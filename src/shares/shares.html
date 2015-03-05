@@ -5,7 +5,7 @@
   </div>
   <div class="share-listings">
     <ul class="indi-share">
-      <li class="link-li" ng-repeat="share in vm.shares">
+      <li class="link-li" ng-repeat="share in vm.shares | orderBy:'upvotes'">
         <div class="share">
           <i ng-click="vm.vote('blue', 'upvote')" class="fa fa-arrow-up fa-2x"></i>
           <i ng-click="vm.vote('orange', 'downvote')" class="fa fa-arrow-down fa-2x"></i>
