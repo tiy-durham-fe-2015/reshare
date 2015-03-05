@@ -297,7 +297,7 @@ app.config(['$routeProvider',
                 //id when the edit button is ng-click(ed).  Haha.  Submit button submits the form.  The API has function to deal deal
                 //with duplicate user.  It states to replace current info with new info.
             };
-
+            
         }
     ]);
 app.config(['$routeProvider',

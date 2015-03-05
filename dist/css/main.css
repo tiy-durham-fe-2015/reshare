@@ -1,5 +1,5 @@
-@import url('http://fonts.googleapis.com/css?family=Montserrat');
-@import url('http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css');
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+@import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css');
 /* Eric Meyer's Reset CSS v2.0 - http://cssreset.com */
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
   border: 0;
@@ -333,13 +333,13 @@ i {
   margin: 0 auto; }
 
 .new-share-div {
-  font-family: 'Montserrat'; }
+  font-family: 'Montserrat', helvetica; }
 
 .users-page-div form {
   height: 40px; }
 
 .add-user-button {
-  font-family: 'Montserrat';
+  font-family: 'Montserrat', helvetica;
   font-size: 100%;
   padding: 6px 9px 5px; }
 
@@ -430,6 +430,8 @@ i {
     height: 110%; } }
 
 @media screen and (max-width: 459px) {
+  .featured-share-wrapper {
+    visibility: hidden; }
   .share-listings {
     width: 95%; }
   .site-header {
