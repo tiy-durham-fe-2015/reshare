@@ -1,0 +1,27 @@
+<div class="share-wrapper">
+  <h1 class="share-description-title">{{vm.share.description}}</h1>
+  <a class="share-url-link" href="{{vm.share.url}}">{{vm.share.url}}</a>
+
+  <div class="shared-by">
+    <span>shared by:</span>
+    <a class="share-userId" href="/#/users/{{vm.share.userId}}">{{vm.share.userId}}</a>
+  </div>
+
+  <div class="vote-counts">
+    <i class="share fa fa-arrow-up fa-2x">{{vm.share.upvotes}}</i>
+    <i class="share fa fa-arrow-down fa-2x">{{vm.share.downvotes}}</i>
+  </div>
+
+  <form ng-submit="vm.addComment()">
+    <input type="textbox" ng-model="vm.comment.text" placeholder="+ Add a Comment">
+    <button class="submit-comment">Submit</button>
+  </form>
+
+  <ul class="comment-section">
+    <li ng-repeat="comment in vm.comments">
+      <div class="comment-text">{{comment.text}}</div>
+      <a href="/#/users/{{comment.userId}}" class="comment-userId">{{comment.userId}}</a>
+      <span class="comment-date">{{comment.created | date:"MM/dd/yyyy 'at' h:mma"}}</span>
+    </li>
+  </ul>
+</div>

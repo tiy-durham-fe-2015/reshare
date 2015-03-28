@@ -1,0 +1,17 @@
+<!--Create a New Share -->
+<div class="main-divs new-share-div">
+  <h1 class="new-share-h1">Share a Resource</h1>
+
+  <form ng-submit="vm.addShare()">
+    <div class="link-input">
+      <p class="new-p what-link-p">Link to your favorite resource</p>
+      <input class="new-link-url new-link-input" type="url" ng-model="vm.share.url" placeholder="www.google.com">
+    </div>
+    <div class="link-description">
+      <p class="new-p desc-p">Give us a quick description!</p>
+      <input class="new-link-desc new-link-input" type="text" ng-model="vm.share.description" placeholder="Description">
+    </div>
+    <button class="new-link-button new-link-submit-button">Submit</button>
+  </form>
+  <button class="new-link-button new-link-cancel-button" ng-click="vm.cancelEdit()">Cancel</button>
+</div>

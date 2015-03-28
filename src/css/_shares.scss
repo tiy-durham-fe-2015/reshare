@@ -1,0 +1,78 @@
+.shares-wrapper {
+  @include outer-container(95%);
+  .indi-share {
+    @include span-columns(10);
+    margin-top: 3em;
+  }
+  // .featured-share-wrapper {
+  //   @include span-columns(4);
+  //   height: 10em;
+  //   margin-top: 20px;
+  // }
+}
+
+.shares-header {
+  @include fill-parent();
+  @include row(table);
+  margin: 2em 0 0 7em;
+}
+
+.resources-header {
+  margin-bottom: .3em;
+ font-family: 'Poiret One', Helvetica;
+ font-size: 3em;
+ color: black;
+ }
+
+.share-new-link-a {
+  font-size: 1.5em;
+  color: #2e2e2d;
+}
+
+.share-new-link-a:hover {
+  color: #83BF17;
+}
+
+.link-li {
+  padding: 0 0 2% 1%;
+}
+
+.share-url {
+  font-size: 1.9em;
+  color: #ecf0f1;
+  margin-left: 1em;
+}
+
+.share-url:hover {
+  color: #2e2e2d;
+}
+
+.share-comments {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+  margin-left: 6.3em;
+  cursor: pointer;
+}
+
+.share-comments a {
+  margin-right: 1em;
+  color: #2e2e2d;
+}
+
+.share-comments a:hover {
+  color: #ecf0f1;
+}
